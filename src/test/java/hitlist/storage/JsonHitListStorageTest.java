@@ -1,0 +1,110 @@
+package hitlist.storage;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static hitlist.testutil.Assert.assertThrows;
+import static hitlist.testutil.TypicalPersons.ALICE;
+import static hitlist.testutil.TypicalPersons.HOON;
+import static hitlist.testutil.TypicalPersons.IDA;
+import static hitlist.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import hitlist.commons.exceptions.DataLoadingException;
+import hitlist.model.HitList;
+import hitlist.model.ReadOnlyHitList;
+
+public class JsonHitListStorageTest {
+    private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonHitListStorageTest");
+
+    @TempDir
+    public Path testFolder;
+
+    @Test
+    public void readHitList_nullFilePath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> readHitList(null));
+    }
+
+    private java.util.Optional<ReadOnlyHitList> readHitList(String filePath) throws Exception {
+        return new JsonHitListStorage(Paths.get(filePath)).readHitList(addToTestDataPathIfNotNull(filePath));
+    }
+
+    private Path addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
+        return prefsFileInTestDataFolder != null
+                ? TEST_DATA_FOLDER.resolve(prefsFileInTestDataFolder)
+                : null;
+    }
+
+    @Test
+    public void read_missingFile_emptyResult() throws Exception {
+        assertFalse(readHitList("NonExistentFile.json").isPresent());
+    }
+
+    @Test
+    public void read_notJsonFormat_exceptionThrown() {
+        assertThrows(DataLoadingException.class, () -> readHitList("notJsonFormatAddressBook.json"));
+    }
+
+    @Test
+    public void readAddressBook_invalidPersonHitList_throwDataLoadingException() {
+        assertThrows(DataLoadingException.class, () -> readHitList("invalidPersonAddressBook.json"));
+    }
+
+    @Test
+    public void readAddressBook_invalidAndValidPersonHitList_throwDataLoadingException() {
+        assertThrows(DataLoadingException.class, () -> readHitList("invalidAndValidPersonAddressBook.json"));
+    }
+
+    @Test
+    public void readAndSaveHitList_allInOrder_success() throws Exception {
+        Path filePath = testFolder.resolve("TempAddressBook.json");
+        HitList original = getTypicalAddressBook();
+        JsonHitListStorage jsonAddressBookStorage = new JsonHitListStorage(filePath);
+
+        // Save in new file and read back
+        jsonAddressBookStorage.saveHitList(original, filePath);
+        ReadOnlyHitList readBack = jsonAddressBookStorage.readHitList(filePath).get();
+        assertEquals(original, new HitList(readBack));
+
+        // Modify data, overwrite exiting file, and read back
+        original.addPerson(HOON);
+        original.removePerson(ALICE);
+        jsonAddressBookStorage.saveHitList(original, filePath);
+        readBack = jsonAddressBookStorage.readHitList(filePath).get();
+        assertEquals(original, new HitList(readBack));
+
+        // Save and read without specifying file path
+        original.addPerson(IDA);
+        jsonAddressBookStorage.saveHitList(original); // file path not specified
+        readBack = jsonAddressBookStorage.readHitList().get(); // file path not specified
+        assertEquals(original, new HitList(readBack));
+
+    }
+
+    @Test
+    public void saveAddressBook_nullHitList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> saveHitList(null, "SomeFile.json"));
+    }
+
+    /**
+     * Saves {@code addressBook} at the specified {@code filePath}.
+     */
+    private void saveHitList(ReadOnlyHitList addressBook, String filePath) {
+        try {
+            new JsonHitListStorage(Paths.get(filePath))
+                    .saveHitList(addressBook, addToTestDataPathIfNotNull(filePath));
+        } catch (IOException ioe) {
+            throw new AssertionError("There should not be an error writing to the file.", ioe);
+        }
+    }
+
+    @Test
+    public void saveHitList_nullFilePath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> saveHitList(new HitList(), null));
+    }
+}
