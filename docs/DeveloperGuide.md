@@ -287,14 +287,16 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​                                    | I want to …​                    | So that I can…​                                                        |
+|----------|--------------------------------------------|---------------------------------|------------------------------------------------------------------------|
+| `* * *`  | new user                                   | see usage instructions          | refer to instructions when I forget how to use the App                 |
+| `* * *`  | user                                       | add a new person                |                                                                        |
+| `* * *`  | user                                       | delete a person                 | remove entries that I no longer need                                   |
+| `* * *`  | user                                       | find a person by name           | locate details of persons without having to go through the entire list |
+| `* * *`  | Headhunter                                 | create a new contact group      |                                                                        |
+| `* * *`  | Headhunter                                 | add a person to a contact group | organise my contacts into groups                                       |
+| `* *`    | user                                       | hide private contact details    | minimize chance of someone else seeing them by accident                |
+| `*`      | user with many persons in the address book | sort persons by name            | locate a person easily                                                 |
 
 *{More to be added}*
 
@@ -426,6 +428,8 @@ Use case ends.
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4.  The system should be able to run without internet access.
+5.  The system should respond to the user within 2 seconds for all user commands.
 
 ### Company Profile Non-Functional Requirements
 1.  The company profile feature should support keyboard-first usage for all core actions
@@ -433,11 +437,15 @@ Use case ends.
 3.  The application should remain responsive while processing invalid company profile commands and should return an appropriate error message promptly
 4.  The company profile feature should support at least 50 company profiles without significant degradation in response time
 
+### Contact Group Non-Functional Requirements
+1. The system should be able to support up to 500 contact groups 
+
 *{More to be added}* 
 
 ### Glossary
 
-* **Company Profile**: A stored record representing a client company that the headhunter is recruiting for
+* **Contact Group**: A tag used to identify different contacts and group similar contacts. A contact group can have none to many contacts.
+* **Company Profile**: A stored record representing a client company that the headhunter is recruiting for.
 
 --------------------------------------------------------------------------------------------------------------------
 
