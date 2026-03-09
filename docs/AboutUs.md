@@ -21,7 +21,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Eugenio Manansala
 
-<img src="images/egg_fish.png" width="200px">
+<img src="images/egg-fish.png" width="200px">
 
 [[github](http://github.com/Egg-Fish)]
 
