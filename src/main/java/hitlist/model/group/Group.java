@@ -2,6 +2,7 @@ package hitlist.model.group;
 
 import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 
+import hitlist.commons.util.ToStringBuilder;
 import hitlist.model.person.Person;
 import hitlist.model.person.UniquePersonList;
 
@@ -66,5 +67,12 @@ public class Group {
         Group otherGroup = (Group) other;
         return name.equals(otherGroup.name)
                && members.equals(otherGroup.members);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("name", name)
+                .toString();
     }
 }

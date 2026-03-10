@@ -9,4 +9,5 @@ import hitlist.model.group.GroupName;
 public class TypicalGroups {
 
     public static final Group STUDENTS = new Group(new GroupName("Students"));
+    public static final Group UNEMPLOYED = new Group(new GroupName("Unemployed"));
 }
