@@ -8,7 +8,11 @@ public class Prefix {
     private final String prefix;
 
     public Prefix(String prefix) {
-        this.prefix = prefix;
+        if (prefix != null && !prefix.isEmpty() && !prefix.startsWith("/")) {
+            this.prefix = "/" + prefix;
+        } else {
+            this.prefix = prefix;
+        }
     }
 
     public String getPrefix() {
