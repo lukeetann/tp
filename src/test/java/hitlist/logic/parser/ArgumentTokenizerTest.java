@@ -204,4 +204,5 @@ public class ArgumentTokenizerTest {
         assertNotEquals(aaa, "/aaa");
         assertNotEquals(aaa, new Prefix("/aab"));
     }
+
 }
