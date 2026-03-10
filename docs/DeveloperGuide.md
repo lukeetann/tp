@@ -275,13 +275,13 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* headhunters and recruiters
+* fast typist
+* headhunts for multiple companies
+* needs to track both candidate and company contacts
+* needs to keep track of candidates' status (unemployed/graduating/etc.)
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: alleviate the logistics of matching candidates to clients
 
 
 ### User stories
