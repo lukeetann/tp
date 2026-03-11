@@ -17,6 +17,7 @@ import hitlist.model.person.Email;
 import hitlist.model.person.Name;
 import hitlist.model.person.Person;
 import hitlist.model.person.Phone;
+import hitlist.model.person.Remark;
 import hitlist.model.tag.Tag;
 
 /**
@@ -44,8 +45,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Remark remark = new Remark("");
 
-        Person person = new Person(name, phone, email, address, tagList);
+        Person person = new Person(name, phone, email, address, tagList, remark);
 
         return new AddCommand(person);
     }
