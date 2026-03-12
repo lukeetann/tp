@@ -27,14 +27,14 @@ public class GroupName {
      */
     public GroupName(String name) {
         requireNonNull(name);
-        checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidGroupName(name), MESSAGE_CONSTRAINTS);
         fullName = name;
     }
 
     /**
      * Returns true if a given string is a valid name.
      */
-    public static boolean isValidName(String test) {
+    public static boolean isValidGroupName(String test) {
         return test.matches(VALIDATION_REGEX);
     }
 
