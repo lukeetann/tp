@@ -140,4 +140,49 @@ public class StringUtilTest {
         assertThrows(NullPointerException.class, () -> StringUtil.getDetails(null));
     }
 
+    @Test
+    public void containsPrefixIgnoreCase_nullSentence_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> StringUtil.containsPrefixIgnoreCase(null, "abc"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_nullWord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> StringUtil.containsPrefixIgnoreCase("abc def", null));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_emptyWord_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> StringUtil.containsPrefixIgnoreCase("abc def", "  "));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_wordWithWhitespace_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> StringUtil.containsPrefixIgnoreCase("abc def", "ab c"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_prefixMatch_returnsTrue() {
+        assertTrue(StringUtil.containsPrefixIgnoreCase("Hans Gruber", "Han"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_fullWordDifferentCase_returnsTrue() {
+        assertTrue(StringUtil.containsPrefixIgnoreCase("Hans Gruber", "hans"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_secondWordPrefix_returnsTrue() {
+        assertTrue(StringUtil.containsPrefixIgnoreCase("Alice Brown", "Bro"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_midWordSubstring_returnsFalse() {
+        assertFalse(StringUtil.containsPrefixIgnoreCase("Hans Gruber", "ans"));
+    }
+
+    @Test
+    public void containsPrefixIgnoreCase_longerThanWord_returnsFalse() {
+        assertFalse(StringUtil.containsPrefixIgnoreCase("Han", "Hans"));
+    }
+
 }

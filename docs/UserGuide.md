@@ -114,23 +114,26 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-### Locating persons by name: `find`
+### Locating persons: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names match any given prefix and/or whose tags match any given tag.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [KEYWORD]... [/t TAG]...`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+- Name search is case-insensitive. e.g. `han` matches `Hans`
+- Name search uses prefix matching. e.g. `Han` matches `Hans`
+- Tag search uses exact but case-insensitive matching. e.g. `/t school` matches `school`
+- If multiple name keywords are given, a person matching any one of them is returned
+- If multiple tags are given, a person matching any one of them is returned
+- If both name keywords and tags are given, a person must satisfy both parts
+- Name keywords and tags may appear in any order
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+- `find Han`
+- `find Han Bo`
+- `find /t school`
+- `find Han /t school`
+- `find /t school Han`
 
 ### Deleting a person : `delete`
 
@@ -201,6 +204,6 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find**   | `find [KEYWORD]... [/t TAG]...`<br> e.g., `find James /t friend`
 **List**   | `list`
 **Help**   | `help`

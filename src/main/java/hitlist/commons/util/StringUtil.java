@@ -65,4 +65,28 @@ public class StringUtil {
             return false;
         }
     }
+
+    /**
+     * Returns true if at least one word in {@code sentence} starts with {@code word},
+     * ignoring case.
+     *
+     * @param sentence Full sentence to search in
+     * @param word Prefix to search for
+     * @return true if a word in the sentence starts with the given prefix
+     */
+    public static boolean containsPrefixIgnoreCase(String sentence, String word) {
+        requireNonNull(sentence);
+        requireNonNull(word);
+
+        String preppedWord = word.trim();
+        checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
+        checkArgument(preppedWord.split("\\s+").length == 1,
+                "Word parameter should be a single word");
+
+        String[] wordsInSentence = sentence.split("\\s+");
+        return Arrays.stream(wordsInSentence)
+                .anyMatch(w -> w.length() >= preppedWord.length()
+                        && w.regionMatches(true, 0, preppedWord, 0, preppedWord.length()));
+    }
+
 }
