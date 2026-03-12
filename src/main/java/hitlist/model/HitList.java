@@ -196,6 +196,8 @@ public class HitList implements ReadOnlyHitList {
      */
     public void removeCompany(Company key) {
         companies.remove(key);
+    }
+
     /**
      * Returns true if a group with the same identity as {@code group} exists.
      */
