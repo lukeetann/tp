@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import hitlist.model.company.exceptions.DuplicateCompanyException;
-import hitlist.model.company.exceptions.CompanyNotFoundException;s
+import hitlist.model.company.exceptions.CompanyNotFoundException;
 import hitlist.testutil.CompanyBuilder;
 import org.junit.jupiter.api.Test;
 
