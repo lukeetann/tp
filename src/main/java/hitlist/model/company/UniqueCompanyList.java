@@ -42,7 +42,7 @@ public class UniqueCompanyList implements Iterable<Company> {
     public void add(Company toAdd) {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
-            throw new IllegalArgumentException("This company " + toAdd.getName() + " already exists");
+            throw new DuplicateCompanyException("This company " + toAdd.getName() + " already exists");
         }
         internalList.add(toAdd);
     }
@@ -95,12 +95,12 @@ public class UniqueCompanyList implements Iterable<Company> {
      * checks that all companies are unique before updating the list.
      *
      * @param companies The list of companies to set.
-     * @throws IllegalArgumentException If the provided list contains any duplicate companies.
+     * @throws DuplicateCompanyException If the provided list contains any duplicate companies.
      */
     public void setCompanies(List<Company> companies) {
         requireNonNull(companies);
         if (!companiesAreUnique(companies)) {
-            throw new IllegalArgumentException("There is already a company with the same name and description");
+            throw new DuplicateCompanyException("There is already a company with the same name and description");
         }
         internalList.setAll(companies);
     }
