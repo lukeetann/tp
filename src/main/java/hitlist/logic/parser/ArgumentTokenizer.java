@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Tokenizes arguments string of the form: {@code preamble </prefix>value </prefix>value ...}<br>
- *     e.g. {@code some preamble text /t 11.00 /t12.00 /k /m July}  where prefixes are {@code /t /k /m}.<br>
+ * Tokenizes arguments string of the form: {@code preamble <prefix>value <prefix>value ...}<br>
+ *     e.g. {@code some preamble text /t 11.00 /t12.00 /k /m July}  where prefixes are {@code /t, /k, /m}.<br>
  * 1. An argument's value can be an empty string e.g. the value of {@code /k} in the above example.<br>
  * 2. Leading and trailing whitespaces of an argument value will be discarded.<br>
  * 3. An argument may be repeated and all its values will be accumulated e.g. the value of {@code /t}
  *    in the above example.<br>
- * 4. Prefixes can be written with or without a space after them (e.g., "/nJohn" or "/n John").
+ * 4. Prefixes can be written with or without a space after them (e.g., {@code /nJohn} or {@code /n John}).
  */
 public class ArgumentTokenizer {
 
@@ -20,7 +20,8 @@ public class ArgumentTokenizer {
      * Tokenizes an arguments string and returns an {@code ArgumentMultimap} object that maps prefixes to their
      * respective argument values. Only the given prefixes will be recognized in the arguments string.
      *
-     * @param argsString Arguments string of the form: {@code preamble </prefix>value </prefix>value ...}
+     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
+     *                   (e.g., {@code add /nJohn /p123} or {@code add /n John /p 123})
      * @param prefixes   Prefixes to tokenize the arguments string with
      * @return           ArgumentMultimap object that maps prefixes to their arguments
      */
@@ -32,7 +33,7 @@ public class ArgumentTokenizer {
     /**
      * Finds all zero-based prefix positions in the given arguments string.
      *
-     * @param argsString Arguments string of the form: {@code preamble </prefix>value </prefix>value ...}
+     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
      * @param prefixes   Prefixes to find in the arguments string
      * @return           List of zero-based prefix positions in the given arguments string
      */
@@ -43,20 +44,16 @@ public class ArgumentTokenizer {
     }
 
     /**
-     * {@see findAllPrefixPositions}
+     * Finds all zero-based positions of a given prefix in the arguments string.
+     * A valid prefix occurrence must be at the start of the string or preceded by whitespace.
      */
     private static List<PrefixPosition> findPrefixPositions(String argsString, Prefix prefix) {
         List<PrefixPosition> positions = new ArrayList<>();
+        int prefixPosition = findPrefixPosition(argsString, prefix.getPrefix(), 0);
 
-        int currentIndex = 0;
-        while (currentIndex < argsString.length()) {
-            int prefixPosition = findPrefixPosition(argsString, prefix.getPrefix(), currentIndex);
-            if (prefixPosition == -1) {
-                break;
-            }
+        while (prefixPosition != -1) {
             positions.add(new PrefixPosition(prefix, prefixPosition));
-            // Move past this prefix to find the next one
-            currentIndex = prefixPosition + 1;
+            prefixPosition = findPrefixPosition(argsString, prefix.getPrefix(), prefixPosition + 1);
         }
 
         return positions;
@@ -65,25 +62,24 @@ public class ArgumentTokenizer {
     /**
      * Returns the index of the first occurrence of {@code prefix} in
      * {@code argsString} starting from index {@code fromIndex}.
-     * The prefix can be found with or without a space before it.
-     * Returns -1 if no such occurrence can be found.
+     * An occurrence is valid if it is at the start of the string or
+     * preceded by whitespace. Returns -1 if no such occurrence can be found.
+     *
+     * E.g if {@code argsString} = "john/doe", {@code prefix} = "/d" and
+     * {@code fromIndex} = 0, this method returns -1 as there is no whitespace
+     * before "/d". However, if {@code argsString} = "/d john", {@code prefix} = "/d"
+     * and {@code fromIndex} = 0, this method returns 0.
      */
     private static int findPrefixPosition(String argsString, String prefix, int fromIndex) {
-        if (fromIndex < 0 || fromIndex >= argsString.length()) {
-            return -1;
+        // Check if prefix is at the very start
+        if (fromIndex == 0 && argsString.startsWith(prefix)) {
+            return 0;
         }
 
-        // Look for the prefix starting from fromIndex
-        int prefixIndex = argsString.indexOf(prefix, fromIndex);
-
-        while (prefixIndex != -1) {
-            // Check if this is a valid prefix occurrence:
-            // Either at the start of string, or preceded by whitespace
-            if (prefixIndex == 0 || Character.isWhitespace(argsString.charAt(prefixIndex - 1))) {
-                return prefixIndex;
-            }
-            // Look for next occurrence after this one
-            prefixIndex = argsString.indexOf(prefix, prefixIndex + 1);
+        // Look for " " + prefix for other occurrences
+        int prefixIndex = argsString.indexOf(" " + prefix, fromIndex);
+        if (prefixIndex != -1) {
+            return prefixIndex + 1; // +1 as offset for whitespace
         }
 
         return -1;
@@ -94,7 +90,7 @@ public class ArgumentTokenizer {
      * extracted prefixes to their respective arguments. Prefixes are extracted based on their zero-based positions in
      * {@code argsString}.
      *
-     * @param argsString      Arguments string of the form: {@code preamble </prefix>value </prefix>value ...}
+     * @param argsString      Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
      * @param prefixPositions Zero-based positions of all prefixes in {@code argsString}
      * @return                ArgumentMultimap object that maps prefixes to their arguments
      */
@@ -131,20 +127,7 @@ public class ArgumentTokenizer {
                                                PrefixPosition currentPrefixPosition,
                                                PrefixPosition nextPrefixPosition) {
         Prefix prefix = currentPrefixPosition.getPrefix();
-
-        // If this is the preamble marker, handle specially
-        if (prefix.getPrefix().isEmpty()) {
-            String value = argsString.substring(0, nextPrefixPosition.getStartPosition());
-            return value.trim();
-        }
-
         int valueStartPos = currentPrefixPosition.getStartPosition() + prefix.getPrefix().length();
-
-        // Skip any whitespace after the prefix
-        while (valueStartPos < argsString.length() && Character.isWhitespace(argsString.charAt(valueStartPos))) {
-            valueStartPos++;
-        }
-
         String value = argsString.substring(valueStartPos, nextPrefixPosition.getStartPosition());
         return value.trim();
     }
@@ -153,7 +136,7 @@ public class ArgumentTokenizer {
      * Represents a prefix's position in an arguments string.
      */
     private static class PrefixPosition {
-        private int startPosition;
+        private final int startPosition;
         private final Prefix prefix;
 
         PrefixPosition(Prefix prefix, int startPosition) {
@@ -169,5 +152,4 @@ public class ArgumentTokenizer {
             return prefix;
         }
     }
-
 }
