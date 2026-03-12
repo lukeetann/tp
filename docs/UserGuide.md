@@ -77,7 +77,7 @@ Format: `help`
 
 Adds a person to the contact book.
 
-Format: `add /n NAME /p PHONE_NUMBER`
+Format: `add /n NAME /p PHONE_NUMBER [/e EMAIL] [/a ADDRESS]`
 
 * The `NAME` and `PHONE_NUMBER` parameters are mandatory. All other parameters are optional.
 
@@ -95,7 +95,7 @@ Format: `list`
 
 Edits an existing person in the contact book.
 
-Format: `edit INDEX [/n NAME] [/p PHONE]`
+Format: `edit INDEX [/n NAME] [/p PHONE] [/e EMAIL] [/a ADDRESS] `
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
