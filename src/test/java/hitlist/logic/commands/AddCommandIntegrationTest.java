@@ -7,7 +7,6 @@ import static hitlist.testutil.TypicalPersons.getTypicalHitList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import hitlist.logic.Messages;
 import hitlist.model.Model;
 import hitlist.model.ModelManager;
 import hitlist.model.UserPrefs;

@@ -15,7 +15,6 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import hitlist.commons.core.GuiSettings;
-import hitlist.logic.Messages;
 import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.HitList;
 import hitlist.model.Model;
