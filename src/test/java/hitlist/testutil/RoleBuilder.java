@@ -1,8 +1,8 @@
 package hitlist.testutil;
 
+import hitlist.model.company.role.Role;
 import hitlist.model.company.role.RoleDescription;
 import hitlist.model.company.role.RoleName;
-import hitlist.model.company.role.Role;
 
 /**
  * A utility class to help with building Role objects.
