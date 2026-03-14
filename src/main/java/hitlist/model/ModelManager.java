@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import hitlist.commons.core.GuiSettings;
 import hitlist.commons.core.LogsCenter;
+import hitlist.model.company.Company;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
@@ -128,6 +129,22 @@ public class ModelManager implements Model {
         hitList.deleteGroup(group);
     }
 
+    @Override
+    public boolean hasCompany(Company company) {
+        requireNonNull(company);
+        return hitList.hasCompany(company);
+    }
+
+    @Override
+    public void addCompany(Company company) {
+        hitList.addCompany(company);
+    }
+
+    @Override
+    public void deleteCompany(Company company) {
+        hitList.removeCompany(company);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -161,5 +178,4 @@ public class ModelManager implements Model {
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
-
 }

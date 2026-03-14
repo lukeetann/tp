@@ -9,6 +9,8 @@ import java.util.Set;
 import hitlist.commons.core.index.Index;
 import hitlist.commons.util.StringUtil;
 import hitlist.logic.parser.exceptions.ParseException;
+import hitlist.model.company.CompanyDescription;
+import hitlist.model.company.CompanyName;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
@@ -136,5 +138,39 @@ public class ParserUtil {
             throw new ParseException(GroupName.MESSAGE_CONSTRAINTS);
         }
         return new GroupName(trimmedName);
+    }
+
+    /**
+     * Parses a {@code String companyName} into a {@code CompanyName}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param companyName The company name to be parsed.
+     * @return CompanyName object created from the given company name.
+     * @throws ParseException if the given {@code companyName} is invalid.
+     */
+    public static CompanyName parseCompanyName(String companyName) throws ParseException {
+        requireNonNull(companyName);
+        String trimmedName = companyName.trim();
+        if (!CompanyName.isValidCompanyName(trimmedName)) {
+            throw new ParseException(CompanyName.MESSAGE_CONSTRAINTS);
+        }
+        return new CompanyName(trimmedName);
+    }
+
+    /**
+     * Parses a {@code String description} into a {@code CompanyDescription}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param description The company description to be parsed.
+     * @return CompanyDescription object created from the given company description.
+     * @throws ParseException if the given {@code description} is invalid.
+     */
+    public static CompanyDescription parseCompanyDescription(String description) throws ParseException {
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        if (!CompanyDescription.isValidCompanyDescription(trimmedDescription)) {
+            throw new ParseException(GroupName.MESSAGE_CONSTRAINTS);
+        }
+        return new CompanyDescription(trimmedDescription);
     }
 }

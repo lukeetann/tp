@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 
 import hitlist.commons.core.GuiSettings;
+import hitlist.model.company.Company;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
@@ -102,4 +103,21 @@ public interface Model {
      * {@code group} must already exist.
      */
     void deleteGroup(Group group);
+
+    /**
+     * Returns true if a company with the same identity as {@code company} exists.
+     */
+    boolean hasCompany(Company company);
+
+    /**
+    * Adds the given company.
+    * {@code company} must not already exist.
+    */
+    void addCompany(Company company);
+
+    /**
+     * Deletes the given company.
+     * {@code company} must already exist.
+     */
+    void deleteCompany(Company company);
 }
