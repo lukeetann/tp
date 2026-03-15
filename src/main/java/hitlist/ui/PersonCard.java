@@ -1,8 +1,5 @@
 package hitlist.ui;
 
-import java.util.Comparator;
-
-import hitlist.model.person.Address;
 import hitlist.model.person.Person;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

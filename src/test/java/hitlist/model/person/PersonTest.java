@@ -92,18 +92,21 @@ public class PersonTest {
         assertFalse(ALICE.equals(editedAlice));
 
         // same person but with empty email -> returns false
-        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(), ALICE.getAddress(), ALICE.getTags());
+        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                ALICE.getAddress(), ALICE.getTags());
         assertFalse(ALICE.equals(editedAlice));
 
         // same person but with empty address -> returns false
-        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(), Optional.empty(), ALICE.getTags());
+        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                Optional.empty(), ALICE.getTags());
         assertFalse(ALICE.equals(editedAlice));
     }
 
     @Test
     public void constructor_withEmptyOptionals() {
         // Test that Person can be created with empty email and address
-        Person person = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(), Optional.empty(), ALICE.getTags());
+        Person person = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
         assertTrue(person.getEmail().isEmpty());
         assertTrue(person.getAddress().isEmpty());
         assertEquals(ALICE.getName(), person.getName());
@@ -114,8 +117,10 @@ public class PersonTest {
     @Test
     public void equals_withEmptyOptionals() {
         // Two persons with same fields but both have empty email and address -> returns true
-        Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(), Optional.empty(), ALICE.getTags());
-        Person person2 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(), Optional.empty(), ALICE.getTags());
+        Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
+        Person person2 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
         assertTrue(person1.equals(person2));
     }
 

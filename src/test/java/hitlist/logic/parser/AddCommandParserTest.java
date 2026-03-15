@@ -191,7 +191,9 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_minimalFields_success() {
-        Person expectedPerson = new Person(new Name(VALID_NAME_BOB), new Phone(VALID_PHONE_BOB), Optional.empty(), Optional.empty(), new HashSet<>());
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB, new AddCommand(expectedPerson));
+        Person expectedPerson = new Person(new Name(VALID_NAME_BOB), new Phone(VALID_PHONE_BOB),
+                Optional.empty(), Optional.empty(), new HashSet<>());
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB,
+                new AddCommand(expectedPerson));
     }
 }
