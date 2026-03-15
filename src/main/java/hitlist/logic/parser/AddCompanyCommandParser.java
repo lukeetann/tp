@@ -36,7 +36,8 @@ public class AddCompanyCommandParser implements Parser<AddCompanyCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COMPANY, PREFIX_COMPANY_DESC);
         CompanyName companyName = ParserUtil.parseCompanyName(argMultimap.getValue(PREFIX_COMPANY).get());
-        CompanyDescription companyDesc = ParserUtil.parseCompanyDescription(argMultimap.getValue(PREFIX_COMPANY_DESC).get());
+        CompanyDescription companyDesc =
+                ParserUtil.parseCompanyDescription(argMultimap.getValue(PREFIX_COMPANY_DESC).get());
 
         Company company = new Company(companyName, companyDesc);
 
