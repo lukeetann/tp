@@ -5,24 +5,24 @@ import static java.util.Objects.requireNonNull;
 import hitlist.commons.util.ToStringBuilder;
 import hitlist.logic.Messages;
 import hitlist.model.Model;
-import hitlist.model.person.NameContainsKeywordsPredicate;
+import hitlist.model.person.PersonMatchesFindPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists all persons whose names match any of the given prefixes
+ * and/or whose tags match any of the given tags.
  */
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names match "
+            + "any given prefix and/or whose tags match the specified tags (case-insensitive).\n"
+            + "Parameters: [KEYWORD]... [t/TAG]...\n"
+            + "Example: " + COMMAND_WORD + " Han t/school";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final PersonMatchesFindPredicate predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    public FindCommand(PersonMatchesFindPredicate predicate) {
         this.predicate = predicate;
     }
 
@@ -39,12 +39,9 @@ public class FindCommand extends Command {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof FindCommand)) {
             return false;
         }
-
         FindCommand otherFindCommand = (FindCommand) other;
         return predicate.equals(otherFindCommand.predicate);
     }

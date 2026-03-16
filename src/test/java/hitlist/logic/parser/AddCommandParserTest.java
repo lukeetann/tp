@@ -33,6 +33,9 @@ import static hitlist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static hitlist.testutil.TypicalPersons.AMY;
 import static hitlist.testutil.TypicalPersons.BOB;
 
+import java.util.HashSet;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import hitlist.logic.Messages;
@@ -149,14 +152,6 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
                 expectedMessage);
 
-        // missing email prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
-
-        // missing address prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + VALID_ADDRESS_BOB,
-                expectedMessage);
-
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB,
                 expectedMessage);
@@ -192,5 +187,13 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_minimalFields_success() {
+        Person expectedPerson = new Person(new Name(VALID_NAME_BOB), new Phone(VALID_PHONE_BOB),
+                Optional.empty(), Optional.empty(), new HashSet<>());
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB,
+                new AddCommand(expectedPerson));
     }
 }

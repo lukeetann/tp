@@ -14,6 +14,8 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import hitlist.logic.parser.exceptions.ParseException;
+import hitlist.model.company.CompanyDescription;
+import hitlist.model.company.CompanyName;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
 import hitlist.model.person.Name;
@@ -21,6 +23,7 @@ import hitlist.model.person.Phone;
 import hitlist.model.tag.Tag;
 
 public class ParserUtilTest {
+
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
@@ -34,6 +37,14 @@ public class ParserUtilTest {
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
 
+    private static final String INVALID_COMPANY_DESCRIPTION =
+            "We specialize in B2B/B2C marketing.";
+    private static final String INVALID_COMPANY_NAME = " A/B Testing Ltd";
+
+    private static final String VALID_COMPANY_DESCRIPTION =
+            "A multinational technology company that specializes in Internet-related services and products";
+    private static final String VALID_COMPANY_NAME = "Google Inc.";
+
     private static final String WHITESPACE = " \t\r\n";
 
     @Test
@@ -44,7 +55,7 @@ public class ParserUtilTest {
     @Test
     public void parseIndex_outOfRangeInput_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+                -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test
@@ -192,5 +203,51 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseCompanyName_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseCompanyName(null));
+    }
+
+    @Test
+    public void parseCompanyName_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseCompanyName(INVALID_COMPANY_NAME));
+    }
+
+    @Test
+    public void parseCompanyName_validValueWithoutWhitespace_returnsCompanyName() throws Exception {
+        CompanyName expectedCompanyName = new CompanyName(VALID_COMPANY_NAME);
+        assertEquals(expectedCompanyName, ParserUtil.parseCompanyName(VALID_COMPANY_NAME));
+    }
+
+    @Test
+    public void parseCompanyName_validValueWithWhitespace_returnsTrimmedCompanyName() throws Exception {
+        String companyNameWithWhitespace = WHITESPACE + VALID_COMPANY_NAME + WHITESPACE;
+        CompanyName expectedCompanyName = new CompanyName(VALID_COMPANY_NAME);
+        assertEquals(expectedCompanyName, ParserUtil.parseCompanyName(companyNameWithWhitespace));
+    }
+
+    @Test
+    public void parseCompanyDescription_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseCompanyDescription(null));
+    }
+
+    @Test
+    public void parseCompanyDescription_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseCompanyDescription(INVALID_COMPANY_DESCRIPTION));
+    }
+
+    @Test
+    public void parseCompanyDescription_validValueWithoutWhitespace_returnsCompanyDescription() throws Exception {
+        CompanyDescription expectedCompanyDescription = new CompanyDescription(VALID_COMPANY_DESCRIPTION);
+        assertEquals(expectedCompanyDescription, ParserUtil.parseCompanyDescription(VALID_COMPANY_DESCRIPTION));
+    }
+
+    @Test
+    public void parseCompanyDescription_validValueWithWhitespace_returnsTrimmedCompanyDescription() throws Exception {
+        String companyDescriptionWithWhitespace = WHITESPACE + VALID_COMPANY_DESCRIPTION + WHITESPACE;
+        CompanyDescription expectedCompanyDescription = new CompanyDescription(VALID_COMPANY_DESCRIPTION);
+        assertEquals(expectedCompanyDescription, ParserUtil.parseCompanyDescription(companyDescriptionWithWhitespace));
     }
 }

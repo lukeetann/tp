@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import hitlist.testutil.PersonBuilder;
@@ -32,23 +34,23 @@ public class PersonTest {
         // null -> returns false
         assertFalse(ALICE.isSamePerson(null));
 
-        // same name, all other attributes different -> returns true
+        // same name, all other attributes different -> returns false
         Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
                 .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(ALICE.isSamePerson(editedAlice));
-
-        // different name, all other attributes same -> returns false
-        editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // name differs in case, all other attributes same -> returns false
-        Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
-        assertFalse(BOB.isSamePerson(editedBob));
+        // different name, all other attributes same -> returns true
+        editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
+        assertTrue(ALICE.isSamePerson(editedAlice));
 
-        // name has trailing spaces, all other attributes same -> returns false
+        // name differs in case, all other attributes same -> returns true
+        Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
+        assertTrue(BOB.isSamePerson(editedBob));
+
+        // name has trailing spaces, all other attributes same -> returns true
         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
         editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
-        assertFalse(BOB.isSamePerson(editedBob));
+        assertTrue(BOB.isSamePerson(editedBob));
     }
 
     @Test
@@ -88,6 +90,38 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // same person but with empty email -> returns false
+        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                ALICE.getAddress(), ALICE.getTags());
+        assertFalse(ALICE.equals(editedAlice));
+
+        // same person but with empty address -> returns false
+        editedAlice = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                Optional.empty(), ALICE.getTags());
+        assertFalse(ALICE.equals(editedAlice));
+    }
+
+    @Test
+    public void constructor_withEmptyOptionals() {
+        // Test that Person can be created with empty email and address
+        Person person = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
+        assertTrue(person.getEmail().isEmpty());
+        assertTrue(person.getAddress().isEmpty());
+        assertEquals(ALICE.getName(), person.getName());
+        assertEquals(ALICE.getPhone(), person.getPhone());
+        assertEquals(ALICE.getTags(), person.getTags());
+    }
+
+    @Test
+    public void equals_withEmptyOptionals() {
+        // Two persons with same fields but both have empty email and address -> returns true
+        Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
+        Person person2 = new Person(ALICE.getName(), ALICE.getPhone(), Optional.empty(),
+                Optional.empty(), ALICE.getTags());
+        assertTrue(person1.equals(person2));
     }
 
     @Test

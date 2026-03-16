@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 
 import hitlist.commons.core.GuiSettings;
+import hitlist.model.company.Company;
+import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
@@ -84,4 +86,38 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Returns true if a group with the same identity as {@code group} exists.
+     */
+    boolean hasGroup(Group group);
+
+    /**
+     * Adds the given group.
+     * {@code group} must not already exist.
+     */
+    void addGroup(Group group);
+
+    /**
+     * Deletes the given group.
+     * {@code group} must already exist.
+     */
+    void deleteGroup(Group group);
+
+    /**
+     * Returns true if a company with the same identity as {@code company} exists.
+     */
+    boolean hasCompany(Company company);
+
+    /**
+    * Adds the given company.
+    * {@code company} must not already exist.
+    */
+    void addCompany(Company company);
+
+    /**
+     * Deletes the given company.
+     * {@code company} must already exist.
+     */
+    void deleteCompany(Company company);
 }

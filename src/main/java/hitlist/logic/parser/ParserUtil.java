@@ -4,11 +4,15 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import hitlist.commons.core.index.Index;
 import hitlist.commons.util.StringUtil;
 import hitlist.logic.parser.exceptions.ParseException;
+import hitlist.model.company.CompanyDescription;
+import hitlist.model.company.CompanyName;
+import hitlist.model.group.GroupName;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
 import hitlist.model.person.Name;
@@ -81,6 +85,23 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String address} into an {@code Address}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code address} is invalid.
+     */
+    public static Optional<Address> parseAddress(Optional<String> address) throws ParseException {
+        if (address.isEmpty()) {
+            return Optional.empty();
+        }
+        Address validAddress = address.filter(s -> Address.isValidAddress(s.trim()))
+                .map(s -> new Address(s.trim()))
+                .orElseThrow(() -> new ParseException(Address.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(validAddress);
+    }
+
+    /**
      * Parses a {@code String email} into an {@code Email}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -96,7 +117,24 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
+     * Parses a {@code String email} into an {@code Email}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code email} is invalid.
+     */
+    public static Optional<Email> parseEmail(Optional<String> email) throws ParseException {
+        if (email.isEmpty()) {
+            return Optional.empty();
+        }
+        Email validEmail = email.filter(s -> Email.isValidEmail(s.trim()))
+                .map(s -> new Email(s.trim()))
+                .orElseThrow(() -> new ParseException(Email.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(validEmail);
+    }
+
+    /**
+     * Parses a {@code String tag} into an {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code tag} is invalid.
@@ -120,5 +158,54 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String name} into a {@code GroupName}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code name} is invalid.
+     */
+    public static GroupName parseGroupName(String name) throws ParseException {
+        requireNonNull(name);
+        String trimmedName = name.trim();
+        if (!GroupName.isValidGroupName(trimmedName)) {
+            throw new ParseException(GroupName.MESSAGE_CONSTRAINTS);
+        }
+        return new GroupName(trimmedName);
+    }
+
+    /**
+     * Parses a {@code String companyName} into a {@code CompanyName}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param companyName The company name to be parsed.
+     * @return CompanyName object created from the given company name.
+     * @throws ParseException if the given {@code companyName} is invalid.
+     */
+    public static CompanyName parseCompanyName(String companyName) throws ParseException {
+        requireNonNull(companyName);
+        String trimmedName = companyName.trim();
+        if (!CompanyName.isValidCompanyName(trimmedName)) {
+            throw new ParseException(CompanyName.MESSAGE_CONSTRAINTS);
+        }
+        return new CompanyName(trimmedName);
+    }
+
+    /**
+     * Parses a {@code String description} into a {@code CompanyDescription}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param description The company description to be parsed.
+     * @return CompanyDescription object created from the given company description.
+     * @throws ParseException if the given {@code description} is invalid.
+     */
+    public static CompanyDescription parseCompanyDescription(String description) throws ParseException {
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        if (!CompanyDescription.isValidCompanyDescription(trimmedDescription)) {
+            throw new ParseException(CompanyDescription.MESSAGE_CONSTRAINTS);
+        }
+        return new CompanyDescription(trimmedDescription);
     }
 }

@@ -73,9 +73,9 @@ Shows a message explaining how to access the help page.
 Format: `help`
 
 
-### Adding a contact: `add`
+### Adding a person: `add`
 
-Adds a person to the contact book.
+Adds a person to the HitList.
 
 Format: `add /n NAME /p PHONE_NUMBER [/e EMAIL] [/a ADDRESS]`
 
@@ -87,46 +87,51 @@ Examples:
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the contact book.
+Shows a list of all persons in the HitList.
 
 Format: `list`
 
 ### Editing a person : `edit`
 
-Edits an existing person in the contact book.
+Edits an existing person in the HitList.
 
 Format: `edit INDEX [/n NAME] [/p PHONE] [/e EMAIL] [/a ADDRESS] `
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* You can remove all the person’s tags by typing `t/` without
+    specifying any tags after it.
 
 Examples:
 *  `edit 1 /p 91234567` Edits the phone number of the first person to `91234567`.
 *  `edit 2 /n Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
 
-### Locating persons by name: `find`
+### Locating persons: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names match any given prefix and/or whose tags match any given tag.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [KEYWORD]... [/t TAG]...`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
-* The search allows partial matches of the keywords. e.g. `find han` will match `Hans Gruber` and `Han Solo`.
+- Name search is case-insensitive. e.g. `han` matches `Hans`
+- Name search uses prefix matching. e.g. `Han` matches `Hans`
+- Tag search uses exact but case-insensitive matching. e.g. `/t school` matches `school`
+- If multiple name keywords are given, a person matching any one of them is returned
+- If multiple tags are given, a person matching any one of them is returned
+- If both name keywords and tags are given, a person must satisfy both parts
+- Name keywords and tags may appear in any order
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+- `find Han`
+- `find Han Bo`
+- `find /t school`
+- `find Han /t school`
+- `find /t school Han`
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the contact book.
+Deletes the specified person from the HitList.
 
 Format: `delete INDEX`
 
@@ -135,12 +140,25 @@ Format: `delete INDEX`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the contact book.
+* `list` followed by `delete 2` deletes the 2nd person in the HitList.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Adding a Company : `cmpadd`
+
+Adds a company to the hitList.
+
+Format: `cmpadd /cCOMPANY_NAME /dCOMPANY_DESCRIPTION`
+
+* The company name must be unique and not the same as any existing company in the hitList.
+* The company description can be any string which does not include '/' or start with spaces.
+
+Example:
+* `cmpadd /cGoogle /dTech giant` adds a company named `Google` with description `Tech giant` to the hitList.
+* `cmpadd /cMeta /dSocial media giant` adds a company named `Meta` with description `Social media giant` to the hitList.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the contact book.
+Clears all entries from the HitList.
 
 Format: `clear`
 
@@ -193,6 +211,6 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [/n NAME] [/p PHONE_NUMBER]`<br> e.g.,`edit 2 /n James Lee`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find**   | `find [KEYWORD]... [/t TAG]...`<br> e.g., `find James /t friend`
 **List**   | `list`
 **Help**   | `help`

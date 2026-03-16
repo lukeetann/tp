@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 public class ArgumentTokenizerTest {
 
-    private final Prefix unknownPrefix = new Prefix("--u");
-    private final Prefix pSlash = new Prefix("p/");
-    private final Prefix dashT = new Prefix("-t");
-    private final Prefix hatQ = new Prefix("^Q");
+    private final Prefix unknownPrefix = new Prefix("/u");
+    private final Prefix pSlash = new Prefix("/p");
+    private final Prefix dashT = new Prefix("/t");
+    private final Prefix hatQ = new Prefix("/q");
 
     @Test
     public void tokenize_emptyArgsString_noValues() {
@@ -60,37 +60,55 @@ public class ArgumentTokenizerTest {
 
         // Same string expected as preamble, but leading/trailing spaces should be trimmed
         assertPreamblePresent(argMultimap, argsString.trim());
-
     }
 
     @Test
     public void tokenize_oneArgument() {
-        // Preamble present
-        String argsString = "  Some preamble string p/ Argument value ";
+        // Preamble present with space after prefix
+        String argsString = "  Some preamble string /p Argument value ";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash);
         assertPreamblePresent(argMultimap, "Some preamble string");
         assertArgumentPresent(argMultimap, pSlash, "Argument value");
 
-        // No preamble
-        argsString = " p/   Argument value ";
+        // No preamble with space after prefix
+        argsString = " /p   Argument value ";
         argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash);
         assertPreambleEmpty(argMultimap);
         assertArgumentPresent(argMultimap, pSlash, "Argument value");
 
+        // Preamble present without space after prefix
+        argsString = "  Some preamble string /pArgument value ";
+        argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash);
+        assertPreamblePresent(argMultimap, "Some preamble string");
+        assertArgumentPresent(argMultimap, pSlash, "Argument value");
+
+        // No preamble without space after prefix
+        argsString = " /pArgument value ";
+        argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash);
+        assertPreambleEmpty(argMultimap);
+        assertArgumentPresent(argMultimap, pSlash, "Argument value");
     }
 
     @Test
     public void tokenize_multipleArguments() {
         // Only two arguments are present
-        String argsString = "SomePreambleString -t dashT-Value p/pSlash value";
+        String argsString = "SomePreambleString /t dashT-Value /p pSlash value";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
         assertPreamblePresent(argMultimap, "SomePreambleString");
         assertArgumentPresent(argMultimap, pSlash, "pSlash value");
         assertArgumentPresent(argMultimap, dashT, "dashT-Value");
         assertArgumentAbsent(argMultimap, hatQ);
 
-        // All three arguments are present
-        argsString = "Different Preamble String ^Q111 -t dashT-Value p/pSlash value";
+        // All three arguments are present with spaces
+        argsString = "Different Preamble String /q 111 /t dashT-Value /p pSlash value";
+        argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
+        assertPreamblePresent(argMultimap, "Different Preamble String");
+        assertArgumentPresent(argMultimap, pSlash, "pSlash value");
+        assertArgumentPresent(argMultimap, dashT, "dashT-Value");
+        assertArgumentPresent(argMultimap, hatQ, "111");
+
+        // All three arguments are present without spaces
+        argsString = "Different Preamble String /q111 /tdashT-Value /ppSlash value";
         argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
         assertPreamblePresent(argMultimap, "Different Preamble String");
         assertArgumentPresent(argMultimap, pSlash, "pSlash value");
@@ -109,7 +127,7 @@ public class ArgumentTokenizerTest {
         /* Also covers: testing for prefixes not specified as a prefix */
 
         // Prefixes not previously given to the tokenizer should not return any values
-        argsString = unknownPrefix + "some value";
+        argsString = unknownPrefix + " some value";
         argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
         assertArgumentAbsent(argMultimap, unknownPrefix);
         assertPreamblePresent(argMultimap, argsString); // Unknown prefix is taken as part of preamble
@@ -118,7 +136,7 @@ public class ArgumentTokenizerTest {
     @Test
     public void tokenize_multipleArgumentsWithRepeats() {
         // Two arguments repeated, some have empty values
-        String argsString = "SomePreambleString -t dashT-Value ^Q ^Q -t another dashT value p/ pSlash value -t";
+        String argsString = "SomePreambleString /t dashT-Value /q /q /t another dashT value /p pSlash value /t";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
         assertPreamblePresent(argMultimap, "SomePreambleString");
         assertArgumentPresent(argMultimap, pSlash, "pSlash value");
@@ -128,23 +146,63 @@ public class ArgumentTokenizerTest {
 
     @Test
     public void tokenize_multipleArgumentsJoined() {
-        String argsString = "SomePreambleStringp/ pSlash joined-tjoined -t not joined^Qjoined";
+        String argsString = "SomePreambleString/p pSlash joined/tjoined /t not joined/qjoined";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
-        assertPreamblePresent(argMultimap, "SomePreambleStringp/ pSlash joined-tjoined");
+        assertPreamblePresent(argMultimap, "SomePreambleString/p pSlash joined/tjoined");
         assertArgumentAbsent(argMultimap, pSlash);
-        assertArgumentPresent(argMultimap, dashT, "not joined^Qjoined");
+        assertArgumentPresent(argMultimap, dashT, "not joined/qjoined");
         assertArgumentAbsent(argMultimap, hatQ);
     }
 
     @Test
+    public void tokenize_mixedPrefixStyles() {
+        // Mix of spaced and unspaced prefixes
+        String argsString = "add /nJohn Doe /p 91234567 /e john@example.com /a123 Main St /t friends /tfamily";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString,
+                new Prefix("/n"), new Prefix("/p"), new Prefix("/e"), new Prefix("/a"), new Prefix("/t"));
+
+        assertPreamblePresent(argMultimap, "add");
+        assertArgumentPresent(argMultimap, new Prefix("/n"), "John Doe");
+        assertArgumentPresent(argMultimap, new Prefix("/p"), "91234567");
+        assertArgumentPresent(argMultimap, new Prefix("/e"), "john@example.com");
+        assertArgumentPresent(argMultimap, new Prefix("/a"), "123 Main St");
+        assertArgumentPresent(argMultimap, new Prefix("/t"), "friends", "family");
+    }
+
+    @Test
+    public void tokenize_prefixAtStart() {
+        // Prefix at the very beginning of the string
+        String argsString = "/n John Doe /p 91234567";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString,
+                new Prefix("/n"), new Prefix("/p"));
+
+        assertPreambleEmpty(argMultimap);
+        assertArgumentPresent(argMultimap, new Prefix("/n"), "John Doe");
+        assertArgumentPresent(argMultimap, new Prefix("/p"), "91234567");
+    }
+
+    @Test
+    public void tokenize_prefixWithNoValue() {
+        // Prefix with no value (should capture empty string)
+        String argsString = "add /n John Doe /p /e john@example.com";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString,
+                new Prefix("/n"), new Prefix("/p"), new Prefix("/e"));
+
+        assertPreamblePresent(argMultimap, "add");
+        assertArgumentPresent(argMultimap, new Prefix("/n"), "John Doe");
+        assertArgumentPresent(argMultimap, new Prefix("/p"), "");
+        assertArgumentPresent(argMultimap, new Prefix("/e"), "john@example.com");
+    }
+
+    @Test
     public void equalsMethod() {
-        Prefix aaa = new Prefix("aaa");
+        Prefix aaa = new Prefix("/aaa");
 
         assertEquals(aaa, aaa);
-        assertEquals(aaa, new Prefix("aaa"));
+        assertEquals(aaa, new Prefix("/aaa"));
 
-        assertNotEquals(aaa, "aaa");
-        assertNotEquals(aaa, new Prefix("aab"));
+        assertNotEquals(aaa, "/aaa");
+        assertNotEquals(aaa, new Prefix("/aab"));
     }
 
 }

@@ -2,6 +2,8 @@ package hitlist.model;
 
 import static hitlist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static hitlist.testutil.Assert.assertThrows;
+import static hitlist.testutil.TypicalCompanies.GOOGLE;
+import static hitlist.testutil.TypicalGroups.STUDENTS;
 import static hitlist.testutil.TypicalPersons.ALICE;
 import static hitlist.testutil.TypicalPersons.BENSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,7 +68,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void setAddressBookFilePath_validPath_setsHitListFilePath() {
+    public void setHitListFilePath_validPath_setsHitListFilePath() {
         Path path = Paths.get("address/book/file/path");
         modelManager.setHitListFilePath(path);
         assertEquals(path, modelManager.getHitListFilePath());
@@ -78,14 +80,77 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
+    public void hasPerson_personNotInHitList_returnsFalse() {
         assertFalse(modelManager.hasPerson(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
+    public void hasPerson_personInHitList_returnsTrue() {
         modelManager.addPerson(ALICE);
         assertTrue(modelManager.hasPerson(ALICE));
+    }
+
+    @Test
+    public void hasGroup_nullGroup_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasGroup(null));
+    }
+
+    @Test
+    public void hasGroup_groupNotInHitList_returnsFalse() {
+        assertFalse(modelManager.hasGroup(STUDENTS));
+    }
+
+    @Test
+    public void hasGroup_groupInHitList_returnsTrue() {
+        modelManager.addGroup(STUDENTS);
+        assertTrue(modelManager.hasGroup(STUDENTS));
+    }
+
+    @Test
+    public void addGroup_groupNotInHitList_success() {
+        modelManager.addGroup(STUDENTS);
+    }
+
+    @Test
+    public void deleteGroup_groupInHitList_success() {
+        modelManager.addGroup(STUDENTS);
+        modelManager.deleteGroup(STUDENTS);
+    }
+
+    @Test
+    public void hasCompany_nullCompany_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasCompany(null));
+    }
+
+    @Test
+    public void hasCompany_companyNotInHitList_returnsFalse() {
+        assertFalse(modelManager.hasCompany(GOOGLE));
+    }
+
+    @Test
+    public void hasCompany_companyInHitList_returnsTrue() {
+        modelManager.addCompany(GOOGLE);
+        assertTrue(modelManager.hasCompany(GOOGLE));
+    }
+
+    @Test
+    public void addCompany_companyNotInHitList_success() {
+        modelManager.addCompany(GOOGLE);
+
+        HitList expectedHitList = new HitList();
+        expectedHitList.addCompany(GOOGLE);
+
+        assertEquals(expectedHitList, modelManager.getHitList());
+    }
+
+    @Test
+    public void deleteCompany_companyInHitList_success() {
+        modelManager.addCompany(GOOGLE);
+        modelManager.deleteCompany(GOOGLE);
+
+        HitList expectedHitList = new HitList();
+
+        assertEquals(expectedHitList, modelManager.getHitList());
     }
 
     @Test
@@ -95,13 +160,13 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        HitList addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
-        HitList differentAddressBook = new HitList();
+        HitList hitList = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        HitList differentHitList = new HitList();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, userPrefs);
+        modelManager = new ModelManager(hitList, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(hitList, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -114,12 +179,12 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(differentHitList, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(hitList, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -127,6 +192,6 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setHitListFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(hitList, differentUserPrefs)));
     }
 }

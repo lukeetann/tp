@@ -383,8 +383,8 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 
 **MSS**
 
-1. User requests to delete a contact group 
-2. System deletes the contact group 
+1. User requests to delete a contact group
+2. System deletes the contact group
 3. System informs user that the contact group has been deleted
 
     Use case ends.
@@ -540,7 +540,7 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 
     Use case ends.
 
-**Use case 13: Delete company details to company profile**
+**Use case 13: Delete company details from company profile**
 
 **MSS**
 
@@ -601,7 +601,7 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 
 1. The system should support at least 100 company profiles without exceeding the 2 seconds response time limit for operations such as adding, deleting, listing of company profiles.
 
-*{More to be added}* 
+*{More to be added}*
 
 ### Glossary
 
@@ -612,6 +612,9 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 * **Contact**: A stored record representing a potential candidate that the headhunter is recruiting for.
 * **Contact Group**: A tag used to identify different contacts and group similar contacts. A contact group can have none to many contacts.
 * **Company Profile**: A stored record representing a client company that the headhunter is recruiting for.
+* **Company Description**: A detail of a company profile that describes the company. A company profile must have a company description.
+* **Company Role**: A detail of a company profile that describes the role that the headhunter is recruiting for. A company profile may or may not have company roles.
+* **Company Role Description**: A detail describing the role that the headhunter is recruiting for within the company. A company role must have a company role description.
 
 *{More to be added}*
 

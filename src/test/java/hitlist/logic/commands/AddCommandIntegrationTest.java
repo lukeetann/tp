@@ -7,7 +7,6 @@ import static hitlist.testutil.TypicalPersons.getTypicalHitList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import hitlist.logic.Messages;
 import hitlist.model.Model;
 import hitlist.model.ModelManager;
 import hitlist.model.UserPrefs;
@@ -34,7 +33,7 @@ public class AddCommandIntegrationTest {
         expectedModel.addPerson(validPerson);
 
         assertCommandSuccess(new AddCommand(validPerson), model,
-                String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
+                String.format(AddCommand.MESSAGE_SUCCESS, validPerson.getName(), validPerson.getPhone()),
                 expectedModel);
     }
 

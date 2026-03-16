@@ -11,7 +11,7 @@ public class Phone {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
+            "Invalid Number: The number %1$s is not valid";
     public static final String VALIDATION_REGEX = "\\d{3,}";
     public final String value;
 
@@ -22,7 +22,7 @@ public class Phone {
      */
     public Phone(String phone) {
         requireNonNull(phone);
-        checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidPhone(phone), String.format(MESSAGE_CONSTRAINTS, phone));
         value = phone;
     }
 
