@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import hitlist.commons.core.index.Index;
@@ -82,6 +83,23 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String address} into an {@code Address}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code address} is invalid.
+     */
+    public static Optional<Address> parseAddress(Optional<String> address) throws ParseException {
+        if (address.isEmpty()) {
+            return Optional.empty();
+        }
+        Address validAddress = address.filter(s -> Address.isValidAddress(s.trim()))
+                .map(s -> new Address(s.trim()))
+                .orElseThrow(() -> new ParseException(Address.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(validAddress);
+    }
+
+    /**
      * Parses a {@code String email} into an {@code Email}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -97,7 +115,24 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
+     * Parses a {@code String email} into an {@code Email}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code email} is invalid.
+     */
+    public static Optional<Email> parseEmail(Optional<String> email) throws ParseException {
+        if (email.isEmpty()) {
+            return Optional.empty();
+        }
+        Email validEmail = email.filter(s -> Email.isValidEmail(s.trim()))
+                .map(s -> new Email(s.trim()))
+                .orElseThrow(() -> new ParseException(Email.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(validEmail);
+    }
+
+    /**
+     * Parses a {@code String tag} into an {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code tag} is invalid.

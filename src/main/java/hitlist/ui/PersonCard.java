@@ -1,7 +1,5 @@
 package hitlist.ui;
 
-import java.util.Comparator;
-
 import hitlist.model.person.Person;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -50,10 +48,7 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
-        email.setText(person.getEmail().value);
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        address.setText(person.getAddress().map(a -> a.value).orElse(""));
+        email.setText(person.getEmail().map(e -> e.value).orElse(""));
     }
 }

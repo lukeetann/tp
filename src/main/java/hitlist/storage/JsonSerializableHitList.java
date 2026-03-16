@@ -16,7 +16,7 @@ import hitlist.model.person.Person;
 /**
  * An Immutable HitList that is serializable to JSON format.
  */
-@JsonRootName(value = "addressbook")
+@JsonRootName(value = "hitlist")
 class JsonSerializableHitList {
 
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
@@ -41,7 +41,7 @@ class JsonSerializableHitList {
     }
 
     /**
-     * Converts this address book into the model's {@code HitList} object.
+     * Converts this hitlist into the model's {@code HitList} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */
