@@ -1,9 +1,10 @@
 package hitlist.model.util;
 
-import hitlist.model.person.Person;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import hitlist.model.person.Person;
 
 public class SampleDataUtilTest {
     @Test
