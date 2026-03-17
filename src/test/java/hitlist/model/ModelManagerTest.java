@@ -13,7 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Optional;
 
+import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import org.junit.jupiter.api.Test;
 
 import hitlist.commons.core.GuiSettings;
@@ -141,6 +144,31 @@ public class ModelManagerTest {
         expectedHitList.addCompany(GOOGLE);
 
         assertEquals(expectedHitList, modelManager.getHitList());
+    }
+
+    @Test
+    public void getCompany_companyExists_returnsCompany() {
+        modelManager.addCompany(GOOGLE);
+
+        Optional<Company> result = modelManager.getCompany(GOOGLE.getName());
+
+        assertTrue(result.isPresent());
+        assertEquals(GOOGLE, result.get());
+    }
+
+    @Test
+    public void getCompany_companyDoesNotExist_returnsEmptyOptional() {
+        modelManager.addCompany(GOOGLE);
+        CompanyName missingCompanyName = new CompanyName("Meta Platforms, Inc.");
+
+        Optional<Company> result = modelManager.getCompany(missingCompanyName);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void getCompany_nullCompanyName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.getCompany(null));
     }
 
     @Test

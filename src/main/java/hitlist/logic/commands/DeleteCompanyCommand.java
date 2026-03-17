@@ -33,6 +33,7 @@ public class DeleteCompanyCommand extends Command {
      * @param companyName The name of the company to be deleted.
      */
     public DeleteCompanyCommand(CompanyName companyName) {
+        requireNonNull(companyName);
         this.companyName = companyName;
     }
 

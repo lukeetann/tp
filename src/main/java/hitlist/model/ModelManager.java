@@ -148,6 +148,7 @@ public class ModelManager implements Model {
 
     @Override
     public Optional<Company> getCompany(CompanyName companyName) {
+        requireNonNull(companyName);
         List<Company> companyList = hitList.getCompanyList();
         for (Company company : companyList) {
             if (company.getName().equals(companyName)) {
