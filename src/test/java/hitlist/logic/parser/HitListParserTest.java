@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hitlist.logic.commands.DeleteCompanyCommand;
 import org.junit.jupiter.api.Test;
 
 import hitlist.logic.commands.AddCommand;
@@ -22,6 +21,7 @@ import hitlist.logic.commands.AddCompanyCommand;
 import hitlist.logic.commands.AddGroupCommand;
 import hitlist.logic.commands.ClearCommand;
 import hitlist.logic.commands.DeleteCommand;
+import hitlist.logic.commands.DeleteCompanyCommand;
 import hitlist.logic.commands.EditCommand;
 import hitlist.logic.commands.EditCommand.EditPersonDescriptor;
 import hitlist.logic.commands.ExitCommand;
@@ -117,7 +117,8 @@ public class HitListParserTest {
         AddCompanyCommand command = (AddCompanyCommand) parser.parseCommand(CompanyUtil.getAddCompanyCommand(company));
         assertEquals(new AddCompanyCommand(company), command);
 
-        DeleteCompanyCommand commanddel = (DeleteCompanyCommand) parser.parseCommand(CompanyUtil.getDeleteCompanyCommand(company));
+        DeleteCompanyCommand commanddel =
+                (DeleteCompanyCommand) parser.parseCommand(CompanyUtil.getDeleteCompanyCommand(company));
         assertEquals(new DeleteCompanyCommand(company.getName()), commanddel);
     }
 

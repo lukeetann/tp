@@ -15,11 +15,11 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 
-import hitlist.model.company.Company;
-import hitlist.model.company.CompanyName;
 import org.junit.jupiter.api.Test;
 
 import hitlist.commons.core.GuiSettings;
+import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import hitlist.model.person.NameContainsKeywordsPredicate;
 import hitlist.testutil.AddressBookBuilder;
 
