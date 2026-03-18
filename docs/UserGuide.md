@@ -144,6 +144,19 @@ Example:
 * `cmpadd /c Google /d Tech giant` adds a company named `Google` with description `Tech giant` to the hitList.
 * `cmpadd /c Meta /d Social media giant` adds a company named `Meta` with description `Social media giant` to the hitList.
 
+### Deleting a Company : `cmpdel`
+
+Deletes the specified company from hitList.
+
+Format: `cmpdel /c COMPANY_NAME`
+
+* The company name must be an existing company in hitList.
+* The company name typed must be the exact company name registered in hitList.
+
+Example:
+* `cmpdel /c Google` deletes a company named `Google` from hitList.
+* `cmpdel /c Meta` deletes a company named `Meta` from hitList.
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the HitList.

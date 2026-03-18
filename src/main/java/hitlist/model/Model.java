@@ -1,10 +1,12 @@
 package hitlist.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
@@ -114,6 +116,12 @@ public interface Model {
     * {@code company} must not already exist.
     */
     void addCompany(Company company);
+
+    /**
+     * Returns an {@code Optional} containing the company with the same identity as {@code companyName} if it exists,
+     * or an empty {@code Optional} otherwise.
+     */
+    Optional<Company> getCompany(CompanyName companyName);
 
     /**
      * Deletes the given company.

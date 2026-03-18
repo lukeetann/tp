@@ -1,10 +1,12 @@
 package hitlist.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
@@ -106,6 +108,11 @@ public abstract class ModelStub implements Model {
 
     @Override
     public void addCompany(Company company) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public Optional<Company> getCompany(CompanyName companyName) {
         throw new AssertionError("This method should not be called.");
     }
 

@@ -4,12 +4,15 @@ import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import hitlist.commons.core.GuiSettings;
 import hitlist.commons.core.LogsCenter;
 import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
@@ -26,18 +29,21 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given HitList and userPrefs.
      */
     public ModelManager(ReadOnlyHitList hitList, ReadOnlyUserPrefs userPrefs) {
         requireAllNonNull(hitList, userPrefs);
 
-        logger.fine("Initializing with address book: " + hitList + " and user prefs " + userPrefs);
+        logger.fine("Initializing with HitList: " + hitList + " and user prefs " + userPrefs);
 
         this.hitList = new HitList(hitList);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.hitList.getPersonList());
     }
 
+    /**
+     * Initializes a ModelManager with a new HitList and userPrefs.
+     */
     public ModelManager() {
         this(new HitList(), new UserPrefs());
     }
@@ -138,6 +144,18 @@ public class ModelManager implements Model {
     @Override
     public void addCompany(Company company) {
         hitList.addCompany(company);
+    }
+
+    @Override
+    public Optional<Company> getCompany(CompanyName companyName) {
+        requireNonNull(companyName);
+        List<Company> companyList = hitList.getCompanyList();
+        for (Company company : companyList) {
+            if (company.getName().equals(companyName)) {
+                return Optional.of(company);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
