@@ -14,6 +14,7 @@ import hitlist.logic.parser.HitListParser;
 import hitlist.logic.parser.exceptions.ParseException;
 import hitlist.model.Model;
 import hitlist.model.ReadOnlyHitList;
+import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import hitlist.storage.Storage;
 import javafx.collections.ObservableList;
@@ -69,6 +70,11 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return model.getFilteredPersonList();
+    }
+
+    @Override
+    public ObservableList<Group> getGroupList() {
+        return model.getGroupList();
     }
 
     @Override
