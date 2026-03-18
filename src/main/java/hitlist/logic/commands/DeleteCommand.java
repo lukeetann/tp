@@ -1,5 +1,6 @@
 package hitlist.logic.commands;
 
+import static hitlist.logic.parser.CliSyntax.PREFIX_NAME;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import hitlist.commons.util.ToStringBuilder;
 import hitlist.logic.Messages;
 import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.Model;
+import hitlist.model.person.Name;
 import hitlist.model.person.Person;
 
 /**
@@ -18,22 +20,49 @@ public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
+    public static final String COMMAND_WORD_ALIAS = "del";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person identified by the index number used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "Parameters: INDEX (must be a positive integer) or NAME\n"
+            + "Example: " + COMMAND_WORD + " 1\n"
+            + "Example: " + COMMAND_WORD_ALIAS + " " + PREFIX_NAME + " John Doe";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted %1$s";
 
     private final Index targetIndex;
+    private final Name targetName;
 
+    /**
+     * Creates a DeleteCommand to delete the specified {@code Person}
+     * @param targetIndex
+     */
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
+        this.targetName = null;
+    }
+
+    /**
+     * Creates a DeleteCommand to delete the specified {@code Person}
+     * @param targetName
+     */
+    public DeleteCommand(Name targetName) {
+        this.targetIndex = null;
+        this.targetName = targetName;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (isDeleteByIndex()) {
+            return executeByIndex(model);
+        } else {
+            return executeByName(model);
+        }
+    }
+
+    private CommandResult executeByIndex(Model model) throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -42,7 +71,22 @@ public class DeleteCommand extends Command {
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+    }
+
+    private CommandResult executeByName(Model model) throws CommandException {
+        List<Person> lastShownList = model.getFilteredPersonList();
+        Person personToDelete = lastShownList.stream()
+                .filter(person -> person.getName().equals(targetName))
+                .findFirst()
+                .orElseThrow(() -> new CommandException(Messages.MESSAGE_PERSON_NOT_FOUND));
+
+        model.deletePerson(personToDelete);
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+    }
+
+    private boolean isDeleteByIndex() {
+        return targetIndex != null;
     }
 
     @Override
@@ -64,6 +108,7 @@ public class DeleteCommand extends Command {
     public String toString() {
         return new ToStringBuilder(this)
                 .add("targetIndex", targetIndex)
+                .add("targetName", targetName)
                 .toString();
     }
 }
