@@ -6,7 +6,10 @@ import static hitlist.testutil.TypicalPersons.BENSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +18,9 @@ import hitlist.commons.exceptions.IllegalValueException;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
 import hitlist.model.person.Name;
+import hitlist.model.person.Person;
 import hitlist.model.person.Phone;
+import hitlist.model.tag.Tag;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -77,10 +82,27 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullEmail_throwsIllegalValueException() {
+    public void toModelType_nullEmail_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null, VALID_ADDRESS, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.empty(),
+                Optional.of(new Address(VALID_ADDRESS)), tags);
+        assertEquals(expected, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_emptyStringEmail_returnsPerson() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, "", VALID_ADDRESS, VALID_TAGS);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.empty(),
+                Optional.of(new Address(VALID_ADDRESS)), tags);
+        assertEquals(expected, person.toModelType());
     }
 
     @Test
@@ -92,10 +114,27 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullAddress_throwsIllegalValueException() {
+    public void toModelType_nullAddress_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, null, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.of(new Email(VALID_EMAIL)),
+                Optional.empty(), tags);
+        assertEquals(expected, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_emptyStringAddress_returnsPerson() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, "", VALID_TAGS);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.of(new Email(VALID_EMAIL)),
+                Optional.empty(), tags);
+        assertEquals(expected, person.toModelType());
     }
 
     @Test
