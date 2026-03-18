@@ -45,8 +45,11 @@ public class AddGroupCommandTest {
         AddGroupCommand addGroupCommand = new AddGroupCommand(validGroup);
         ModelStub modelStub = new ModelStubWithGroup(validGroup);
 
+        String expectedMessage =
+            String.format(AddGroupCommand.MESSAGE_DUPLICATE_GROUP, validGroup.getName());
+
         assertThrows(CommandException.class,
-                     AddGroupCommand.MESSAGE_DUPLICATE_GROUP, () -> addGroupCommand.execute(modelStub));
+                     expectedMessage, () -> addGroupCommand.execute(modelStub));
     }
 
     @Test
