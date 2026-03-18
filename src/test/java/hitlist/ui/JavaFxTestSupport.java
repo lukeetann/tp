@@ -17,6 +17,9 @@ public final class JavaFxTestSupport {
 
     private JavaFxTestSupport() {}
 
+    /**
+     * Checks if JavaFX is available in the current environment. Initializes toolkit if not already done.
+     */
     public static boolean isFxAvailable() {
         if (!INITIALIZED.get()) {
             init();
