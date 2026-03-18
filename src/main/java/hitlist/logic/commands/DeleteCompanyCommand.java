@@ -11,7 +11,7 @@ import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 
 /**
- * Deletes a company identified using it's displayed company name from the hit list.
+ * Deletes a company identified using it's displayed company name from HitList.
  */
 public class DeleteCompanyCommand extends Command {
 
