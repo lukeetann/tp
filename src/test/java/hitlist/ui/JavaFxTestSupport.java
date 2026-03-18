@@ -8,7 +8,7 @@ import javafx.application.Platform;
 
 /**
  * Shared JavaFX bootstrap helper for UI tests.
- * Skips tests gracefully when JavaFX toolkit/pipeline is unavailable in CI.
+ * Tests can skip gracefully when JavaFX is unavailable in CI/headless environments.
  */
 public final class JavaFxTestSupport {
 
@@ -40,10 +40,9 @@ public final class JavaFxTestSupport {
                 fxAvailable = false;
             }
         } catch (UnsupportedOperationException | NoClassDefFoundError e) {
-            // Headless CI or unsupported JavaFX backend.
             fxAvailable = false;
         } catch (IllegalStateException e) {
-            // Toolkit already initialized by another test.
+            // Toolkit already initialized by another test class.
             fxAvailable = true;
         } catch (Exception e) {
             fxAvailable = false;

@@ -16,9 +16,6 @@ import hitlist.testutil.CompanyBuilder;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 
-/**
- * Unit tests for {@link CompanyCard}.
- */
 public class CompanyCardTest {
 
     @BeforeAll
@@ -35,52 +32,50 @@ public class CompanyCardTest {
                 .build();
 
         AtomicReference<CompanyCard> cardRef = new AtomicReference<>();
-        AtomicReference<String> idTextRef = new AtomicReference<>();
-        AtomicReference<String> nameTextRef = new AtomicReference<>();
-        AtomicReference<String> descriptionTextRef = new AtomicReference<>();
+        AtomicReference<String> idText = new AtomicReference<>();
+        AtomicReference<String> nameText = new AtomicReference<>();
+        AtomicReference<String> descText = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         Platform.runLater(() -> {
             CompanyCard card = new CompanyCard(company, 1);
             cardRef.set(card);
 
-            Label idLabel = (Label) card.getRoot().lookup("#id");
-            Label nameLabel = (Label) card.getRoot().lookup("#name");
-            Label descriptionLabel = (Label) card.getRoot().lookup("#description");
+            Label id = (Label) card.getRoot().lookup("#id");
+            Label name = (Label) card.getRoot().lookup("#name");
+            Label description = (Label) card.getRoot().lookup("#description");
 
-            idTextRef.set(idLabel == null ? null : idLabel.getText());
-            nameTextRef.set(nameLabel == null ? null : nameLabel.getText());
-            descriptionTextRef.set(descriptionLabel == null ? null : descriptionLabel.getText());
+            idText.set(id == null ? null : id.getText());
+            nameText.set(name == null ? null : name.getText());
+            descText.set(description == null ? null : description.getText());
             latch.countDown();
         });
 
-        boolean completed = latch.await(5, TimeUnit.SECONDS);
-        assertEquals(true, completed);
+        latch.await(5, TimeUnit.SECONDS);
         assertNotNull(cardRef.get());
-        assertEquals("1. ", idTextRef.get());
-        assertEquals("Google Inc.", nameTextRef.get());
-        assertEquals("A multinational technology company", descriptionTextRef.get());
+        assertEquals("1. ", idText.get());
+        assertEquals("Google Inc.", nameText.get());
+        assertEquals("A multinational technology company", descText.get());
     }
 
     @Test
-    public void constructor_validCompanyDifferentIndex_displaysCorrectIndex() throws Exception {
+    public void constructor_differentIndex_displaysCorrectIndex() throws Exception {
         Company company = new CompanyBuilder()
                 .withName("Meta Platforms, Inc.")
                 .withDescription("A technology conglomerate")
                 .build();
 
-        AtomicReference<String> idTextRef = new AtomicReference<>();
+        AtomicReference<String> idText = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         Platform.runLater(() -> {
             CompanyCard card = new CompanyCard(company, 7);
-            Label idLabel = (Label) card.getRoot().lookup("#id");
-            idTextRef.set(idLabel == null ? null : idLabel.getText());
+            Label id = (Label) card.getRoot().lookup("#id");
+            idText.set(id == null ? null : id.getText());
             latch.countDown();
         });
 
-        boolean completed = latch.await(5, TimeUnit.SECONDS);
-        assertEquals(true, completed);
-        assertEquals("7. ", idTextRef.get());
+        latch.await(5, TimeUnit.SECONDS);
+        assertEquals("7. ", idText.get());
     }
 }
