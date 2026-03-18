@@ -17,8 +17,8 @@ public class SampleDataUtilTest {
     }
 
     @Test
-    public void getSampleAddressBook_returnsValidAddressBook() {
-        ReadOnlyHitList hitList = SampleDataUtil.getSampleAddressBook();
+    public void getSampleHitList_returnsValidHitList() {
+        ReadOnlyHitList hitList = SampleDataUtil.getSampleHitList();
         assertNotNull(hitList);
     }
 }

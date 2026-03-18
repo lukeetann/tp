@@ -39,16 +39,16 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyHitList getSampleAddressBook() {
-        HitList sampleAb = new HitList();
+    public static ReadOnlyHitList getSampleHitList() {
+        HitList sampleHitList = new HitList();
         Group defaultGroup = new Group(new GroupName("Everyone Except David"));
         Group yGroup = new Group(new GroupName("The Y People"));
 
-        sampleAb.addGroup(defaultGroup);
-        sampleAb.addGroup(yGroup);
+        sampleHitList.addGroup(defaultGroup);
+        sampleHitList.addGroup(yGroup);
 
         for (Person samplePerson : getSamplePersons()) {
-            sampleAb.addPerson(samplePerson);
+            sampleHitList.addPerson(samplePerson);
 
             if (!samplePerson.getName().fullName.startsWith("David")) {
                 defaultGroup.addMember(samplePerson);
@@ -59,7 +59,7 @@ public class SampleDataUtil {
             }
         }
 
-        return sampleAb;
+        return sampleHitList;
     }
 
     /**

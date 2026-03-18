@@ -75,15 +75,15 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getHitListFilePath());
 
-        Optional<ReadOnlyHitList> addressBookOptional;
+        Optional<ReadOnlyHitList> hitListOptional;
         ReadOnlyHitList initialData;
         try {
-            addressBookOptional = storage.readHitList();
-            if (!addressBookOptional.isPresent()) {
+            hitListOptional = storage.readHitList();
+            if (!hitListOptional.isPresent()) {
                 logger.info("Creating a new data file " + storage.getHitListFilePath()
                         + " populated with a sample HitList.");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialData = hitListOptional.orElseGet(SampleDataUtil::getSampleHitList);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getHitListFilePath() + " could not be loaded."
                     + " Will be starting with an empty HitList.");
