@@ -94,6 +94,18 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_emptyStringEmail_returnsPerson() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, "", VALID_ADDRESS, VALID_TAGS);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.empty(),
+                Optional.of(new Address(VALID_ADDRESS)), tags);
+        assertEquals(expected, person.toModelType());
+    }
+
+    @Test
     public void toModelType_invalidAddress_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_ADDRESS, VALID_TAGS);
@@ -104,6 +116,18 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_nullAddress_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, null, VALID_TAGS);
+        Set<Tag> tags = new HashSet<>();
+        for (JsonAdaptedTag tag : VALID_TAGS) {
+            tags.add(tag.toModelType());
+        }
+        Person expected = new Person(new Name(VALID_NAME), new Phone(VALID_PHONE), Optional.of(new Email(VALID_EMAIL)),
+                Optional.empty(), tags);
+        assertEquals(expected, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_emptyStringAddress_returnsPerson() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, "", VALID_TAGS);
         Set<Tag> tags = new HashSet<>();
         for (JsonAdaptedTag tag : VALID_TAGS) {
             tags.add(tag.toModelType());
