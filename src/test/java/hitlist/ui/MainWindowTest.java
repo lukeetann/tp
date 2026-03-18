@@ -262,7 +262,7 @@ public class MainWindowTest {
     }
 
     @Test
-    public void executeCommand_exception_setsErrorFeedback_command() throws Exception {
+    public void executeCommand_exceptionSetsErrorFeedback_command() throws Exception {
         AtomicReference<Throwable> thrown = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -291,7 +291,7 @@ public class MainWindowTest {
     }
 
     @Test
-    public void executeCommand_exception_setsErrorFeedback_parse() throws Exception {
+    public void executeCommand_exceptionSetsErrorFeedback_parse() throws Exception {
         AtomicReference<Throwable> thrown = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
