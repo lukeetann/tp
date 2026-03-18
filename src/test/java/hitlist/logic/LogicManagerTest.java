@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
 
+import hitlist.logic.commands.ListCompanyCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -71,6 +72,12 @@ public class LogicManagerTest {
     }
 
     @Test
+    public void execute_validCompanyCommand_success() throws Exception {
+        String listCompanyCommand = ListCompanyCommand.COMMAND_WORD;
+        assertCommandSuccess(listCompanyCommand, ListCompanyCommand.MESSAGE_SUCCESS, model);
+    }
+
+    @Test
     public void execute_storageThrowsIoException_throwsCommandException() {
         assertCommandFailureForExceptionFromStorage(DUMMY_IO_EXCEPTION, String.format(
                 LogicManager.FILE_OPS_ERROR_FORMAT, DUMMY_IO_EXCEPTION.getMessage()));
@@ -85,6 +92,11 @@ public class LogicManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void getFilteredCompanyList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredCompanyList().remove(0));
     }
 
     /**

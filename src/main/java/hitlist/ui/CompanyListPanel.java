@@ -16,6 +16,7 @@ import javafx.scene.layout.Region;
 public class CompanyListPanel extends UiPart<Region> {
     private static final String FXML = "CompanyListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(CompanyListPanel.class);
+    private final ObservableList<Company> companyList;
 
     @FXML
     private ListView<Company> companyListView;
@@ -25,6 +26,18 @@ public class CompanyListPanel extends UiPart<Region> {
      */
     public CompanyListPanel(ObservableList<Company> companyList) {
         super(FXML);
+        this.companyList = companyList;
+        setupListView();
+    }
+
+    /**
+     * Sets up list bindings after FXML has been loaded.
+     */
+    private void setupListView() {
+        if (companyListView == null) {
+            // If this ever happens, FXML failed to inject fx:id="companyListView".
+            throw new IllegalStateException("companyListView is not injected. Check CompanyListPanel.fxml fx:id.");
+        }
         companyListView.setItems(companyList);
         companyListView.setCellFactory(listView -> new CompanyListViewCell());
     }

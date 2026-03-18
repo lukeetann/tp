@@ -77,6 +77,18 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void setHitList_validReadOnlyHitList_replacesData() {
+        HitList hitList = new AddressBookBuilder()
+                .withPerson(ALICE)
+                .withCompany(GOOGLE)
+                .build();
+
+        modelManager.setHitList(hitList);
+
+        assertEquals(hitList, modelManager.getHitList());
+    }
+
+    @Test
     public void hasPerson_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.hasPerson(null));
     }
@@ -90,6 +102,60 @@ public class ModelManagerTest {
     public void hasPerson_personInHitList_returnsTrue() {
         modelManager.addPerson(ALICE);
         assertTrue(modelManager.hasPerson(ALICE));
+    }
+
+    @Test
+    public void deletePerson_personInHitList_success() {
+        modelManager.addPerson(ALICE);
+        modelManager.deletePerson(ALICE);
+
+        assertFalse(modelManager.hasPerson(ALICE));
+    }
+
+    @Test
+    public void addPerson_personNotInHitList_success() {
+        modelManager.addPerson(ALICE);
+
+        HitList expectedHitList = new HitList();
+        expectedHitList.addPerson(ALICE);
+
+        assertEquals(expectedHitList, modelManager.getHitList());
+    }
+
+    @Test
+    public void setPerson_nullTarget_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setPerson(null, ALICE));
+    }
+
+    @Test
+    public void setPerson_nullEditedPerson_throwsNullPointerException() {
+        modelManager.addPerson(ALICE);
+        assertThrows(NullPointerException.class, () -> modelManager.setPerson(ALICE, null));
+    }
+
+    @Test
+    public void setPerson_validTargetAndEditedPerson_success() {
+        modelManager.addPerson(ALICE);
+        modelManager.setPerson(ALICE, BENSON);
+
+        assertFalse(modelManager.hasPerson(ALICE));
+        assertTrue(modelManager.hasPerson(BENSON));
+    }
+
+    @Test
+    public void updateFilteredPersonList_nullPredicate_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.updateFilteredPersonList(null));
+    }
+
+    @Test
+    public void updateFilteredPersonList_validPredicate_filtersList() {
+        modelManager.addPerson(ALICE);
+        modelManager.addPerson(BENSON);
+
+        modelManager.updateFilteredPersonList(person -> person.getName().toString().contains("Alice"));
+
+        assertEquals(1, modelManager.getFilteredPersonList().size());
+        assertEquals(ALICE, modelManager.getFilteredPersonList().get(0));
     }
 
     @Test
@@ -168,6 +234,17 @@ public class ModelManagerTest {
     @Test
     public void updateFilteredCompanyList_nullPredicate_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.updateFilteredCompanyList(null));
+    }
+
+    @Test
+    public void updateFilteredCompanyList_validPredicate_filtersList() {
+        modelManager.addCompany(GOOGLE);
+        modelManager.addCompany(META);
+
+        modelManager.updateFilteredCompanyList(company -> company.getName().toString().contains("Google"));
+
+        assertEquals(1, modelManager.getFilteredCompanyList().size());
+        assertEquals(GOOGLE, modelManager.getFilteredCompanyList().get(0));
     }
 
     @Test
