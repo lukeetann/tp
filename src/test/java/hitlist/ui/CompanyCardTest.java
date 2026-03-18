@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import hitlist.model.company.Company;
 import hitlist.testutil.CompanyBuilder;
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Label;
 
 /**
@@ -21,10 +21,15 @@ import javafx.scene.control.Label;
  */
 public class CompanyCardTest {
 
+    private static final AtomicBoolean IS_FX_INITIALIZED = new AtomicBoolean(false);
+
     @BeforeAll
-    public static void initToolkit() {
-        // Initializes JavaFX runtime for tests.
-        new JFXPanel();
+    public static void initToolkit() throws Exception {
+        if (IS_FX_INITIALIZED.compareAndSet(false, true)) {
+            CountDownLatch latch = new CountDownLatch(1);
+            Platform.startup(latch::countDown);
+            latch.await(5, TimeUnit.SECONDS);
+        }
     }
 
     @Test
@@ -51,12 +56,10 @@ public class CompanyCardTest {
             idTextRef.set(idLabel == null ? null : idLabel.getText());
             nameTextRef.set(nameLabel == null ? null : nameLabel.getText());
             descriptionTextRef.set(descriptionLabel == null ? null : descriptionLabel.getText());
-
             latch.countDown();
         });
 
-        boolean completed = latch.await(5, TimeUnit.SECONDS);
-        assertEquals(true, completed);
+        latch.await(5, TimeUnit.SECONDS);
         assertNotNull(cardRef.get());
         assertEquals("1. ", idTextRef.get());
         assertEquals("Google Inc.", nameTextRef.get());
@@ -80,8 +83,7 @@ public class CompanyCardTest {
             latch.countDown();
         });
 
-        boolean completed = latch.await(5, TimeUnit.SECONDS);
-        assertEquals(true, completed);
+        latch.await(5, TimeUnit.SECONDS);
         assertEquals("7. ", idTextRef.get());
     }
 }
