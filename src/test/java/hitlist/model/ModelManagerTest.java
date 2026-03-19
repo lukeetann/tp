@@ -6,6 +6,7 @@ import static hitlist.testutil.Assert.assertThrows;
 import static hitlist.testutil.TypicalCompanies.GOOGLE;
 import static hitlist.testutil.TypicalCompanies.META;
 import static hitlist.testutil.TypicalGroups.STUDENTS;
+import static hitlist.testutil.TypicalGroups.UNEMPLOYED;
 import static hitlist.testutil.TypicalPersons.ALICE;
 import static hitlist.testutil.TypicalPersons.BENSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -108,6 +109,26 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void getGroupList_noGroupsInHitList_returnsEmptyList() {
+        assertTrue(modelManager.getGroupList().size() == 0);
+    }
+
+    @Test
+    public void getGroupList_oneGroupInHitList_returnsEmptyList() {
+        modelManager.addGroup(STUDENTS);
+        assertTrue(modelManager.getGroupList().size() == 1);
+        assertTrue(modelManager.getGroupList().contains(STUDENTS));
+    }
+
+    @Test
+    public void getGroupList_twoGroupsInHitList_returnsEmptyList() {
+        modelManager.addGroup(STUDENTS);
+        modelManager.addGroup(UNEMPLOYED);
+        assertTrue(modelManager.getGroupList().size() == 2);
+        assertTrue(modelManager.getGroupList().contains(STUDENTS));
+        assertTrue(modelManager.getGroupList().contains(UNEMPLOYED));
+    }
+
     public void deletePerson_personInHitList_success() {
         modelManager.addPerson(ALICE);
         modelManager.deletePerson(ALICE);

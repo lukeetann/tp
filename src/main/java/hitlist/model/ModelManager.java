@@ -128,6 +128,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public ObservableList<Group> getGroupList() {
+        return hitList.getGroupList();
+    }
+
+    @Override
     public void addGroup(Group group) {
         hitList.addGroup(group);
     }

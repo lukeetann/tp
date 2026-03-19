@@ -1,14 +1,46 @@
 package hitlist.model.group;
 
+import static hitlist.testutil.Assert.assertThrows;
 import static hitlist.testutil.TypicalGroups.STUDENTS;
 import static hitlist.testutil.TypicalGroups.UNEMPLOYED;
+import static hitlist.testutil.TypicalPersons.ALICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import hitlist.model.person.exceptions.DuplicatePersonException;
+
 public class GroupTest {
+    @Test
+    public void hasMember_emptyGroup_returnsFalse() {
+        Group group = new Group(new GroupName("MyGroup"));
+
+        assertFalse(group.hasMember(ALICE));
+    }
+
+    @Test
+    public void hasMember_memberInGroup_returnsFalse() {
+        Group group = new Group(new GroupName("MyGroup"));
+        group.addMember(ALICE);
+
+        assertTrue(group.hasMember(ALICE));
+    }
+
+    @Test
+    public void addMember_emptyGroup_success() {
+        Group group = new Group(new GroupName("MyGroup"));
+        group.addMember(ALICE);
+    }
+
+    @Test
+    public void addMember_memberAlreadyInGroup_throwsDuplicatePersonException() {
+        Group group = new Group(new GroupName("MyGroup"));
+        group.addMember(ALICE);
+
+        assertThrows(DuplicatePersonException.class, () -> group.addMember(ALICE));
+    }
 
     @Test
     public void isSameGroup() {

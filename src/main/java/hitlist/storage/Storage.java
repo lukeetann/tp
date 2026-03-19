@@ -27,6 +27,6 @@ public interface Storage extends HitListStorage, UserPrefsStorage {
     Optional<ReadOnlyHitList> readHitList() throws DataLoadingException;
 
     @Override
-    void saveHitList(ReadOnlyHitList addressBook) throws IOException;
+    void saveHitList(ReadOnlyHitList hitList) throws IOException;
 
 }

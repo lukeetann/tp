@@ -10,6 +10,8 @@ import hitlist.model.ReadOnlyHitList;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyDescription;
 import hitlist.model.company.CompanyName;
+import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
 import hitlist.model.person.Name;
@@ -60,15 +62,31 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyHitList getSampleAddressBook() {
-        HitList sampleAb = new HitList();
+    public static ReadOnlyHitList getSampleHitList() {
+        HitList sampleHitList = new HitList();
+        Group defaultGroup = new Group(new GroupName("Everyone Except David"));
+        Group yGroup = new Group(new GroupName("The Y People"));
+
+        sampleHitList.addGroup(defaultGroup);
+        sampleHitList.addGroup(yGroup);
+
         for (Person samplePerson : getSamplePersons()) {
-            sampleAb.addPerson(samplePerson);
+            sampleHitList.addPerson(samplePerson);
+
+            if (!samplePerson.getName().fullName.startsWith("David")) {
+                defaultGroup.addMember(samplePerson);
+            }
+
+            if (samplePerson.getName().fullName.contains("Y")) {
+                yGroup.addMember(samplePerson);
+            }
         }
+
         for (Company sampleCompany : getSampleCompanies()) {
-            sampleAb.addCompany(sampleCompany);
+            sampleHitList.addCompany(sampleCompany);
         }
-        return sampleAb;
+
+        return sampleHitList;
     }
 
     /**

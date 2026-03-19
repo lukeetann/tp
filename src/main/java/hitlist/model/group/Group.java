@@ -30,6 +30,10 @@ public class Group {
         return members;
     }
 
+    public boolean hasMember(Person person) {
+        return members.contains(person);
+    }
+
     public void addMember(Person person) {
         members.add(person);
     }

@@ -1,6 +1,7 @@
 package hitlist.model.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -34,6 +35,12 @@ public class SampleDataUtilTest {
     }
 
     @Test
+    public void getSampleHitList_returnsValidHitList() {
+        ReadOnlyHitList hitList = SampleDataUtil.getSampleHitList();
+        assertNotNull(hitList);
+    }
+
+    @Test
     public void getSampleCompanies_returnsValidCompanies() {
         Company[] companies = SampleDataUtil.getSampleCompanies();
 
@@ -46,8 +53,8 @@ public class SampleDataUtilTest {
     }
 
     @Test
-    public void getSampleAddressBook_containsAllSamplePersonsAndCompanies() {
-        ReadOnlyHitList sampleHitList = SampleDataUtil.getSampleAddressBook();
+    public void getSampleHitList_containsAllSamplePersonsAndCompanies() {
+        ReadOnlyHitList sampleHitList = SampleDataUtil.getSampleHitList();
 
         assertEquals(SampleDataUtil.getSamplePersons().length, sampleHitList.getPersonList().size());
         assertEquals(SampleDataUtil.getSampleCompanies().length, sampleHitList.getCompanyList().size());

@@ -3,6 +3,7 @@ package hitlist.ui;
 import java.util.logging.Logger;
 
 import hitlist.commons.core.LogsCenter;
+import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,11 +21,15 @@ public class PersonListPanel extends UiPart<Region> {
     @FXML
     private ListView<Person> personListView;
 
+    private final ObservableList<Group> groupList;
+
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public PersonListPanel(ObservableList<Person> personList) {
+    public PersonListPanel(ObservableList<Person> personList, ObservableList<Group> groupList) {
         super(FXML);
+        this.groupList = groupList;
+
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
     }
@@ -41,7 +46,7 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(person, getIndex() + 1).getRoot());
+                setGraphic(new PersonCard(person, getIndex() + 1, groupList).getRoot());
             }
         }
     }

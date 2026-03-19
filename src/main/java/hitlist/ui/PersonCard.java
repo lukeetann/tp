@@ -1,6 +1,8 @@
 package hitlist.ui;
 
+import hitlist.model.group.Group;
 import hitlist.model.person.Person;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +25,7 @@ public class PersonCard extends UiPart<Region> {
      */
 
     public final Person person;
+    private final ObservableList<Group> groupList;
 
     @FXML
     private HBox cardPane;
@@ -38,17 +41,37 @@ public class PersonCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private FlowPane groups;
+    @FXML
+    private HBox groupsWrapper;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
-    public PersonCard(Person person, int displayedIndex) {
+    public PersonCard(Person person, int displayedIndex, ObservableList<Group> groupList) {
         super(FXML);
         this.person = person;
+        this.groupList = groupList;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().map(a -> a.value).orElse(""));
         email.setText(person.getEmail().map(e -> e.value).orElse(""));
+
+
+        groupList.stream()
+            .filter(group -> group.hasMember(person))
+            .forEach(group -> {
+                Label groupLabel = new Label(group.getName().fullName);
+
+                groupLabel.getStyleClass().add("tag-label");
+                groups.getChildren().add(groupLabel);
+            });
+
+        if (groups.getChildren().isEmpty()) {
+            groupsWrapper.setVisible(false);
+            groupsWrapper.setManaged(false);
+        }
     }
 }

@@ -33,14 +33,14 @@ public interface HitListStorage {
 
     /**
      * Saves the given {@link ReadOnlyHitList} to the storage.
-     * @param addressBook cannot be null.
+     * @param hitList cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveHitList(ReadOnlyHitList addressBook) throws IOException;
+    void saveHitList(ReadOnlyHitList hitList) throws IOException;
 
     /**
      * @see #saveHitList(ReadOnlyHitList)
      */
-    void saveHitList(ReadOnlyHitList addressBook, Path filePath) throws IOException;
+    void saveHitList(ReadOnlyHitList hitList, Path filePath) throws IOException;
 
 }

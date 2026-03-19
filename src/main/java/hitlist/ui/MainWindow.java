@@ -119,8 +119,8 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Fills up all the placeholders of this window.
      */
-    public void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+    void fillInnerParts() {
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList(), logic.getGroupList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         companyListPanel = new CompanyListPanel(logic.getFilteredCompanyList());
@@ -218,7 +218,7 @@ public class MainWindow extends UiPart<Stage> {
                 hideCompanyListPane();
 
                 // Force refresh the person list
-                personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+                personListPanel = new PersonListPanel(logic.getFilteredPersonList(), logic.getGroupList());
                 personListPanelPlaceholder.getChildren().clear();
                 personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
             }

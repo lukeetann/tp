@@ -65,14 +65,14 @@ public class StorageManager implements Storage {
     }
 
     @Override
-    public void saveHitList(ReadOnlyHitList addressBook) throws IOException {
-        saveHitList(addressBook, hitListStorage.getHitListFilePath());
+    public void saveHitList(ReadOnlyHitList hitList) throws IOException {
+        saveHitList(hitList, hitListStorage.getHitListFilePath());
     }
 
     @Override
-    public void saveHitList(ReadOnlyHitList addressBook, Path filePath) throws IOException {
+    public void saveHitList(ReadOnlyHitList hitList, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        hitListStorage.saveHitList(addressBook, filePath);
+        hitListStorage.saveHitList(hitList, filePath);
     }
 
 }
