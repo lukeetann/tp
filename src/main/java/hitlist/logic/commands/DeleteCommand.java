@@ -12,7 +12,7 @@ import hitlist.model.Model;
 import hitlist.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes a person identified using it's displayed index from the HitList.
  */
 public class DeleteCommand extends Command {
 

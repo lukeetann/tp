@@ -7,7 +7,7 @@ import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of an HitList
  */
 public interface ReadOnlyHitList {
 

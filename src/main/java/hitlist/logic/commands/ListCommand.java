@@ -6,7 +6,7 @@ import static java.util.Objects.requireNonNull;
 import hitlist.model.Model;
 
 /**
- * Lists all persons in the address book to the user.
+ * Lists all persons in the HitList to the user.
  */
 public class ListCommand extends Command {
 

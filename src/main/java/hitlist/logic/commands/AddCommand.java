@@ -12,7 +12,7 @@ import hitlist.model.Model;
 import hitlist.model.person.Person;
 
 /**
- * Adds a person to the address book.
+ * Adds a person to the HitList.
  */
 public class AddCommand extends Command {
 

@@ -16,8 +16,8 @@ import hitlist.model.person.UniquePersonList;
 import javafx.collections.ObservableList;
 
 /**
- * Wraps all data at the address-book level
- * Duplicates are not allowed (by .isSamePerson comparison)
+ * Wraps all data at the HitList level
+ * Duplicates are not allowed (by .isSamePerson, .isSameGroup, .isSameCompany comparison)
  */
 public class HitList implements ReadOnlyHitList {
 

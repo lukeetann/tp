@@ -9,7 +9,7 @@ import hitlist.model.Model;
 import hitlist.model.group.Group;
 
 /**
- * Adds a group to the address book.
+ * Adds a group to the HitList.
  */
 public class AddGroupCommand extends Command {
 

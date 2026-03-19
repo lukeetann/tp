@@ -2,7 +2,7 @@ package hitlist.logic.parser;
 
 /**
  * A prefix that marks the beginning of an argument in an arguments string.
- * E.g. 't/' in 'add James t/ friend'.
+ * E.g. '/n' in 'add /n James /p 98765432'.
  */
 public class Prefix {
     private final String prefix;

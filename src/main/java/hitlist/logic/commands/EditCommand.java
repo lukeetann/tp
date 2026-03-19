@@ -28,7 +28,7 @@ import hitlist.model.person.Phone;
 import hitlist.model.tag.Tag;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Edits the details of an existing person in the HitList.
  */
 public class EditCommand extends Command {
 
