@@ -3,6 +3,7 @@ package hitlist.model.group;
 import static hitlist.testutil.Assert.assertThrows;
 import static hitlist.testutil.TypicalGroups.STUDENTS;
 import static hitlist.testutil.TypicalGroups.UNEMPLOYED;
+import static hitlist.testutil.TypicalPersons.ALICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,6 +74,19 @@ public class UniqueGroupListTest {
     }
 
     @Test
+    public void remove_groupWithSameIdentityFieldsInList_removesGroup() {
+        uniqueGroupList.add(STUDENTS);
+
+        Group editedGroup = new Group(STUDENTS.getName());
+        editedGroup.addMember(ALICE);
+
+        uniqueGroupList.remove(editedGroup);
+
+        UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
+        assertEquals(expectedUniqueGroupList, uniqueGroupList);
+    }
+
+    @Test
     public void setGroups_nullUniqueGroupList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> uniqueGroupList.setGroups((UniqueGroupList) null));
     }
@@ -109,8 +123,8 @@ public class UniqueGroupListTest {
 
     @Test
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, ()
-            -> uniqueGroupList.asUnmodifiableObservableList().remove(0));
+        assertThrows(UnsupportedOperationException.class,
+                () -> uniqueGroupList.asUnmodifiableObservableList().remove(0));
     }
 
     @Test

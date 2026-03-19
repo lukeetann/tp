@@ -47,9 +47,13 @@ public class UniqueGroupList implements Iterable<Group> {
      */
     public void remove(Group toRemove) {
         requireNonNull(toRemove);
-        if (!internalList.remove(toRemove)) {
-            throw new GroupNotFoundException();
-        }
+
+        Group targetGroup = internalList.stream()
+                .filter(existingGroup -> existingGroup.isSameGroup(toRemove))
+                .findFirst()
+                .orElseThrow(GroupNotFoundException::new);
+
+        internalList.remove(targetGroup);
     }
 
     public void setGroups(UniqueGroupList replacement) {
