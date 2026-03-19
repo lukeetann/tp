@@ -8,6 +8,7 @@ import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
@@ -103,6 +104,11 @@ public abstract class ModelStub implements Model {
 
     @Override
     public boolean hasGroup(Group group) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public Optional<Group> getGroup(GroupName groupName) {
         throw new AssertionError("This method should not be called.");
     }
 

@@ -131,6 +131,16 @@ Examples:
 - `find John` returns `john` and `John Doe`
 - `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
+### Adding a contact group : `grpadd`
+
+Adds a contact group to the HitList.
+
+Format: `grpadd /g GROUP_NAME`
+
+Examples:
+* `grpadd /g Students`
+* `grpadd /g Experienced`
+
 ### Deleting a contact group : `grpdel`
 
 Deletes the specified contact group from HitList.
@@ -140,6 +150,16 @@ Format: `grpdel /g GROUP_NAME`
 Examples:
 * `grpdel /g Students`
 * `grpdel /g Experienced`
+
+### Listing contacts in a contact group : `grplist`
+
+Lists all the contacts who are members of a specified contact group.
+
+Format: `grplist /g GROUP_NAME`
+
+Examples:
+* `grplist /g Students`
+* `grplist /g Experienced`
 
 ### Adding a Company : `cmpadd`
 

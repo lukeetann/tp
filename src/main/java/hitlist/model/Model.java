@@ -8,6 +8,7 @@ import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
@@ -108,6 +109,12 @@ public interface Model {
      * Returns true if a group with the same identity as {@code group} exists.
      */
     boolean hasGroup(Group group);
+
+    /**
+     * Returns an {@code Optional} containing the group with the same identity as {@code groupName} if it exists,
+     * or an empty {@code Optional} otherwise.
+     */
+    Optional<Group> getGroup(GroupName groupName);
 
     /**
      * Adds the given group.
