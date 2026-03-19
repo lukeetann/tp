@@ -99,7 +99,8 @@ public class DeleteCommandTest {
         Person personNotFound = new PersonBuilder().withName("NonExistent").build();
         DeleteCommand deleteCommand = new DeleteCommand(personNotFound.getName());
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_PERSON_NOT_FOUND);
+        assertCommandFailure(deleteCommand, model, String.format(Messages.MESSAGE_PERSON_NOT_FOUND,
+                personNotFound.getName()));
     }
 
     @Test
