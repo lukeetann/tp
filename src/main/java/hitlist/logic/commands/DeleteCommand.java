@@ -71,7 +71,7 @@ public class DeleteCommand extends Command {
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
 
     private CommandResult executeByName(Model model) throws CommandException {
@@ -82,7 +82,7 @@ public class DeleteCommand extends Command {
                 .orElseThrow(() -> new CommandException(Messages.MESSAGE_PERSON_NOT_FOUND));
 
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
 
     private boolean isDeleteByIndex() {
