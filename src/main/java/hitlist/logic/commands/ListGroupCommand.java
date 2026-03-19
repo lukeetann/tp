@@ -27,7 +27,7 @@ public class ListGroupCommand extends Command {
             + PREFIX_GROUP + " Students";
 
     public static final String MESSAGE_SUCCESS = "Listed all contacts in the group %1$s";
-    public static final String MESSAGE_GROUP_NOT_FOUND = "No Group: No group %1$s was found";
+    public static final String MESSAGE_GROUP_NOT_FOUND = "No group %1$s was found";
 
     private final GroupName toList;
 
