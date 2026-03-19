@@ -49,7 +49,7 @@ public class MainWindowTest {
     }
 
     @Test
-    public void fillInnerParts_getPersonListPanel_getCompanyListPanel_success() throws Exception {
+    public void fillInnerParts_getPanel_success() throws Exception {
         AtomicReference<MainWindow> ref = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -62,7 +62,7 @@ public class MainWindowTest {
 
         assertTrue(latch.await(5, TimeUnit.SECONDS));
         assertNotNull(ref.get());
-        assertNotNull(ref.get().getPersonListPanel());  // covers getPersonListPanel
+        assertNotNull(ref.get().getPersonListPanel()); // covers getPersonListPanel
         assertNotNull(ref.get().getCompanyListPanel()); // covers getCompanyListPanel
     }
 
@@ -166,7 +166,9 @@ public class MainWindowTest {
         assertNotNull(thrown.get());
 
         Throwable root = unwrapInvocationTargetException(thrown.get());
-        assertThrows(CommandException.class, () -> { throw root; });
+        assertThrows(CommandException.class, () -> {
+            throw root;
+        });
     }
 
     @Test
@@ -193,7 +195,9 @@ public class MainWindowTest {
         assertNotNull(thrown.get());
 
         Throwable root = unwrapInvocationTargetException(thrown.get());
-        assertThrows(ParseException.class, () -> { throw root; });
+        assertThrows(ParseException.class, () -> {
+            throw root;
+        });
     }
 
     @Test
