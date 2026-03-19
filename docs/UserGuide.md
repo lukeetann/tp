@@ -157,6 +157,12 @@ Example:
 * `cmpdel /c Google` deletes a company named `Google` from hitList.
 * `cmpdel /c Meta` deletes a company named `Meta` from hitList.
 
+### Listing all Companies : `cmplist`
+
+Shows a list of all companies in the hitList.
+
+Format: `cmplist`
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the HitList.
@@ -199,7 +205,6 @@ _Details coming soon ..._
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -216,5 +221,6 @@ _Details coming soon ..._
 | **Add contact group** | `grpadd /n GROUP_NAME`                                           | `grpadd /n Students`                                                           |
 | **Add Company**       | `cmpadd /c COMPANY_NAME /d COMPANY_DESCRIPTION`                  | `cmpadd /c Google /d Tech giant`                                               |
 | **Delete Company**    | `cmpdel /c COMPANY_NAME`                                         | `cmpdel /c Google`                                                             |
+| **List Companies**    | `cmplist`                                                        | `cmplist`                                                                      |
 | **Clear**             | `clear`                                                          | `clear`                                                                        |
 | **Exit**              | `exit`                                                           | `exit`                                                                         |
