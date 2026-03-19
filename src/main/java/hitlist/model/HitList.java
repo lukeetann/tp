@@ -123,6 +123,13 @@ public class HitList implements ReadOnlyHitList {
         requireNonNull(editedPerson);
 
         persons.setPerson(target, editedPerson);
+
+        for (Group group : groups) {
+            if (group.getMembers().contains(target)) {
+                group.removeMember(target);
+                group.addMember(editedPerson);
+            }
+        }
     }
 
     /**
@@ -130,6 +137,12 @@ public class HitList implements ReadOnlyHitList {
      * {@code key} must exist in hitList.
      */
     public void removePerson(Person key) {
+        for (Group group : groups) {
+            if (group.getMembers().contains(key)) {
+                group.removeMember(key);
+            }
+        }
+
         persons.remove(key);
     }
 

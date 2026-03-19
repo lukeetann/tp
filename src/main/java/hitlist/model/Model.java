@@ -1,6 +1,7 @@
 package hitlist.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -8,6 +9,8 @@ import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
+import hitlist.model.person.Name;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
@@ -17,6 +20,9 @@ import javafx.collections.ObservableList;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+
+    /** {@code Predicate} that always evaluate to true */
+    Predicate<Company> PREDICATE_SHOW_ALL_COMPANIES = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -83,11 +89,20 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
 
+    /** Returns an unmodifiable view of the filtered company list */
+    ObservableList<Company> getFilteredCompanyList();
+
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Updates the filter of the filtered company list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredCompanyList(Predicate<Company> predicate);
 
     /**
      * Returns true if a group with the same identity as {@code group} exists.
@@ -105,6 +120,17 @@ public interface Model {
      * {@code group} must already exist.
      */
     void deleteGroup(Group group);
+
+    /**
+     * Returns an {@code Optional} containing the group with the same identity as {@code groupName} if it exists,
+     * or an empty {@code Optional} otherwise.
+     */
+    Optional<Group> getGroup(GroupName groupName);
+
+    /**
+     * Returns all persons whose names exactly match {@code name}.
+     */
+    List<Person> getPersonsByName(Name name);
 
     /**
      * Returns true if a company with the same identity as {@code company} exists.

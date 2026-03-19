@@ -1,6 +1,7 @@
 package hitlist.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -8,11 +9,13 @@ import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
+import hitlist.model.person.Name;
 import hitlist.model.person.Person;
 import javafx.collections.ObservableList;
 
 /**
- * A default model stub that have all methods failing.
+ * A default model stub that has all methods failing.
  */
 public abstract class ModelStub implements Model {
 
@@ -47,11 +50,6 @@ public abstract class ModelStub implements Model {
     }
 
     @Override
-    public void addPerson(Person person) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
     public void setHitList(ReadOnlyHitList newData) {
         throw new AssertionError("This method should not be called.");
     }
@@ -72,6 +70,11 @@ public abstract class ModelStub implements Model {
     }
 
     @Override
+    public void addPerson(Person person) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
     public void setPerson(Person target, Person editedPerson) {
         throw new AssertionError("This method should not be called.");
     }
@@ -82,7 +85,17 @@ public abstract class ModelStub implements Model {
     }
 
     @Override
+    public ObservableList<Company> getFilteredCompanyList() {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public void updateFilteredCompanyList(Predicate<Company> predicate) {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -98,6 +111,16 @@ public abstract class ModelStub implements Model {
 
     @Override
     public void deleteGroup(Group group) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public Optional<Group> getGroup(GroupName groupName) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public List<Person> getPersonsByName(Name name) {
         throw new AssertionError("This method should not be called.");
     }
 
