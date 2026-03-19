@@ -51,7 +51,8 @@ public class SampleDataUtil {
 
         Group[] groups = new Group[] { studentsGroup, unemployedGroup };
 
-        Random random = new Random();
+        long seed = 676767L;
+        Random random = new Random(seed);
 
         // groups are currently disjoint sets
         for (Person person : samplePersons) {
