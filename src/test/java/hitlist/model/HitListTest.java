@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import hitlist.model.group.GroupName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +25,7 @@ import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.company.role.Role;
 import hitlist.model.group.Group;
+import hitlist.model.group.GroupName;
 import hitlist.model.group.exceptions.DuplicateGroupException;
 import hitlist.model.group.exceptions.GroupNotFoundException;
 import hitlist.model.person.Person;
@@ -111,8 +111,8 @@ public class HitListTest {
                 .withPhone("99999999")
                 .build();
 
-        assertThrows(hitlist.model.person.exceptions.PersonNotFoundException.class,
-                () -> hitList.removePerson(missing));
+        assertThrows(hitlist.model.person.exceptions.PersonNotFoundException.class, ()
+                -> hitList.removePerson(missing));
     }
 
     @Test
@@ -126,8 +126,8 @@ public class HitListTest {
                 .withPhone("88888888")
                 .build();
 
-        assertThrows(hitlist.model.person.exceptions.PersonNotFoundException.class,
-                () -> hitList.setPerson(targetMissing, edited));
+        assertThrows(hitlist.model.person.exceptions.PersonNotFoundException.class, ()
+                -> hitList.setPerson(targetMissing, edited));
     }
 
     @Test
@@ -143,8 +143,8 @@ public class HitListTest {
         hitList.addPerson(a);
         hitList.addPerson(b);
 
-        assertThrows(hitlist.model.person.exceptions.DuplicatePersonException.class,
-                () -> hitList.setPerson(a, b));
+        assertThrows(hitlist.model.person.exceptions.DuplicatePersonException.class, ()
+                -> hitList.setPerson(a, b));
     }
 
     @Test
@@ -313,8 +313,8 @@ public class HitListTest {
                 .withDescription("Desc")
                 .build();
 
-        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class,
-                () -> hitList.setCompany(targetMissing, edited));
+        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class, ()
+                -> hitList.setCompany(targetMissing, edited));
     }
 
     @Test
@@ -324,8 +324,8 @@ public class HitListTest {
         hitList.addCompany(a);
         hitList.addCompany(b);
 
-        assertThrows(hitlist.model.company.exceptions.DuplicateCompanyException.class,
-                () -> hitList.setCompany(a, b));
+        assertThrows(hitlist.model.company.exceptions.DuplicateCompanyException.class, ()
+                -> hitList.setCompany(a, b));
     }
 
     @Test
@@ -335,8 +335,8 @@ public class HitListTest {
                 .withDescription("Desc")
                 .build();
 
-        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class,
-                () -> hitList.removeCompany(missing));
+        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class, ()
+                -> hitList.removeCompany(missing));
     }
 
     @Test

@@ -329,7 +329,8 @@ public class ModelManagerTest {
 
     @Test
     public void getCompanyRole_nullCompanyName_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.getCompanyRole(null, "AnyRole"));
+        assertThrows(NullPointerException.class, ()
+                -> modelManager.getCompanyRole(null, "AnyRole"));
     }
 
     @Test
@@ -363,29 +364,32 @@ public class ModelManagerTest {
 
     @Test
     public void getCompanyRole_companyNotFound_throwsCompanyNotFoundException() {
-        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class,
-                () -> modelManager.getCompanyRole(new CompanyName("Missing Co"), "AnyRole"));
+        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class, ()
+                -> modelManager.getCompanyRole(new CompanyName("Missing Co"), "AnyRole"));
     }
 
     @Test
     public void setCompanyRole_nullCompanyName_throwsNullPointerException() {
         Role target = new RoleBuilder().withName("MM_SetRole_NullCompany_Target").withDescription("desc").build();
         Role edited = new RoleBuilder().withName("MM_SetRole_NullCompany_Edited").withDescription("desc").build();
-        assertThrows(NullPointerException.class, () -> modelManager.setCompanyRole(null, target, edited));
+        assertThrows(NullPointerException.class, ()
+                -> modelManager.setCompanyRole(null, target, edited));
     }
 
     @Test
     public void setCompanyRole_nullTargetRole_throwsNullPointerException() {
         modelManager.addCompany(GOOGLE);
         Role edited = new RoleBuilder().withName("MM_SetRole_NullTarget_Edited").withDescription("desc").build();
-        assertThrows(NullPointerException.class, () -> modelManager.setCompanyRole(GOOGLE.getName(), null, edited));
+        assertThrows(NullPointerException.class, ()
+                -> modelManager.setCompanyRole(GOOGLE.getName(), null, edited));
     }
 
     @Test
     public void setCompanyRole_nullEditedRole_throwsNullPointerException() {
         modelManager.addCompany(GOOGLE);
         Role target = new RoleBuilder().withName("MM_SetRole_NullEdited_Target").withDescription("desc").build();
-        assertThrows(NullPointerException.class, () -> modelManager.setCompanyRole(GOOGLE.getName(), target, null));
+        assertThrows(NullPointerException.class, ()
+                -> modelManager.setCompanyRole(GOOGLE.getName(), target, null));
     }
 
     @Test
@@ -407,8 +411,8 @@ public class ModelManagerTest {
         Role missingTarget = new RoleBuilder().withName("MM_SetRole_TargetMissing").withDescription("desc").build();
         Role edited = new RoleBuilder().withName("MM_SetRole_TargetMissing_Edited").withDescription("desc").build();
 
-        assertThrows(hitlist.model.company.role.exceptions.RoleNotFoundException.class,
-                () -> modelManager.setCompanyRole(GOOGLE.getName(), missingTarget, edited));
+        assertThrows(hitlist.model.company.role.exceptions.RoleNotFoundException.class, ()
+                -> modelManager.setCompanyRole(GOOGLE.getName(), missingTarget, edited));
     }
 
     @Test
@@ -423,8 +427,8 @@ public class ModelManagerTest {
         modelManager.addCompanyRole(GOOGLE.getName(), target);
         modelManager.addCompanyRole(GOOGLE.getName(), exists);
 
-        assertThrows(hitlist.model.company.role.exceptions.DuplicateRoleException.class,
-                () -> modelManager.setCompanyRole(GOOGLE.getName(), target, editedSameIdentity));
+        assertThrows(hitlist.model.company.role.exceptions.DuplicateRoleException.class, ()
+                -> modelManager.setCompanyRole(GOOGLE.getName(), target, editedSameIdentity));
     }
 
     @Test
@@ -432,8 +436,8 @@ public class ModelManagerTest {
         Role target = new RoleBuilder().withName("MM_SetRole_MissingCompany_Target").withDescription("desc").build();
         Role edited = new RoleBuilder().withName("MM_SetRole_MissingCompany_Edited").withDescription("desc").build();
 
-        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class,
-                () -> modelManager.setCompanyRole(new CompanyName("Missing Co"), target, edited));
+        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class, ()
+                -> modelManager.setCompanyRole(new CompanyName("Missing Company"), target, edited));
     }
 
     @Test
@@ -463,8 +467,8 @@ public class ModelManagerTest {
     public void deleteCompanyRole_companyNotFound_throwsCompanyNotFoundException() {
         Role role = new RoleBuilder().withName("MM_DeleteRole_MissingCompany").withDescription("desc").build();
 
-        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class,
-                () -> modelManager.deleteCompanyRole(new CompanyName("Missing Co"), role));
+        assertThrows(hitlist.model.company.exceptions.CompanyNotFoundException.class, ()
+                -> modelManager.deleteCompanyRole(new CompanyName("Missing Co"), role));
     }
 
     @Test
