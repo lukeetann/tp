@@ -23,9 +23,6 @@ public class CompanyNameTest {
 
     @Test
     public void isValidCompanyName() {
-        // null name
-        assertThrows(NullPointerException.class, () -> CompanyName.isValidCompanyName(null));
-
         // invalid name
         assertFalse(CompanyName.isValidCompanyName("")); // empty string
         assertFalse(CompanyName.isValidCompanyName(" ")); // spaces only

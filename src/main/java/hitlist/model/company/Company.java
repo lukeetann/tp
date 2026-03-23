@@ -28,6 +28,8 @@ public class Company {
         this.name = name;
         this.description = description;
         this.uniqueRoleList = new UniqueRoleList();
+        assert this.name != null : "Company name should not be null";
+        assert this.description != null : "Company description should not be null";
     }
 
     /**
@@ -42,6 +44,9 @@ public class Company {
         this.name = name;
         this.description = description;
         this.uniqueRoleList = uniqueRoleList;
+        assert this.name != null : "Company name should not be null";
+        assert this.description != null : "Company description should not be null";
+        assert this.uniqueRoleList != null : "Company role list should not be null";
     }
 
     /**
@@ -93,6 +98,7 @@ public class Company {
         requireNonNull(role);
 
         getUniqueRoleList().add(role);
+        assert getUniqueRoleList().contains(role) : "Role list should contain the added role";
     }
 
     /**
@@ -102,6 +108,7 @@ public class Company {
     public void setRole(Role target, Role editedRole) {
         requireAllNonNull(target, editedRole);
         uniqueRoleList.setRole(target, editedRole);
+        assert uniqueRoleList.contains(editedRole) : "Role list should contain the newly edited role";
     }
 
     /**
@@ -114,6 +121,7 @@ public class Company {
         requireNonNull(role);
 
         getUniqueRoleList().remove(role);
+        assert !getUniqueRoleList().contains(role) : "Role list should no longer contain the removed role";
     }
 
     /**

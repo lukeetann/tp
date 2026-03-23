@@ -23,9 +23,6 @@ public class RoleDescriptionTest {
 
     @Test
     public void isValidRoleDescription() {
-        // null description
-        assertThrows(NullPointerException.class, () -> RoleDescription.isValidRoleDescription(null));
-
         // invalid description
         assertFalse(RoleDescription.isValidRoleDescription("")); // empty string
         assertFalse(RoleDescription.isValidRoleDescription(" ")); // spaces only

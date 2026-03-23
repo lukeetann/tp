@@ -58,6 +58,7 @@ public class UniqueCompanyList implements Iterable<Company> {
             throw new DuplicateCompanyException(DUPLICATE_COMPANY_MESSAGE);
         }
         internalList.add(toAdd);
+        assert internalList.contains(toAdd);
     }
 
     /**
@@ -84,6 +85,7 @@ public class UniqueCompanyList implements Iterable<Company> {
         }
 
         internalList.set(index, editedCompany);
+        assert internalList.get(index).equals(editedCompany);
     }
 
     /**
@@ -98,6 +100,7 @@ public class UniqueCompanyList implements Iterable<Company> {
         if (!internalList.remove(toRemove)) {
             throw new CompanyNotFoundException(COMPANY_NOT_FOUND_MESSAGE);
         }
+        assert !internalList.contains(toRemove);
     }
 
     /**
@@ -109,6 +112,7 @@ public class UniqueCompanyList implements Iterable<Company> {
     public void setCompanies(UniqueCompanyList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
+        assert internalList.equals(replacement.internalList);
     }
 
     /**
@@ -124,6 +128,7 @@ public class UniqueCompanyList implements Iterable<Company> {
             throw new DuplicateCompanyException(DUPLICATE_COMPANY_MESSAGE);
         }
         internalList.setAll(companies);
+        assert internalList.size() == companies.size();
     }
 
     /**
@@ -171,6 +176,7 @@ public class UniqueCompanyList implements Iterable<Company> {
      * @return True if the list contains only unique companies, false otherwise.
      */
     private boolean companiesAreUnique(List<Company> companies) {
+        assert companies != null : "The list of companies to check should not be null";
         for (int i = 0; i < companies.size() - 1; i++) {
             for (int j = i + 1; j < companies.size(); j++) {
                 if (companies.get(i).isSameCompany(companies.get(j))) {

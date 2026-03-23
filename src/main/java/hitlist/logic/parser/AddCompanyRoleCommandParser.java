@@ -28,6 +28,8 @@ public class AddCompanyRoleCommandParser implements Parser<AddCompanyRoleCommand
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCompanyRoleCommand parse(String args) throws ParseException {
+        assert args != null : "The arguments string to parse should not be null";
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ROLE, PREFIX_ROLE_DESC, PREFIX_COMPANY);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_ROLE, PREFIX_ROLE_DESC, PREFIX_COMPANY)

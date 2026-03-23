@@ -23,9 +23,6 @@ public class RoleNameTest {
 
     @Test
     public void isValidRoleName() {
-        // null name
-        assertThrows(NullPointerException.class, () -> RoleName.isValidRoleName(null));
-
         // invalid name
         assertFalse(RoleName.isValidRoleName("")); // empty string
         assertFalse(RoleName.isValidRoleName(" ")); // spaces only

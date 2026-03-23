@@ -58,6 +58,7 @@ public class UniqueRoleList implements Iterable<Role> {
             throw new DuplicateRoleException(DUPLICATE_ROLE_MESSAGE);
         }
         internalList.add(toAdd);
+        assert internalList.contains(toAdd);
     }
 
     /**
@@ -90,6 +91,7 @@ public class UniqueRoleList implements Iterable<Role> {
         }
 
         internalList.set(index, editedRole);
+        assert internalList.get(index).equals(editedRole);
     }
 
     /**
@@ -104,6 +106,7 @@ public class UniqueRoleList implements Iterable<Role> {
         if (!internalList.remove(toRemove)) {
             throw new RoleNotFoundException(ROLE_NOT_FOUND_MESSAGE);
         }
+        assert !internalList.contains(toRemove);
     }
 
     /**
@@ -115,6 +118,7 @@ public class UniqueRoleList implements Iterable<Role> {
     public void setRoles(UniqueRoleList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
+        assert internalList.equals(replacement.internalList);
     }
 
     /**
@@ -131,6 +135,7 @@ public class UniqueRoleList implements Iterable<Role> {
         }
 
         internalList.setAll(roles);
+        assert internalList.size() == roles.size();
     }
 
     /**
@@ -177,6 +182,7 @@ public class UniqueRoleList implements Iterable<Role> {
      * @return True if the list of roles contains only unique roles, false otherwise.
      */
     private boolean rolesAreUnique(List<Role> roles) {
+        assert roles != null : "The list of roles to check should not be null";
         for (int i = 0; i < roles.size(); i++) {
             for (int j = i + 1; j < roles.size(); j++) {
                 if (roles.get(i).isSameRole(roles.get(j))) {

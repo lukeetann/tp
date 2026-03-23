@@ -43,6 +43,8 @@ public class AddCompanyRoleCommand extends Command {
         requireAllNonNull(role, companyName);
         this.role = role;
         this.companyName = companyName;
+        assert this.role != null : "Role should not be null after command initialization";
+        assert this.companyName != null : "CompanyName should not be null after command initialization";
     }
 
     @Override
@@ -54,6 +56,9 @@ public class AddCompanyRoleCommand extends Command {
         }
 
         model.addCompanyRole(companyName, role);
+
+        assert model.hasCompanyRole(companyName, role) : "Model should contain the newly added company role";
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, role.getRoleName()),
                 false, false, true);
     }

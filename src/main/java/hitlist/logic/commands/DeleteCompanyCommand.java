@@ -25,7 +25,7 @@ public class DeleteCompanyCommand extends Command {
     public static final String MESSAGE_COMPANY_NOT_FOUND = "Company not found: %1$s";
     public static final String MESSAGE_DELETE_COMPANY_SUCCESS = "Deleted Company: %1$s";
 
-    private CompanyName companyName;
+    private final CompanyName companyName;
 
     /**
      * Creates a DeleteCompanyCommand to delete the specified {@code Company}.
@@ -44,7 +44,10 @@ public class DeleteCompanyCommand extends Command {
         Company companyToDelete = model.getCompany(companyName)
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_COMPANY_NOT_FOUND, companyName)));
 
+        assert companyToDelete != null : "Retrieved company to delete must not be null";
+
         model.deleteCompany(companyToDelete);
+
         return new CommandResult(
                 String.format(MESSAGE_DELETE_COMPANY_SUCCESS,
                         Messages.formatCompany(companyToDelete)));

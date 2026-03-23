@@ -23,6 +23,8 @@ public class DeleteCompanyCommandParser implements Parser<DeleteCompanyCommand> 
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteCompanyCommand parse(String args) throws ParseException {
+        assert args != null : "The arguments string to parse should not be null";
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_COMPANY);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_COMPANY) || !argMultimap.getPreamble().isEmpty()) {
@@ -30,6 +32,9 @@ public class DeleteCompanyCommandParser implements Parser<DeleteCompanyCommand> 
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COMPANY);
+
+        assert argMultimap.getValue(PREFIX_COMPANY).isPresent() : "Prefix company value should be present";
+
         CompanyName companyName = ParserUtil.parseCompanyName(argMultimap.getValue(PREFIX_COMPANY).get());
 
         return new DeleteCompanyCommand(companyName);

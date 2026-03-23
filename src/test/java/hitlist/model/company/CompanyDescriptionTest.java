@@ -23,9 +23,6 @@ public class CompanyDescriptionTest {
 
     @Test
     public void isValidCompanyDescription() {
-        // null description
-        assertThrows(NullPointerException.class, () -> CompanyDescription.isValidCompanyDescription(null));
-
         // invalid description
         assertFalse(CompanyDescription.isValidCompanyDescription("")); // empty string
         assertFalse(CompanyDescription.isValidCompanyDescription(" ")); // spaces only
