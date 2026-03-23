@@ -12,7 +12,8 @@ public class RoleTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Role(null, new RoleDescription("Valid Description")));
+        assertThrows(NullPointerException.class, ()
+                -> new Role(null, new RoleDescription("Valid Description")));
         assertThrows(NullPointerException.class, () -> new Role(new RoleName("Valid Name"), null));
     }
 
@@ -90,9 +91,15 @@ public class RoleTest {
 
     @Test
     public void hashCodeTest() {
-        Role role1 = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
-        Role role2 = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
-        Role role3 = new Role(new RoleName("Other Valid Role Name"), new RoleDescription("Other Valid Role Description"));
+        Role role1 = new Role(
+                new RoleName("Valid Role Name"),
+                new RoleDescription("Valid Role Description"));
+        Role role2 = new Role(
+                new RoleName("Valid Role Name"),
+                new RoleDescription("Valid Role Description"));
+        Role role3 = new Role(
+                new RoleName("Other Valid Role Name"),
+                new RoleDescription("Other Valid Role Description"));
 
         assertEquals(role1.hashCode(), role2.hashCode());
 
