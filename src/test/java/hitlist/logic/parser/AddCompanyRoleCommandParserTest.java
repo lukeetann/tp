@@ -54,7 +54,6 @@ public class AddCompanyRoleCommandParserTest {
         String expectedMessage =
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyRoleCommand.MESSAGE_USAGE);
 
-        // missing role name prefix
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + VALID_ROLE_NAME_PRODUCT_MANAGER
@@ -62,7 +61,6 @@ public class AddCompanyRoleCommandParserTest {
                         + COMPANY_NAME_DESC_GOOGLE,
                 expectedMessage);
 
-        // missing role description prefix
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -70,7 +68,6 @@ public class AddCompanyRoleCommandParserTest {
                         + COMPANY_NAME_DESC_GOOGLE,
                 expectedMessage);
 
-        // missing company name prefix
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -78,7 +75,6 @@ public class AddCompanyRoleCommandParserTest {
                         + VALID_COMPANY_NAME_GOOGLE,
                 expectedMessage);
 
-        // all prefixes missing
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + VALID_ROLE_NAME_PRODUCT_MANAGER
@@ -89,7 +85,6 @@ public class AddCompanyRoleCommandParserTest {
 
     @Test
     public void parse_repeatedNonUniqueFields_failure() {
-        // multiple role names
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -98,7 +93,6 @@ public class AddCompanyRoleCommandParserTest {
                         + ROLE_NAME_DESC_SOFTWARE_ENGINEER,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ROLE));
 
-        // multiple role descriptions
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -107,7 +101,6 @@ public class AddCompanyRoleCommandParserTest {
                         + ROLE_DESC_SOFTWARE_ENGINEER,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ROLE_DESC));
 
-        // multiple company names
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -116,7 +109,6 @@ public class AddCompanyRoleCommandParserTest {
                         + COMPANY_NAME_DESC_META,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY));
 
-        // multiple role names and descriptions
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
@@ -129,26 +121,34 @@ public class AddCompanyRoleCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        // invalid role name
         assertParseFailure(parser,
                 INVALID_ROLE_NAME_DESC
                         + ROLE_DESC_PRODUCT_MANAGER
                         + COMPANY_NAME_DESC_GOOGLE,
                 RoleName.MESSAGE_CONSTRAINTS);
 
-        // invalid role description
         assertParseFailure(parser,
                 ROLE_NAME_DESC_PRODUCT_MANAGER
                         + INVALID_ROLE_DESC
                         + COMPANY_NAME_DESC_GOOGLE,
                 RoleDescription.MESSAGE_CONSTRAINTS);
 
-        // non-empty preamble
         assertParseFailure(parser,
                 PREAMBLE_NON_EMPTY
                         + ROLE_NAME_DESC_PRODUCT_MANAGER
                         + ROLE_DESC_PRODUCT_MANAGER
                         + COMPANY_NAME_DESC_GOOGLE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyRoleCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_oneOrMorePrefixesMissing_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyRoleCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, ROLE_NAME_DESC_PRODUCT_MANAGER + ROLE_DESC_PRODUCT_MANAGER, expectedMessage);
+
+        assertParseFailure(parser, ROLE_NAME_DESC_PRODUCT_MANAGER + COMPANY_NAME_DESC_GOOGLE, expectedMessage);
+
+        assertParseFailure(parser, ROLE_DESC_PRODUCT_MANAGER + COMPANY_NAME_DESC_GOOGLE, expectedMessage);
     }
 }

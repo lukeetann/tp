@@ -29,8 +29,8 @@ public class CompanyDescription {
      */
     public CompanyDescription(String companyDescription) {
         requireNonNull(companyDescription);
-        checkArgument(isValidCompanyDescription(companyDescription), MESSAGE_CONSTRAINTS);
-        this.companyDescription = companyDescription;
+        checkArgument(isValidCompanyDescription(companyDescription.trim()), MESSAGE_CONSTRAINTS);
+        this.companyDescription = companyDescription.trim();
         assert this.companyDescription != null : "Company description should not be null after initialization";
         assert isValidCompanyDescription(this.companyDescription) : "Company description must match validation rules";
     }

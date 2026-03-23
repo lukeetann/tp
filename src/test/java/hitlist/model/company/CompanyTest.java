@@ -372,4 +372,81 @@ public class CompanyTest {
 
         assertFalse(company1.equals(company2));
     }
+
+    // =========================================================================
+    // NEW TESTS (Added specifically for 100% JaCoCo Branch Coverage)
+    // =========================================================================
+
+    @Test
+    public void isSameCompany_sameNameSameDescriptionDifferentRoles_returnsTrue() {
+        UniqueRoleList roleList1 = new UniqueRoleList();
+        roleList1.add(PRODUCT_MANAGER);
+
+        UniqueRoleList roleList2 = new UniqueRoleList();
+        roleList2.add(SOFTWARE_ENGINEER);
+
+        Company company1 = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .withUniqueRoleList(roleList1)
+                .build();
+
+        Company company2 = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .withUniqueRoleList(roleList2)
+                .build();
+
+        assertTrue(company1.isSameCompany(company2));
+    }
+
+    @Test
+    public void equals_differentType_returnsFalse() {
+        Company company = new CompanyBuilder().build();
+
+        assertFalse(company.equals(5));
+        assertFalse(company.equals(new Object()));
+    }
+
+    @Test
+    public void equals_differentName_returnsFalse() {
+        Company company = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .build();
+        Company differentNameCompany = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_META)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .build();
+
+        assertFalse(company.equals(differentNameCompany));
+    }
+
+    @Test
+    public void equals_differentDescription_returnsFalse() {
+        Company company = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .build();
+        Company differentDescCompany = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_META)
+                .build();
+
+        assertFalse(company.equals(differentDescCompany));
+    }
+
+    @Test
+    public void hashCode_sameFields_sameHashCode() {
+        Company company1 = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .build();
+        Company company2 = new CompanyBuilder()
+                .withName(VALID_COMPANY_NAME_GOOGLE)
+                .withDescription(VALID_COMPANY_DESCRIPTION_GOOGLE)
+                .build();
+
+        assertEquals(company1.hashCode(), company2.hashCode());
+    }
 }

@@ -29,8 +29,8 @@ public class RoleName {
      */
     public RoleName(String roleName) {
         requireNonNull(roleName);
-        checkArgument(isValidRoleName(roleName), MESSAGE_CONSTRAINTS);
-        this.roleName = roleName;
+        checkArgument(isValidRoleName(roleName.trim()), MESSAGE_CONSTRAINTS);
+        this.roleName = roleName.trim();
         assert isValidRoleName(this.roleName) : "Role name must match validation rules";
     }
 

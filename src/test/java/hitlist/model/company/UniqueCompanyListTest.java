@@ -238,4 +238,59 @@ public class UniqueCompanyListTest {
     public void toStringMethod() {
         assertEquals(uniqueCompanyList.asUnmodifiableObservableList().toString(), uniqueCompanyList.toString());
     }
+
+    @Test
+    public void setCompany_editedCompanyIsStrictlySameCompany_success() {
+        uniqueCompanyList.add(GOOGLE);
+        uniqueCompanyList.setCompany(GOOGLE, GOOGLE);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompany_editedCompanyIsDifferentAndNotContained_success() {
+        uniqueCompanyList.add(GOOGLE);
+        uniqueCompanyList.setCompany(GOOGLE, META);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(META);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompany_nullEditedCompanyThrowsNullPointerException() {
+        uniqueCompanyList.add(GOOGLE);
+        assertThrows(NullPointerException.class, () -> uniqueCompanyList.setCompany(GOOGLE, null));
+    }
+
+    @Test
+    public void setCompanies_listWithMultipleUniqueCompanies_success() {
+        List<Company> listWithUniqueCompanies = List.of(GOOGLE, META);
+        uniqueCompanyList.setCompanies(listWithUniqueCompanies);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        expectedUniqueCompanyList.add(META);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompanies_listWithDuplicatesSpacedOut_throwsDuplicateCompanyException() {
+        Company anotherGoogle = new CompanyBuilder(GOOGLE).build();
+        List<Company> listWithDuplicates = List.of(META, GOOGLE, anotherGoogle);
+
+        assertThrows(DuplicateCompanyException.class, () -> uniqueCompanyList.setCompanies(listWithDuplicates));
+    }
+
+    @Test
+    public void setCompanies_listWithSingleCompany_success() {
+        List<Company> singleCompanyList = List.of(GOOGLE);
+        uniqueCompanyList.setCompanies(singleCompanyList);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
 }

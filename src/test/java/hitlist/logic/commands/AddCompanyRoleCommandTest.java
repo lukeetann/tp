@@ -106,6 +106,18 @@ public class AddCompanyRoleCommandTest {
     }
 
     @Test
+    public void equals_differentRoleSameCompany_returnsFalse() {
+        Role roleA = new RoleBuilder().withName(VALID_ROLE_NAME_SOFTWARE_ENGINEER).build();
+        Role roleB = new RoleBuilder().withName(VALID_ROLE_NAME_PRODUCT_MANAGER).build();
+        CompanyName company = new CompanyBuilder().withName(VALID_COMPANY_NAME_GOOGLE).build().getName();
+
+        AddCompanyRoleCommand commandA = new AddCompanyRoleCommand(roleA, company);
+        AddCompanyRoleCommand commandB = new AddCompanyRoleCommand(roleB, company);
+
+        assertFalse(commandA.equals(commandB));
+    }
+
+    @Test
     public void toStringMethod() {
         Role role = new RoleBuilder()
                 .withName(VALID_ROLE_NAME_SOFTWARE_ENGINEER)
@@ -140,8 +152,7 @@ public class AddCompanyRoleCommandTest {
 
         @Override
         public boolean hasCompanyRole(CompanyName companyName, Role role) {
-            return companyNamesAdded.stream().anyMatch(existingCompany -> existingCompany.equals(companyName))
-                    && companyRolesAdded.stream().anyMatch(role::isSameRole);
+            return companyNamesAdded.contains(companyName) && companyRolesAdded.contains(role);
         }
 
         @Override

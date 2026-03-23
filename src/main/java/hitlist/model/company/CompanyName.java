@@ -29,8 +29,8 @@ public class CompanyName {
      */
     public CompanyName(String companyName) {
         requireNonNull(companyName);
-        checkArgument(isValidCompanyName(companyName), MESSAGE_CONSTRAINTS);
-        this.companyName = companyName;
+        checkArgument(isValidCompanyName(companyName.trim()), MESSAGE_CONSTRAINTS);
+        this.companyName = companyName.trim();
         assert isValidCompanyName(this.companyName) : "Company name must match validation rules";
     }
 

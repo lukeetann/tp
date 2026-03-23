@@ -12,65 +12,54 @@ public class RoleTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
-        // null name
-        assertThrows(NullPointerException.class, () -> new Role(null, null));
+        assertThrows(NullPointerException.class, () -> new Role(null, new RoleDescription("Valid Description")));
+        assertThrows(NullPointerException.class, () -> new Role(new RoleName("Valid Name"), null));
     }
 
     @Test
     public void constructor_invalidRole_throwsIllegalArgumentException() {
-        // invalid name and description
-        String invalidName = "";
-        String invalidDescription = "";
         assertThrows(IllegalArgumentException.class, ()
-                -> new Role(new RoleName(invalidName), new RoleDescription(invalidDescription)));
+                -> new Role(new RoleName(""), new RoleDescription("")));
     }
 
     @Test
     public void constructor_invalidRoleName_throwsIllegalArgumentException() {
-        // invalid name
-        String invalidName = "";
         assertThrows(IllegalArgumentException.class, ()
-                -> new Role(new RoleName(invalidName), new RoleDescription("Valid Role Description")));
+                -> new Role(new RoleName(""), new RoleDescription("Valid Role Description")));
     }
 
     @Test
     public void constructor_invalidRoleDescription_throwsIllegalArgumentException() {
-        // invalid description
-        String invalidDescription = "";
         assertThrows(IllegalArgumentException.class, ()
-                -> new Role(new RoleName("Valid Role Name"), new RoleDescription(invalidDescription)));
+                -> new Role(new RoleName("Valid Role Name"), new RoleDescription("")));
     }
 
     @Test
     public void getRoleName() {
         RoleName roleName = new RoleName("Valid Role Name");
         Role role = new Role(roleName, new RoleDescription("Valid Role Description"));
-        assertEquals(role.getRoleName(), roleName);
+        assertEquals(roleName, role.getRoleName());
     }
 
     @Test
     public void getRoleDescription() {
         RoleDescription roleDescription = new RoleDescription("Valid Role Description");
         Role role = new Role(new RoleName("Valid Role Name"), roleDescription);
-        assertEquals(role.getRoleDescription(), roleDescription);
+        assertEquals(roleDescription, role.getRoleDescription());
     }
 
     @Test
     public void isSameRole() {
         Role role = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
 
-        // same object -> returns true
         assertTrue(role.isSameRole(role));
 
-        // null -> returns false
         assertFalse(role.isSameRole(null));
 
-        // different name -> returns false
         assertFalse(role.isSameRole(new Role(
                 new RoleName("Other Valid Role Name"),
                 new RoleDescription("Valid Role Description"))));
 
-        // different description -> returns true
         assertTrue(role.isSameRole(new Role(
                 new RoleName("Valid Role Name"),
                 new RoleDescription("Other Valid Role Description"))));
@@ -80,49 +69,34 @@ public class RoleTest {
     public void equals() {
         Role role = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
 
-        // same values -> returns true
-        assertTrue(role.equals(
-                new Role(
-                        new RoleName("Valid Role Name"),
-                        new RoleDescription("Valid Role Description"))));
+        assertTrue(role.equals(new Role(
+                new RoleName("Valid Role Name"),
+                new RoleDescription("Valid Role Description"))));
 
-        // same object -> returns true
         assertTrue(role.equals(role));
 
-        // null -> returns false
         assertFalse(role.equals(null));
 
-        // different types -> returns false
         assertFalse(role.equals(5.0f));
 
-        // different values -> returns false
         assertFalse(role.equals(new Role(
                 new RoleName("Other Valid Role Name"),
+                new RoleDescription("Valid Role Description"))));
+
+        assertFalse(role.equals(new Role(
+                new RoleName("Valid Role Name"),
                 new RoleDescription("Other Valid Role Description"))));
     }
 
     @Test
     public void hashCodeTest() {
-        Role role1 = new Role(
-                new RoleName("Valid Role Name"),
-                new RoleDescription("Valid Role Description"));
-        Role role2 = new Role(
-                new RoleName("Valid Role Name"),
-                new RoleDescription("Valid Role Description"));
-        Role role3 = new Role(
-                new RoleName("Other Valid Role Name"),
-                new RoleDescription("Other Valid Role Description"));
+        Role role1 = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
+        Role role2 = new Role(new RoleName("Valid Role Name"), new RoleDescription("Valid Role Description"));
+        Role role3 = new Role(new RoleName("Other Valid Role Name"), new RoleDescription("Other Valid Role Description"));
 
-        // same values -> same hash code
         assertEquals(role1.hashCode(), role2.hashCode());
 
-        // different values -> different hash code
         assertNotEquals(role1.hashCode(), role3.hashCode());
-    }
-
-    @Test
-    public void toString_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Role(null, null).toString());
     }
 
     @Test

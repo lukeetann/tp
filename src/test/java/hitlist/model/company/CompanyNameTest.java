@@ -17,69 +17,52 @@ public class CompanyNameTest {
 
     @Test
     public void constructor_invalidName_throwsIllegalArgumentException() {
-        String invalidName = "";
-        assertThrows(IllegalArgumentException.class, () -> new CompanyName(invalidName));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyName(""));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyName(" "));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyName("/"));
     }
 
     @Test
     public void isValidCompanyName() {
-        // invalid name
-        assertFalse(CompanyName.isValidCompanyName("")); // empty string
-        assertFalse(CompanyName.isValidCompanyName(" ")); // spaces only
-        assertFalse(CompanyName.isValidCompanyName("/")); // forward slash only
-        assertFalse(CompanyName.isValidCompanyName("Company/Name")); // contains forward slash
-        assertFalse(CompanyName.isValidCompanyName("Company\nName")); // contains line break
+        assertThrows(AssertionError.class, () -> CompanyName.isValidCompanyName(null));
 
-        // valid name
-        assertTrue(CompanyName.isValidCompanyName("Google")); // alphabets only
-        assertTrue(CompanyName.isValidCompanyName("12345")); // numbers only
-        assertTrue(CompanyName.isValidCompanyName("Google Inc.")); // alphanumeric characters and punctuation
-        assertTrue(CompanyName.isValidCompanyName("Google LLC")); // with capital letters
-        assertTrue(CompanyName.isValidCompanyName("Google")); // short name
-        assertTrue(CompanyName.isValidCompanyName("Google Google Google Google Go")); // long name (30
-    }
+        assertFalse(CompanyName.isValidCompanyName(""));
+        assertFalse(CompanyName.isValidCompanyName(" "));
+        assertFalse(CompanyName.isValidCompanyName("/"));
+        assertFalse(CompanyName.isValidCompanyName("Company/Name"));
+        assertFalse(CompanyName.isValidCompanyName("Company\nName"));
 
-    @Test
-    public void toString_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CompanyName(null).toString());
+        assertTrue(CompanyName.isValidCompanyName("Google"));
+        assertTrue(CompanyName.isValidCompanyName("12345"));
+        assertTrue(CompanyName.isValidCompanyName("Google Inc."));
+        assertTrue(CompanyName.isValidCompanyName("Google LLC"));
+        assertTrue(CompanyName.isValidCompanyName("A".repeat(30)));
     }
 
     @Test
     public void toString_validName_returnsName() {
         CompanyName name = new CompanyName("Valid Company Name");
-        assertTrue(name.toString().equals("Valid Company Name"));
+        assertEquals("Valid Company Name", name.toString());
     }
 
     @Test
     public void equals() {
         CompanyName name = new CompanyName("Valid Company Name");
 
-        // same values -> returns true
         assertTrue(name.equals(new CompanyName("Valid Company Name")));
-
-        // same object -> returns true
         assertTrue(name.equals(name));
-
-        // null -> returns false
         assertFalse(name.equals(null));
-
-        // different types -> returns false
         assertFalse(name.equals(5.0f));
-
-        // different values -> returns false
         assertFalse(name.equals(new CompanyName("Other Valid Company Name")));
     }
 
     @Test
-    public void hashCodeTest() {
+    public void hashCode_validName_returnsHashCode() {
         CompanyName name1 = new CompanyName("Valid Company Name");
         CompanyName name2 = new CompanyName("Valid Company Name");
         CompanyName name3 = new CompanyName("Other Valid Company Name");
 
-        // same values -> same hash code
         assertEquals(name1.hashCode(), name2.hashCode());
-
-        // different values -> different hash code
         assertNotEquals(name1.hashCode(), name3.hashCode());
     }
 }

@@ -205,7 +205,7 @@ public class UniqueRoleListTest {
 
     @Test
     public void equals_differentTypes_returnsFalse() {
-        assertFalse(uniqueRoleList.equals(5)); // Passing an Integer
+        assertFalse(uniqueRoleList.equals(5));
     }
 
     @Test
@@ -241,5 +241,54 @@ public class UniqueRoleListTest {
     @Test
     public void toStringMethod() {
         assertEquals(uniqueRoleList.asUnmodifiableObservableList().toString(), uniqueRoleList.toString());
+    }
+
+    @Test
+    public void setRole_editedRoleIsStrictlySameRole_success() {
+        uniqueRoleList.add(SOFTWARE_ENGINEER);
+        uniqueRoleList.setRole(SOFTWARE_ENGINEER, SOFTWARE_ENGINEER);
+
+        UniqueRoleList expectedUniqueRoleList = new UniqueRoleList();
+        expectedUniqueRoleList.add(SOFTWARE_ENGINEER);
+        assertEquals(expectedUniqueRoleList, uniqueRoleList);
+    }
+
+    @Test
+    public void setRole_editedRoleIsDifferentAndNotContained_success() {
+        uniqueRoleList.add(SOFTWARE_ENGINEER);
+        uniqueRoleList.setRole(SOFTWARE_ENGINEER, PRODUCT_MANAGER);
+
+        UniqueRoleList expectedUniqueRoleList = new UniqueRoleList();
+        expectedUniqueRoleList.add(PRODUCT_MANAGER);
+        assertEquals(expectedUniqueRoleList, uniqueRoleList);
+    }
+
+    @Test
+    public void setRoles_listWithSingleRole_success() {
+        List<Role> singleRoleList = Collections.singletonList(SOFTWARE_ENGINEER);
+        uniqueRoleList.setRoles(singleRoleList);
+
+        UniqueRoleList expectedUniqueRoleList = new UniqueRoleList();
+        expectedUniqueRoleList.add(SOFTWARE_ENGINEER);
+        assertEquals(expectedUniqueRoleList, uniqueRoleList);
+    }
+
+    @Test
+    public void setRoles_listWithMultipleUniqueRoles_success() {
+        List<Role> uniqueRoles = Arrays.asList(SOFTWARE_ENGINEER, PRODUCT_MANAGER);
+        uniqueRoleList.setRoles(uniqueRoles);
+
+        UniqueRoleList expectedUniqueRoleList = new UniqueRoleList();
+        expectedUniqueRoleList.add(SOFTWARE_ENGINEER);
+        expectedUniqueRoleList.add(PRODUCT_MANAGER);
+        assertEquals(expectedUniqueRoleList, uniqueRoleList);
+    }
+
+    @Test
+    public void setRoles_listWithDuplicatesSpacedOut_throwsDuplicateRoleException() {
+        Role duplicateSoftwareEngineer = new RoleBuilder(SOFTWARE_ENGINEER).build();
+        List<Role> listWithDuplicates = Arrays.asList(PRODUCT_MANAGER, SOFTWARE_ENGINEER, duplicateSoftwareEngineer);
+
+        assertThrows(DuplicateRoleException.class, () -> uniqueRoleList.setRoles(listWithDuplicates));
     }
 }

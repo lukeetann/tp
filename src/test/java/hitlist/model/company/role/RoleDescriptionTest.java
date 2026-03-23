@@ -17,29 +17,30 @@ public class RoleDescriptionTest {
 
     @Test
     public void constructor_invalidDescription_throwsIllegalArgumentException() {
-        String invalidDescription = "";
-        assertThrows(IllegalArgumentException.class, () -> new RoleDescription(invalidDescription));
+        assertThrows(IllegalArgumentException.class, () -> new RoleDescription(""));
+        assertThrows(IllegalArgumentException.class, () -> new RoleDescription(" "));
+        assertThrows(IllegalArgumentException.class, () -> new RoleDescription("/"));
     }
 
     @Test
     public void isValidRoleDescription() {
-        // invalid description
-        assertFalse(RoleDescription.isValidRoleDescription("")); // empty string
-        assertFalse(RoleDescription.isValidRoleDescription(" ")); // spaces only
-        assertFalse(RoleDescription.isValidRoleDescription("/")); // forward slash only
-        assertFalse(RoleDescription.isValidRoleDescription("Role/Description")); // contains forward slash
-        assertFalse(RoleDescription.isValidRoleDescription("Role\nDescription")); // contains line break
+        assertThrows(AssertionError.class, () -> RoleDescription.isValidRoleDescription(null));
 
-        // valid description
-        assertTrue(RoleDescription.isValidRoleDescription("Software Engineer")); // alphabets only
-        assertTrue(RoleDescription.isValidRoleDescription("12345")); // numbers only
-        assertTrue(RoleDescription.isValidRoleDescription("An entry-level software engineering role responsible for "
-                + "developing and maintaining software applications.")); // long description
+        assertFalse(RoleDescription.isValidRoleDescription(""));
+        assertFalse(RoleDescription.isValidRoleDescription(" "));
+        assertFalse(RoleDescription.isValidRoleDescription("/"));
+        assertFalse(RoleDescription.isValidRoleDescription("Role/Description"));
+        assertFalse(RoleDescription.isValidRoleDescription("Role\nDescription"));
+
+        assertTrue(RoleDescription.isValidRoleDescription("Software Engineer"));
+        assertTrue(RoleDescription.isValidRoleDescription("12345"));
+        assertTrue(RoleDescription.isValidRoleDescription("A".repeat(999)));
     }
 
     @Test
-    public void toString_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new RoleDescription(null).toString());
+    public void constructor_trimsWhitespace_success() {
+        RoleDescription description = new RoleDescription("  Valid Role Description  ");
+        assertEquals("Valid Role Description", description.toString());
     }
 
     @Test
@@ -52,19 +53,10 @@ public class RoleDescriptionTest {
     public void equals() {
         RoleDescription description = new RoleDescription("Valid Role Description");
 
-        // same values -> returns true
         assertTrue(description.equals(new RoleDescription("Valid Role Description")));
-
-        // same object -> returns true
         assertTrue(description.equals(description));
-
-        // null -> returns false
         assertFalse(description.equals(null));
-
-        // different types -> returns false
         assertFalse(description.equals(5.0f));
-
-        // different values -> returns false
         assertFalse(description.equals(new RoleDescription("Other Valid Role Description")));
     }
 
@@ -74,10 +66,7 @@ public class RoleDescriptionTest {
         RoleDescription description2 = new RoleDescription("Valid Role Description");
         RoleDescription description3 = new RoleDescription("Other Valid Role Description");
 
-        // same values -> same hash code
         assertEquals(description1.hashCode(), description2.hashCode());
-
-        // different values -> different hash code
         assertNotEquals(description1.hashCode(), description3.hashCode());
     }
 }
