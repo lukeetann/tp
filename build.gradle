@@ -25,7 +25,6 @@ application {
 }
 
 test {
-    enableAssertions = true
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }

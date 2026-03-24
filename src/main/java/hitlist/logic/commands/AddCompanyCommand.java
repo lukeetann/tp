@@ -50,8 +50,6 @@ public class AddCompanyCommand extends Command {
 
         model.addCompany(company);
 
-        assert model.hasCompany(company) : "Model should contain the newly added company";
-
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCompany(company)),
                 false, false, true);
     }

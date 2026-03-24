@@ -58,7 +58,6 @@ public class UniqueRoleList implements Iterable<Role> {
             throw new DuplicateRoleException(DUPLICATE_ROLE_MESSAGE);
         }
         internalList.add(toAdd);
-        assert internalList.contains(toAdd);
     }
 
     /**

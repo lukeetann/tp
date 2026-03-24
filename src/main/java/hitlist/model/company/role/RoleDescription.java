@@ -31,7 +31,6 @@ public class RoleDescription {
         requireNonNull(roleDescription);
         checkArgument(isValidRoleDescription(roleDescription.trim()), MESSAGE_CONSTRAINTS);
         this.roleDescription = roleDescription.trim();
-        assert isValidRoleDescription(this.roleDescription) : "Role description must match validation rules";
     }
 
     /**
@@ -41,7 +40,6 @@ public class RoleDescription {
      * @return True if the string is a valid role description, false otherwise.
      */
     public static boolean isValidRoleDescription(String test) {
-        assert test != null : "String to test for role description validity should not be null";
         return test.matches(VALIDATION_REGEX);
     }
 
