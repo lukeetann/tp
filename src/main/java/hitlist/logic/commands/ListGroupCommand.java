@@ -88,7 +88,8 @@ public class ListGroupCommand extends Command {
         }
 
         ListGroupCommand otherListGroupCommand = (ListGroupCommand) other;
-        return toList.equals(otherListGroupCommand.toList);
+        return (toList == null && otherListGroupCommand.toList == null)
+            || toList.equals(otherListGroupCommand.toList);
     }
 
     @Override
