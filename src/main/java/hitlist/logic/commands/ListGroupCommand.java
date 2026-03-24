@@ -20,13 +20,16 @@ public class ListGroupCommand extends Command {
 
     public static final String COMMAND_WORD = "grplist";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all contacts in a contact group. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all contact groups,"
+            + "or all contacts in a specified contact group.\n"
             + "Parameters: "
-            + PREFIX_GROUP + " GROUP\n"
-            + "Example: " + COMMAND_WORD + " "
-            + PREFIX_GROUP + " Students";
+            + "[" + PREFIX_GROUP + " GROUP]\n"
+            + "Example:\n"
+            + COMMAND_WORD + " " + PREFIX_GROUP + " Students\n"
+            + COMMAND_WORD;
 
-    public static final String MESSAGE_SUCCESS = "Listed all contacts in the group %1$s";
+    public static final String MESSAGE_SUCCESS_1 = "Listed all contacts in the group %1$s";
+    public static final String MESSAGE_SUCCESS_2 = "Listed all contact groups";
     public static final String MESSAGE_GROUP_NOT_FOUND = "No group %1$s was found";
 
     private final GroupName toList;
@@ -39,10 +42,17 @@ public class ListGroupCommand extends Command {
         this.toList = toList;
     }
 
-    @Override
-    public CommandResult execute(Model model) throws CommandException {
-        requireNonNull(model);
+    /**
+     * Creates a ListGroupCommand to list all groups
+     */
+    public ListGroupCommand() {
+        this.toList = null;
+    }
 
+    /**
+     * Lists contacts in a contact group
+     */
+    private CommandResult executeWithGroup(Model model) throws CommandException {
         Group group = model.getGroup(toList)
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_GROUP_NOT_FOUND, toList)));
 
@@ -50,8 +60,20 @@ public class ListGroupCommand extends Command {
 
         model.updateFilteredPersonList(predicate);
 
-        String message = String.format(MESSAGE_SUCCESS, group.getName());
+        String message = String.format(MESSAGE_SUCCESS_1, group.getName());
         return new CommandResult(message);
+    }
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+
+        if (toList == null) {
+            // Simply display all groups
+            return new CommandResult(MESSAGE_SUCCESS_2, false, false, false, true);
+        } else {
+            return executeWithGroup(model);
+        }
     }
 
     @Override

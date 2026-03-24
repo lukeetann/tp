@@ -22,21 +22,36 @@ public class CommandResult {
     /** The company list pane should be shown to the user. */
     private final boolean showCompanyList;
 
+    /** The group list pane should be shown to the user. */
+    private final boolean showGroupList;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean showCompanyList) {
+    public CommandResult(String feedbackToUser,
+                         boolean showHelp,
+                         boolean exit,
+                         boolean showCompanyList,
+                         boolean showGroupList) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.showCompanyList = showCompanyList;
+        this.showGroupList = showGroupList;
+    }
+
+    /**
+     * Constructs a {@code CommandResult} with the specified fields.
+     */
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean showCompanyList) {
+        this(feedbackToUser, showHelp, exit, showCompanyList, false);
     }
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, false);
+        this(feedbackToUser, showHelp, exit, false, false);
     }
 
     /**
@@ -44,7 +59,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false, false);
+        this(feedbackToUser, false, false, false, false);
     }
 
     public String getFeedbackToUser() {
@@ -63,6 +78,10 @@ public class CommandResult {
         return showCompanyList;
     }
 
+    public boolean isShowGroupList() {
+        return showGroupList;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -78,12 +97,13 @@ public class CommandResult {
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
                 && showHelp == otherCommandResult.showHelp
                 && exit == otherCommandResult.exit
-                && showCompanyList == otherCommandResult.showCompanyList;
+                && showCompanyList == otherCommandResult.showCompanyList
+                && showGroupList == otherCommandResult.showGroupList;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, showCompanyList);
+        return Objects.hash(feedbackToUser, showHelp, exit, showCompanyList, showGroupList);
     }
 
     @Override
@@ -93,6 +113,7 @@ public class CommandResult {
                 .add("showHelp", showHelp)
                 .add("exit", exit)
                 .add("showCompanyList", showCompanyList)
+                .add("showGroupList", showGroupList)
                 .toString();
     }
 

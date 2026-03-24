@@ -24,8 +24,12 @@ public class ListGroupCommandParser implements Parser<ListGroupCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_GROUP);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_GROUP)
-                || !argMultimap.getPreamble().isEmpty()) {
+                && !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListGroupCommand.MESSAGE_USAGE));
+        }
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_GROUP)) {
+            return new ListGroupCommand();
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_GROUP);

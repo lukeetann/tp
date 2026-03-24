@@ -33,7 +33,7 @@ public class ListGroupCommandTest {
         CommandResult commandResult = new ListGroupCommand(validGroup.getName()).execute(modelStub);
 
         String expectedMessage =
-            String.format(ListGroupCommand.MESSAGE_SUCCESS, validGroup.getName());
+            String.format(ListGroupCommand.MESSAGE_SUCCESS_1, validGroup.getName());
 
         assertEquals(expectedMessage,
                      commandResult.getFeedbackToUser());
