@@ -79,6 +79,15 @@ public class ListGroupCommandTest {
 
         // different content -> returns false
         assertFalse(listGroupACommand.equals(listGroupBCommand));
+
+        ListGroupCommand listAllCommandA = new ListGroupCommand();
+        ListGroupCommand listAllCommandB = new ListGroupCommand();
+
+        // same object -> returns true
+        assertTrue(listAllCommandA.equals(listAllCommandA));
+
+        // same values (zero-argument case) -> returns true
+        assertTrue(listAllCommandA.equals(listAllCommandB));
     }
 
     @Test
