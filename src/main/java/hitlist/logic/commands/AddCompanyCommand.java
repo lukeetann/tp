@@ -38,8 +38,6 @@ public class AddCompanyCommand extends Command {
     public AddCompanyCommand(Company company) {
         requireNonNull(company);
         this.company = company;
-
-        assert this.company != null : "Company should not be null after command initialization";
     }
 
     @Override

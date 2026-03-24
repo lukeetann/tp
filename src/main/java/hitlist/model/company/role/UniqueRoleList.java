@@ -182,7 +182,7 @@ public class UniqueRoleList implements Iterable<Role> {
      * @return True if the list of roles contains only unique roles, false otherwise.
      */
     private boolean rolesAreUnique(List<Role> roles) {
-        assert roles != null : "The list of roles to check should not be null";
+        requireNonNull(roles);
         for (int i = 0; i < roles.size(); i++) {
             for (int j = i + 1; j < roles.size(); j++) {
                 if (roles.get(i).isSameRole(roles.get(j))) {

@@ -23,8 +23,6 @@ public class Role {
         requireAllNonNull(roleName, roleDescription);
         this.roleName = roleName;
         this.roleDescription = roleDescription;
-        assert this.roleName != null : "Role name should not be null";
-        assert this.roleDescription != null : "Role description should not be null";
     }
 
     /**

@@ -41,7 +41,7 @@ public class RoleName {
      * @return True if the string is a valid role name, false otherwise.
      */
     public static boolean isValidRoleName(String test) {
-        assert test != null : "String to test for role name validity should not be null";
+        requireNonNull(test);
         return test.matches(VALIDATION_REGEX);
     }
 

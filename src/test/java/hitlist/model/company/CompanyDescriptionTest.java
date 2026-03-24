@@ -24,7 +24,7 @@ public class CompanyDescriptionTest {
 
     @Test
     public void isValidCompanyDescription() {
-        assertThrows(AssertionError.class, () -> CompanyDescription.isValidCompanyDescription(null));
+        assertThrows(NullPointerException.class, () -> CompanyDescription.isValidCompanyDescription(null));
 
         assertFalse(CompanyDescription.isValidCompanyDescription(""));
         assertFalse(CompanyDescription.isValidCompanyDescription(" "));

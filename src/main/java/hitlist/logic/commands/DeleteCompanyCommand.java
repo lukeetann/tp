@@ -44,8 +44,6 @@ public class DeleteCompanyCommand extends Command {
         Company companyToDelete = model.getCompany(companyName)
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_COMPANY_NOT_FOUND, companyName)));
 
-        assert companyToDelete != null : "Retrieved company to delete must not be null";
-
         model.deleteCompany(companyToDelete);
 
         return new CommandResult(

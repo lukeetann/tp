@@ -3,6 +3,7 @@ package hitlist.logic.parser;
 import static hitlist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY_DESC;
+import static java.util.Objects.requireNonNull;
 
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ public class AddCompanyCommandParser implements Parser<AddCompanyCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCompanyCommand parse(String args) throws ParseException {
-        assert args != null : "The arguments string to parse should not be null";
+        requireNonNull(args);
 
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_COMPANY, PREFIX_COMPANY_DESC);

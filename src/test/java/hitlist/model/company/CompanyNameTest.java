@@ -23,7 +23,7 @@ public class CompanyNameTest {
 
     @Test
     public void isValidCompanyName() {
-        assertThrows(AssertionError.class, () -> CompanyName.isValidCompanyName(null));
+        assertThrows(NullPointerException.class, () -> CompanyName.isValidCompanyName(null));
 
         assertFalse(CompanyName.isValidCompanyName(""));
         assertFalse(CompanyName.isValidCompanyName(" "));

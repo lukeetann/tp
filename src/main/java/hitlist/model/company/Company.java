@@ -28,8 +28,6 @@ public class Company {
         this.name = name;
         this.description = description;
         this.uniqueRoleList = new UniqueRoleList();
-        assert this.name != null : "Company name should not be null";
-        assert this.description != null : "Company description should not be null";
     }
 
     /**
@@ -44,9 +42,6 @@ public class Company {
         this.name = name;
         this.description = description;
         this.uniqueRoleList = uniqueRoleList;
-        assert this.name != null : "Company name should not be null";
-        assert this.description != null : "Company description should not be null";
-        assert this.uniqueRoleList != null : "Company role list should not be null";
     }
 
     /**

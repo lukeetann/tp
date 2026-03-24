@@ -24,7 +24,7 @@ public class RoleNameTest {
 
     @Test
     public void isValidRoleName() {
-        assertThrows(AssertionError.class, () -> RoleName.isValidRoleName(null));
+        assertThrows(NullPointerException.class, () -> RoleName.isValidRoleName(null));
 
         assertFalse(RoleName.isValidRoleName(""));
         assertFalse(RoleName.isValidRoleName(" "));

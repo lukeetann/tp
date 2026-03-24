@@ -2,6 +2,7 @@ package hitlist.logic.parser;
 
 import static hitlist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
+import static java.util.Objects.requireNonNull;
 
 import java.util.stream.Stream;
 
@@ -23,8 +24,7 @@ public class DeleteCompanyCommandParser implements Parser<DeleteCompanyCommand> 
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteCompanyCommand parse(String args) throws ParseException {
-        assert args != null : "The arguments string to parse should not be null";
-
+        requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_COMPANY);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_COMPANY) || !argMultimap.getPreamble().isEmpty()) {
