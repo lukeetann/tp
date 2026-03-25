@@ -1,11 +1,11 @@
 package hitlist.logic.commands;
 
+import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Optional;
 
 import hitlist.commons.core.index.Index;
 import hitlist.commons.util.ToStringBuilder;
@@ -47,8 +47,7 @@ public class DeleteCompanyRoleCommand extends Command {
      * Creates a DeleteCompanyRoleCommand to delete a role by index.
      */
     public DeleteCompanyRoleCommand(Index roleIndex, CompanyName companyName) {
-        requireNonNull(roleIndex);
-        requireNonNull(companyName);
+        requireAllNonNull(roleIndex, companyName);
         this.roleIndex = roleIndex;
         this.roleName = null;
         this.companyName = companyName;
@@ -58,8 +57,7 @@ public class DeleteCompanyRoleCommand extends Command {
      * Creates a DeleteCompanyRoleCommand to delete a role by name.
      */
     public DeleteCompanyRoleCommand(RoleName roleName, CompanyName companyName) {
-        requireNonNull(roleName);
-        requireNonNull(companyName);
+        requireAllNonNull(roleName, companyName);
         this.roleName = roleName;
         this.roleIndex = null;
         this.companyName = companyName;
@@ -101,16 +99,12 @@ public class DeleteCompanyRoleCommand extends Command {
 
     private Role deleteByName(Company company) throws CommandException {
         List<Role> roles = company.getUniqueRoleList().asUnmodifiableObservableList();
-        Optional<Role> matchingRole = roles.stream()
+        return roles.stream()
                 .filter(role -> role.getRoleName().equals(roleName))
-                .findFirst();
-
-        if (matchingRole.isEmpty()) {
-            throw new CommandException(String.format(MESSAGE_ROLE_NAME_NOT_FOUND,
-                    roleName, company.getName()));
-        }
-
-        return matchingRole.get();
+                .findFirst()
+                .orElseThrow(() -> new CommandException(
+                        String.format(MESSAGE_ROLE_NAME_NOT_FOUND, roleName, company.getName())
+                ));
     }
 
     private boolean isDeleteByIndex() {

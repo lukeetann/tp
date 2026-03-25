@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import hitlist.logic.Messages;
@@ -25,6 +27,18 @@ import hitlist.model.company.Company;
 import hitlist.testutil.CompanyBuilder;
 
 public class AddCompanyCommandTest {
+
+    private HitList hitList;
+
+    @BeforeEach
+    public void setUp() {
+        hitList = new HitList();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        hitList = null;
+    }
 
     @Test
     public void constructor_nullCompany_throwsNullPointerException() {
@@ -44,6 +58,7 @@ public class AddCompanyCommandTest {
         assertEquals(String.format(AddCompanyCommand.MESSAGE_SUCCESS, Messages.formatCompany(validCompany)),
                 commandResult.getFeedbackToUser());
         assertEquals(List.of(validCompany), modelStub.companiesAdded);
+        assertTrue(modelStub.hasCompany(validCompany));
     }
 
     @Test
@@ -73,21 +88,22 @@ public class AddCompanyCommandTest {
         AddCompanyCommand addCompanyACommand = new AddCompanyCommand(companyA);
         AddCompanyCommand addCompanyBCommand = new AddCompanyCommand(companyB);
 
-        // same object -> returns true
         assertTrue(addCompanyACommand.equals(addCompanyACommand));
 
-        // same values -> returns true
         AddCompanyCommand addCompanyACommandCopy = new AddCompanyCommand(companyA);
         assertTrue(addCompanyACommand.equals(addCompanyACommandCopy));
 
-        // different types -> returns false
         assertFalse(addCompanyACommand.equals(1));
-
-        // null -> returns false
         assertFalse(addCompanyACommand.equals(null));
-
-        // different company -> returns false
         assertFalse(addCompanyACommand.equals(addCompanyBCommand));
+    }
+
+    @Test
+    public void toString_containsCompanyName() {
+        AddCompanyCommand command = new AddCompanyCommand(
+                new CompanyBuilder().withName("Google Inc.").withDescription("Desc").build());
+
+        assertTrue(command.toString().contains("Google Inc."));
     }
 
     @Test
@@ -100,9 +116,6 @@ public class AddCompanyCommandTest {
         assertEquals(expectedString, addCompanyCommand.toString());
     }
 
-    /**
-     * A Model stub that contains a single company.
-     */
     private class ModelStubWithCompany extends ModelStub {
         private final Company company;
 
@@ -118,9 +131,6 @@ public class AddCompanyCommandTest {
         }
     }
 
-    /**
-     * A Model stub that always accept the company being added.
-     */
     private class ModelStubAcceptingCompanyAdded extends ModelStub {
         final ArrayList<Company> companiesAdded = new ArrayList<>();
 
