@@ -49,6 +49,7 @@ public class AddCompanyCommand extends Command {
         }
 
         model.addCompany(company);
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCompany(company)),
                 false, false, true);
     }

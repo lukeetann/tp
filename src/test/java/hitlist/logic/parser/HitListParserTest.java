@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import hitlist.logic.commands.AddCommand;
 import hitlist.logic.commands.AddCompanyCommand;
+import hitlist.logic.commands.AddCompanyRoleCommand;
 import hitlist.logic.commands.AddGroupCommand;
 import hitlist.logic.commands.ClearCommand;
 import hitlist.logic.commands.DeleteCommand;
@@ -31,6 +32,9 @@ import hitlist.logic.commands.ListCommand;
 import hitlist.logic.commands.ListCompanyCommand;
 import hitlist.logic.parser.exceptions.ParseException;
 import hitlist.model.company.Company;
+import hitlist.model.company.role.Role;
+import hitlist.model.company.role.RoleDescription;
+import hitlist.model.company.role.RoleName;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 import hitlist.model.person.PersonMatchesFindPredicate;
@@ -127,6 +131,21 @@ public class HitListParserTest {
         DeleteCompanyCommand commanddel =
                 (DeleteCompanyCommand) parser.parseCommand(CompanyUtil.getDeleteCompanyCommand(company));
         assertEquals(new DeleteCompanyCommand(company.getName()), commanddel);
+    }
+
+    @Test
+    public void parseCommand_addCompanyRole() throws Exception {
+        Company company = GOOGLE;
+        AddCompanyRoleCommand command =
+                (AddCompanyRoleCommand) parser.parseCommand(CompanyUtil.getAddCompanyRoleCommand(company));
+
+        AddCompanyRoleCommand expectedCommand = new AddCompanyRoleCommand(
+            new Role(
+                new RoleName("Software Engineer"),
+                new RoleDescription("Develops software")),
+                company.getName());
+
+        assertEquals(expectedCommand, command);
     }
 
     @Test

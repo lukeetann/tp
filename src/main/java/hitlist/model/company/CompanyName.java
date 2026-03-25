@@ -29,8 +29,8 @@ public class CompanyName {
      */
     public CompanyName(String companyName) {
         requireNonNull(companyName);
-        checkArgument(isValidCompanyName(companyName), MESSAGE_CONSTRAINTS);
-        this.companyName = companyName;
+        checkArgument(isValidCompanyName(companyName.trim()), MESSAGE_CONSTRAINTS);
+        this.companyName = companyName.trim();
     }
 
     /**
@@ -40,6 +40,7 @@ public class CompanyName {
      * @return True if the string is a valid company name, false otherwise.
      */
     public static boolean isValidCompanyName(String test) {
+        requireNonNull(test);
         return test.matches(VALIDATION_REGEX);
     }
 

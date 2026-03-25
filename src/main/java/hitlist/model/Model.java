@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
+import hitlist.model.company.role.Role;
 import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Name;
@@ -156,4 +157,40 @@ public interface Model {
      * {@code company} must already exist.
      */
     void deleteCompany(Company company);
+
+    /**
+     * Returns true if a company role with the same identity as {@code role} exists.
+     */
+    boolean hasCompanyRole(CompanyName companyName, Role role);
+
+    /**
+     * Adds the given company role to the company with the given company name.
+     * {@code companyName} must already exist.
+     * {@code role} must not already exist for the company.
+     */
+    void addCompanyRole(CompanyName companyName, Role role);
+
+    /**
+     * Returns an {@code Optional} containing the company role with the same identity as {@code roleName}
+     * for the company with the given company name if it exists,
+     * or an empty {@code Optional} otherwise.
+     */
+    Optional<Role> getCompanyRole(CompanyName companyName, String roleName);
+
+    /**
+     * Replaces the given company role {@code target} with {@code editedRole} in the company with the given
+     * company name.
+     * {@code companyName} must already exist.
+     * {@code target} must already exist for the company.
+     * The company role identity of {@code editedRole} must not be the same as another existing company role
+     * for the company.
+     */
+    void setCompanyRole(CompanyName companyName, Role target, Role editedRole);
+
+    /**
+     * Deletes the given company role from the company with the given company name.
+     * {@code companyName} must already exist.
+     * {@code role} must already exist for the company.
+     */
+    void deleteCompanyRole(CompanyName companyName, Role role);
 }

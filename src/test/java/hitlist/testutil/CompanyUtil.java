@@ -2,8 +2,11 @@ package hitlist.testutil;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY_DESC;
+import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE;
+import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE_DESC;
 
 import hitlist.logic.commands.AddCompanyCommand;
+import hitlist.logic.commands.AddCompanyRoleCommand;
 import hitlist.logic.commands.DeleteCompanyCommand;
 import hitlist.model.company.Company;
 
@@ -30,6 +33,21 @@ public class CompanyUtil {
      */
     public static String getDeleteCompanyCommand(Company company) {
         return DeleteCompanyCommand.COMMAND_WORD + " " + getCompanyNameDetails(company);
+    }
+
+    /**
+     * Returns an add-company-role command string for the given {@code company}.
+     *
+     * @param company The company for which the add-company-role command string is to be generated.
+     * @return The add-company-role command string.
+     */
+    public static String getAddCompanyRoleCommand(Company company) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(AddCompanyRoleCommand.COMMAND_WORD).append(" ")
+                .append(PREFIX_ROLE).append("Software Engineer").append(" ")
+                .append(PREFIX_ROLE_DESC).append("Develops software").append(" ")
+                .append(PREFIX_COMPANY).append(company.getName());
+        return sb.toString();
     }
 
     /**

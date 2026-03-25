@@ -12,6 +12,8 @@ import hitlist.commons.util.StringUtil;
 import hitlist.logic.parser.exceptions.ParseException;
 import hitlist.model.company.CompanyDescription;
 import hitlist.model.company.CompanyName;
+import hitlist.model.company.role.RoleDescription;
+import hitlist.model.company.role.RoleName;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Address;
 import hitlist.model.person.Email;
@@ -219,5 +221,39 @@ public class ParserUtil {
             throw new ParseException(CompanyDescription.MESSAGE_CONSTRAINTS);
         }
         return new CompanyDescription(trimmedDescription);
+    }
+
+    /**
+     * Parses a {@code String roleName} into a {@code RoleName}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param roleName The role name to be parsed.
+     * @return RoleName object created from the given role name.
+     * @throws ParseException if the given {@code roleName} is invalid.
+     */
+    public static RoleName parseRoleName(String roleName) throws ParseException {
+        requireNonNull(roleName);
+        String trimmedRoleName = roleName.trim();
+        if (!RoleName.isValidRoleName(trimmedRoleName)) {
+            throw new ParseException(RoleName.MESSAGE_CONSTRAINTS);
+        }
+        return new RoleName(trimmedRoleName);
+    }
+
+    /**
+     * Parses a {@code String description} into a {@code RoleDescription}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param description The role description to be parsed.
+     * @return RoleDescription object created from the given role description.
+     * @throws ParseException if the given {@code description} is invalid.
+     */
+    public static RoleDescription parseRoleDescription(String description) throws ParseException {
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        if (!RoleDescription.isValidRoleDescription(trimmedDescription)) {
+            throw new ParseException(RoleDescription.MESSAGE_CONSTRAINTS);
+        }
+        return new RoleDescription(trimmedDescription);
     }
 }

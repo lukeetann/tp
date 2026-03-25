@@ -1,9 +1,11 @@
 package hitlist.model.company;
 
 import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
+import hitlist.model.company.role.Role;
 import hitlist.model.company.role.UniqueRoleList;
 
 /**
@@ -67,6 +69,54 @@ public class Company {
      */
     public UniqueRoleList getUniqueRoleList() {
         return this.uniqueRoleList;
+    }
+
+    /**
+     * Returns true if the company has the specified role.
+     *
+     * @param role The role to check for.
+     * @return True if the company has the specified role, false otherwise.
+     */
+    public boolean hasRole(Role role) {
+        requireNonNull(role);
+
+        return getUniqueRoleList().contains(role);
+    }
+
+    /**
+     * Adds the specified role to the company.
+     * The role must not already exist in the company.
+     *
+     * @param role The role to be added.
+     */
+    public void addRole(Role role) {
+        requireNonNull(role);
+
+        getUniqueRoleList().add(role);
+        assert getUniqueRoleList().contains(role) : "Role list should contain the added role";
+    }
+
+    /**
+     * Replaces {@code target} with {@code editedRole} in this company.
+     * {@code target} must exist in this company.
+     */
+    public void setRole(Role target, Role editedRole) {
+        requireAllNonNull(target, editedRole);
+        uniqueRoleList.setRole(target, editedRole);
+        assert uniqueRoleList.contains(editedRole) : "Role list should contain the newly edited role";
+    }
+
+    /**
+     * Removes the specified role from this company.
+     * The role must exist in this company.
+     *
+     * @param role The role to be removed.
+     */
+    public void removeRole(Role role) {
+        requireNonNull(role);
+
+        getUniqueRoleList().remove(role);
+        assert !getUniqueRoleList().contains(role) : "Role list should no longer contain the removed role";
     }
 
     /**

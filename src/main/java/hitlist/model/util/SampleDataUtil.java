@@ -11,6 +11,10 @@ import hitlist.model.ReadOnlyHitList;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyDescription;
 import hitlist.model.company.CompanyName;
+import hitlist.model.company.role.Role;
+import hitlist.model.company.role.RoleDescription;
+import hitlist.model.company.role.RoleName;
+import hitlist.model.company.role.UniqueRoleList;
 import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Address;
@@ -65,24 +69,39 @@ public class SampleDataUtil {
     }
 
     public static Company[] getSampleCompanies() {
+        UniqueRoleList googleRoles = new UniqueRoleList();
+        googleRoles.add(new Role(new RoleName("Software Engineer"),
+                new RoleDescription("Builds and maintains scalable products")));
+        googleRoles.add(new Role(new RoleName("Product Manager"),
+                new RoleDescription("Owns product direction and roadmap")));
+
+        UniqueRoleList microsoftRoles = new UniqueRoleList();
+        microsoftRoles.add(new Role(new RoleName("Cloud Architect"),
+                new RoleDescription("Designs and optimizes cloud infrastructure")));
+
+        UniqueRoleList metaRoles = new UniqueRoleList();
+        metaRoles.add(new Role(new RoleName("Data Scientist"),
+                new RoleDescription("Analyzes product and user data for decisions")));
+
         return new Company[] {
             new Company(new CompanyName("Google Inc."),
                     new CompanyDescription("A multinational technology company specializing in "
-                            + "Internet-related services and products")),
+                            + "Internet-related services and products"), googleRoles),
             new Company(new CompanyName("Microsoft Corporation"),
                     new CompanyDescription("An American multinational technology company with headquarters "
-                            + "in Redmond, Washington")),
+                            + "in Redmond, Washington"), microsoftRoles),
             new Company(new CompanyName("Meta Platforms, Inc."),
                     new CompanyDescription("An American multinational technology conglomerate based in "
-                            + "Menlo Park, California")),
+                            + "Menlo Park, California"), metaRoles),
             new Company(new CompanyName("Apple Inc."),
                     new CompanyDescription("An American multinational technology company specializing in "
-                            + "consumer electronics and computer software")),
+                            + "consumer electronics and computer software"), new UniqueRoleList()),
             new Company(new CompanyName("Amazon.com, Inc."),
                     new CompanyDescription("An American multinational technology company focusing on "
-                            + "e-commerce, cloud computing, and digital streaming"))
+                            + "e-commerce, cloud computing, and digital streaming"), new UniqueRoleList())
         };
     }
+
 
     public static ReadOnlyHitList getSampleHitList() {
         HitList sampleHitList = new HitList();

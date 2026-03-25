@@ -1,14 +1,17 @@
 package hitlist.model;
 
+import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import hitlist.commons.util.ToStringBuilder;
 import hitlist.model.company.Company;
+import hitlist.model.company.CompanyName;
 import hitlist.model.company.UniqueCompanyList;
+import hitlist.model.company.exceptions.CompanyNotFoundException;
 import hitlist.model.company.role.Role;
-import hitlist.model.company.role.UniqueRoleList;
 import hitlist.model.group.Group;
 import hitlist.model.group.UniqueGroupList;
 import hitlist.model.person.Person;
@@ -22,7 +25,6 @@ import javafx.collections.ObservableList;
 public class HitList implements ReadOnlyHitList {
 
     private final UniquePersonList persons;
-    private final UniqueRoleList roles;
     private final UniqueCompanyList companies;
     private final UniqueGroupList groups;
 
@@ -35,7 +37,6 @@ public class HitList implements ReadOnlyHitList {
      */
     {
         persons = new UniquePersonList();
-        roles = new UniqueRoleList();
         companies = new UniqueCompanyList();
         groups = new UniqueGroupList();
     }
@@ -61,14 +62,6 @@ public class HitList implements ReadOnlyHitList {
     }
 
     /**
-     * Replaces the contents of the role list with {@code roles}.
-     * {@code roles} must not contain duplicate roles.
-     */
-    public void setRoles(List<Role> roles) {
-        this.roles.setRoles(roles);
-    }
-
-    /**
     * Replaces the contents of the company list with {@code companies}.
     * {@code companies} must not contain duplicate companies.
     */
@@ -91,7 +84,6 @@ public class HitList implements ReadOnlyHitList {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
-        setRoles(newData.getRoleList());
         setCompanies(newData.getCompanyList());
         setGroups(newData.getGroupList());
     }
@@ -146,43 +138,6 @@ public class HitList implements ReadOnlyHitList {
         persons.remove(key);
     }
 
-    //// role-level operations
-
-    /**
-     * Returns true if a role with the same identity as {@code role} exists in hitList.
-     */
-    public boolean hasRole(Role role) {
-        requireNonNull(role);
-        return roles.contains(role);
-    }
-
-    /**
-     * Adds a role to hitList.
-     * The role must not already exist in hitList.
-     */
-    public void addRole(Role r) {
-        roles.add(r);
-    }
-
-    /**
-     * Replaces the given role {@code target} in the list with {@code editedRole}.
-     * {@code target} must exist in hitList.
-     * The role identity of {@code editedRole} must not be the same as another existing role in hitList.
-     */
-    public void setRole(Role target, Role editedRole) {
-        requireNonNull(editedRole);
-
-        roles.setRole(target, editedRole);
-    }
-
-    /**
-     * Removes {@code key} from this {@code HitList}.
-     * {@code key} must exist in hitList.
-     */
-    public void removeRole(Role key) {
-        roles.remove(key);
-    }
-
     //// company-level operations
 
     /**
@@ -221,6 +176,73 @@ public class HitList implements ReadOnlyHitList {
     }
 
     /**
+     * Returns an {@code Optional} containing the company with the same identity as {@code companyName} if it exists,
+     * or an empty {@code Optional} otherwise.
+     */
+    private Company findCompanyOrThrow(CompanyName companyName) {
+        return companies.asUnmodifiableObservableList().stream()
+                .filter(company -> company.getName().equals(companyName))
+                .findFirst()
+                .orElseThrow(() -> new CompanyNotFoundException(
+                        String.format("Company not found: %s", companyName)));
+    }
+
+    //// role-level operations (roles are stored inside each company)
+
+    /**
+     * Returns true if a company role with the same identity as {@code role} exists
+     * in the company identified by {@code companyName}.
+     */
+    public boolean hasCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(companyName, role);
+        Company company = findCompanyOrThrow(companyName);
+        return company.hasRole(role);
+    }
+
+    /**
+     * Adds {@code role} to the company identified by {@code companyName}.
+     * The role must not already exist in that company.
+     */
+    public void addCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(companyName, role);
+        Company company = findCompanyOrThrow(companyName);
+        company.addRole(role);
+    }
+
+    /**
+     * Returns the role with role name {@code roleName} from the company
+     * identified by {@code companyName}, if present.
+     */
+    public Optional<Role> getCompanyRole(CompanyName companyName, String roleName) {
+        requireAllNonNull(companyName, roleName);
+        Company company = findCompanyOrThrow(companyName);
+        return company.getUniqueRoleList().asUnmodifiableObservableList().stream()
+                .filter(role -> role.getRoleName().toString().equals(roleName))
+                .findFirst();
+    }
+
+    /**
+     * Replaces {@code target} with {@code editedRole} in the company identified by
+     * {@code companyName}.
+     */
+    public void setCompanyRole(CompanyName companyName, Role target, Role editedRole) {
+        requireAllNonNull(companyName, target, editedRole);
+        Company company = findCompanyOrThrow(companyName);
+        company.setRole(target, editedRole);
+    }
+
+    /**
+     * Removes {@code role} from the company identified by {@code companyName}.
+     */
+    public void removeCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(companyName, role);
+        Company company = findCompanyOrThrow(companyName);
+        company.removeRole(role);
+    }
+
+    /// group-level operations
+
+    /**
      * Returns true if a group with the same identity as {@code group} exists.
      */
     public boolean hasGroup(Group group) {
@@ -250,7 +272,6 @@ public class HitList implements ReadOnlyHitList {
     public String toString() {
         return new ToStringBuilder(this)
                 .add("persons", persons)
-                .add("roles", roles)
                 .add("companies", companies)
                 .add("groups", groups)
                 .toString();
@@ -259,11 +280,6 @@ public class HitList implements ReadOnlyHitList {
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
-    }
-
-    @Override
-    public ObservableList<Role> getRoleList() {
-        return roles.asUnmodifiableObservableList();
     }
 
     @Override
@@ -283,17 +299,17 @@ public class HitList implements ReadOnlyHitList {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof HitList)) {
+        if (!(other instanceof HitList otherHitList)) {
             return false;
         }
 
-        HitList otherAddressBook = (HitList) other;
-        return persons.equals(otherAddressBook.persons)
-            && groups.equals(otherAddressBook.groups);
+        return persons.equals(otherHitList.persons)
+            && groups.equals(otherHitList.groups)
+            && companies.equals(otherHitList.companies);
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode();
+        return java.util.Objects.hash(persons, groups, companies);
     }
 }

@@ -29,8 +29,8 @@ public class CompanyDescription {
      */
     public CompanyDescription(String companyDescription) {
         requireNonNull(companyDescription);
-        checkArgument(isValidCompanyDescription(companyDescription), MESSAGE_CONSTRAINTS);
-        this.companyDescription = companyDescription;
+        checkArgument(isValidCompanyDescription(companyDescription.trim()), MESSAGE_CONSTRAINTS);
+        this.companyDescription = companyDescription.trim();
     }
 
     /**
@@ -40,6 +40,7 @@ public class CompanyDescription {
      * @return True if the string is a valid company description, false otherwise.
      */
     public static boolean isValidCompanyDescription(String test) {
+        requireNonNull(test);
         return test.matches(VALIDATION_REGEX);
     }
 

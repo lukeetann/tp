@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import hitlist.commons.core.GuiSettings;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
+import hitlist.model.company.role.Role;
 import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Name;
@@ -45,7 +46,7 @@ public abstract class ModelStub implements Model {
     }
 
     @Override
-    public void setHitListFilePath(Path addressBookFilePath) {
+    public void setHitListFilePath(Path hitListFilePath) {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -85,17 +86,17 @@ public abstract class ModelStub implements Model {
     }
 
     @Override
+    public ObservableList<Group> getGroupList() {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
     public ObservableList<Company> getFilteredCompanyList() {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public ObservableList<Group> getGroupList() {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -146,6 +147,31 @@ public abstract class ModelStub implements Model {
 
     @Override
     public void deleteCompany(Company company) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public boolean hasCompanyRole(CompanyName companyName, Role role) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public void addCompanyRole(CompanyName companyName, Role role) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public Optional<Role> getCompanyRole(CompanyName companyName, String roleName) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public void setCompanyRole(CompanyName companyName, Role target, Role editedRole) {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    @Override
+    public void deleteCompanyRole(CompanyName companyName, Role role) {
         throw new AssertionError("This method should not be called.");
     }
 }

@@ -20,6 +20,10 @@ checkstyle {
     toolVersion = '11.0.0'
 }
 
+application {
+    applicationDefaultJvmArgs = ['-ea']
+}
+
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport

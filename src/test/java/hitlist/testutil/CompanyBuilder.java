@@ -13,7 +13,6 @@ public class CompanyBuilder {
     public static final String DEFAULT_NAME = "Google Inc.";
     public static final String DEFAULT_DESCRIPTION =
             "A multinational technology company that specializes in Internet-related services and products.";
-    public static final UniqueRoleList DEFAULT_UNIQUE_ROLE = new UniqueRoleList();
 
     private CompanyName name;
     private CompanyDescription description;
@@ -25,7 +24,7 @@ public class CompanyBuilder {
     public CompanyBuilder() {
         name = new CompanyName(DEFAULT_NAME);
         description = new CompanyDescription(DEFAULT_DESCRIPTION);
-        uniqueRoleList = DEFAULT_UNIQUE_ROLE;
+        uniqueRoleList = new UniqueRoleList();
     }
 
     /**

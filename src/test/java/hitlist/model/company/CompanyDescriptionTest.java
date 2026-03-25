@@ -17,65 +17,47 @@ public class CompanyDescriptionTest {
 
     @Test
     public void constructor_invalidDescription_throwsIllegalArgumentException() {
-        String invalidDescription = "";
-        assertThrows(IllegalArgumentException.class, () -> new CompanyDescription(invalidDescription));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyDescription(""));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyDescription(" "));
+        assertThrows(IllegalArgumentException.class, () -> new CompanyDescription("/"));
     }
 
     @Test
     public void isValidCompanyDescription() {
-        // null description
         assertThrows(NullPointerException.class, () -> CompanyDescription.isValidCompanyDescription(null));
 
-        // invalid description
-        assertFalse(CompanyDescription.isValidCompanyDescription("")); // empty string
-        assertFalse(CompanyDescription.isValidCompanyDescription(" ")); // spaces only
-        assertFalse(CompanyDescription.isValidCompanyDescription("/")); // forward slash only
-        assertFalse(CompanyDescription.isValidCompanyDescription("Company/Name")); // contains forward slash
-        assertFalse(CompanyDescription.isValidCompanyDescription("Company\nDescription")); // contains line break
+        assertFalse(CompanyDescription.isValidCompanyDescription(""));
+        assertFalse(CompanyDescription.isValidCompanyDescription(" "));
+        assertFalse(CompanyDescription.isValidCompanyDescription("/"));
+        assertFalse(CompanyDescription.isValidCompanyDescription("Company/Name"));
+        assertFalse(CompanyDescription.isValidCompanyDescription("Company\nDescription"));
 
-        // valid description
-        assertTrue(CompanyDescription.isValidCompanyDescription("Google")); // alphabets only
-        assertTrue(CompanyDescription.isValidCompanyDescription("12345")); // numbers only
-        assertTrue(CompanyDescription.isValidCompanyDescription("An American multinational technology company with "
-                + "headquarters in Redmond, Washington. It develops, manufactures, licenses, supports and sells "
-                + "computer software, consumer electronics, personal computers, "
-                + "and related services")); // long description
+        assertTrue(CompanyDescription.isValidCompanyDescription("Google"));
+        assertTrue(CompanyDescription.isValidCompanyDescription("12345"));
+        assertTrue(CompanyDescription.isValidCompanyDescription("A".repeat(999)));
     }
 
     @Test
-    public void toString_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CompanyDescription(null).toString());
+    public void constructor_trimsWhitespace_success() {
+        CompanyDescription description = new CompanyDescription("  Valid Description  ");
+        assertEquals("Valid Description", description.toString());
     }
 
     @Test
     public void toString_validDescription_returnsDescription() {
         CompanyDescription description = new CompanyDescription("Valid Company Description");
-        assertTrue(description.toString().equals("Valid Company Description"));
+        assertEquals("Valid Company Description", description.toString());
     }
 
     @Test
     public void equals() {
         CompanyDescription description = new CompanyDescription("Valid Company Description");
 
-        // same values -> returns true
         assertTrue(description.equals(new CompanyDescription("Valid Company Description")));
-
-        // same object -> returns true
         assertTrue(description.equals(description));
-
-        // null -> returns false
         assertFalse(description.equals(null));
-
-        // different types -> returns false
         assertFalse(description.equals(5.0f));
-
-        // different values -> returns false
         assertNotEquals(description, new CompanyDescription("Other Valid Company Description"));
-    }
-
-    @Test
-    public void hashCode_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CompanyDescription(null).hashCode());
     }
 
     @Test
@@ -84,10 +66,7 @@ public class CompanyDescriptionTest {
         CompanyDescription description2 = new CompanyDescription("Valid Company Description");
         CompanyDescription description3 = new CompanyDescription("Other Valid Company Description");
 
-        // same values -> same hash code
         assertEquals(description1.hashCode(), description2.hashCode());
-
-        // different values -> different hash code
         assertNotEquals(description1.hashCode(), description3.hashCode());
     }
 }

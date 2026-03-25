@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import hitlist.model.HitList;
 import hitlist.model.company.role.Role;
 
 /**
@@ -41,17 +40,6 @@ public class TypicalRoles {
             .build();
 
     private TypicalRoles() {} // prevents instantiation
-
-    /**
-     * Returns an {@code HitList} with all the typical roles.
-     */
-    public static HitList getTypicalHitList() {
-        HitList hl = new HitList();
-        for (Role role : getTypicalRoles()) {
-            hl.addRole(role);
-        }
-        return hl;
-    }
 
     public static List<Role> getTypicalRoles() {
         return new ArrayList<>(Arrays.asList(LECTURER, DATA_SCIENTIST, PRODUCT_MANAGER, SOFTWARE_ENGINEER));

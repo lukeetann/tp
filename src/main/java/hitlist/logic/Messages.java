@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import hitlist.logic.parser.Prefix;
 import hitlist.model.company.Company;
+import hitlist.model.company.role.Role;
 import hitlist.model.group.Group;
 import hitlist.model.person.Person;
 
@@ -68,9 +69,25 @@ public class Messages {
      */
     public static String formatCompany(Company company) {
         final StringBuilder builder = new StringBuilder();
-        builder.append(company.getName())
+        builder.append("Name: ")
+                .append(company.getName())
                 .append("; Description: ")
                 .append(company.getDescription());
+        return builder.toString();
+    }
+
+    /**
+    * Formats the {@code role} for display to the user.
+    *
+    * @param role The role to be formatted.
+    * @return A string representation of the role, including its name and description.
+    */
+    public static String formatCompanyRole(Role role) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Role: ")
+                .append(role.getRoleName())
+                .append("; Description: ")
+                .append(role.getRoleDescription());
         return builder.toString();
     }
 }

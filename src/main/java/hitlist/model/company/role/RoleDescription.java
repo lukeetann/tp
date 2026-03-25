@@ -29,7 +29,7 @@ public class RoleDescription {
      */
     public RoleDescription(String roleDescription) {
         requireNonNull(roleDescription);
-        checkArgument(isValidRoleDescription(roleDescription), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidRoleDescription(roleDescription.trim()), MESSAGE_CONSTRAINTS);
         this.roleDescription = roleDescription.trim();
     }
 

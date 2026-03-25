@@ -68,4 +68,13 @@ public class DeleteCompanyCommandParserTest {
                         + " " + PREFIX_COMPANY + "Meta",
                 expectedMessage);
     }
+
+    @Test
+    public void parse_prefixMissingInMixedInput_throwsParseException() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCompanyCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, "Google", expectedMessage);
+
+        assertParseFailure(parser, "some preamble " + PREFIX_COMPANY + "Google", expectedMessage);
+    }
 }

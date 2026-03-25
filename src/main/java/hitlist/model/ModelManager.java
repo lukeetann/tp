@@ -13,6 +13,7 @@ import hitlist.commons.core.GuiSettings;
 import hitlist.commons.core.LogsCenter;
 import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
+import hitlist.model.company.role.Role;
 import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Name;
@@ -173,7 +174,6 @@ public class ModelManager implements Model {
     public void addCompany(Company company) {
         hitList.addCompany(company);
         updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
-        updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
     }
 
     @Override
@@ -191,6 +191,39 @@ public class ModelManager implements Model {
     @Override
     public void deleteCompany(Company company) {
         hitList.removeCompany(company);
+    }
+
+    @Override
+    public boolean hasCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(role, companyName);
+        return hitList.hasCompanyRole(companyName, role);
+    }
+
+    @Override
+    public void addCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(companyName, role);
+        hitList.addCompanyRole(companyName, role);
+        updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
+    }
+
+    @Override
+    public Optional<Role> getCompanyRole(CompanyName companyName, String roleName) {
+        requireAllNonNull(companyName, roleName);
+        return hitList.getCompanyRole(companyName, roleName);
+    }
+
+    @Override
+    public void setCompanyRole(CompanyName companyName, Role target, Role editedRole) {
+        requireAllNonNull(companyName, target, editedRole);
+        hitList.setCompanyRole(companyName, target, editedRole);
+        updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
+    }
+
+    @Override
+    public void deleteCompanyRole(CompanyName companyName, Role role) {
+        requireAllNonNull(companyName, role);
+        hitList.removeCompanyRole(companyName, role);
+        updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -228,15 +261,12 @@ public class ModelManager implements Model {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof ModelManager)) {
+        if (!(other instanceof ModelManager otherModelManager)) {
             return false;
         }
 
-        ModelManager otherModelManager = (ModelManager) other;
         return hitList.equals(otherModelManager.hitList)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons)
-                && filteredCompanies.equals(otherModelManager.filteredCompanies)
                 && filteredPersons.equals(otherModelManager.filteredPersons)
                 && filteredCompanies.equals(otherModelManager.filteredCompanies);
     }

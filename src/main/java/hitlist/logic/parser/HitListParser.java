@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import hitlist.commons.core.LogsCenter;
 import hitlist.logic.commands.AddCommand;
 import hitlist.logic.commands.AddCompanyCommand;
+import hitlist.logic.commands.AddCompanyRoleCommand;
 import hitlist.logic.commands.AddGroupCommand;
 import hitlist.logic.commands.AssignGroupCommand;
 import hitlist.logic.commands.ClearCommand;
@@ -103,6 +104,9 @@ public class HitListParser {
 
         case DeleteCompanyCommand.COMMAND_WORD:
             return new DeleteCompanyCommandParser().parse(arguments);
+
+        case AddCompanyRoleCommand.COMMAND_WORD:
+            return new AddCompanyRoleCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

@@ -279,23 +279,23 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​    | I want to …​                                | So that I can…​                                                                                  |
-|----------|------------|---------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `* * *`  | Headhunter | add new candidate contacts                  | build a database of potential hires for future placements                                        |
-| `* * *`  | Headhunter | delete contacts                             | keep my database uncluttered by removing irrelevant candidates contacts                          |
-| `* * *`  | Headhunter | list contacts                               | easily browse my talent pool to locate specific individuals                                      |
-| `* * *`  | Headhunter | add contact groups                          | keep track of which candidates are headhunted for the companies                                  |
-| `* * *`  | Headhunter | delete contact groups                       | remove the group for a role when it is already filled                                            |
-| `* * *`  | Headhunter | list contact groups                         | view a complete overview of all the job groups I have added to the system                        |
-| `* * *`  | Headhunter | add contacts to contact groups              | build a targeted shortlist of candidates for a specific job opening                              |
-| `* * *`  | Headhunter | delete contacts from contact groups         | keep my shortlist accurate by removing candidates who are no longer in the running for that role |
-| `* * *`  | Headhunter | list contact group members                  | easily evaluate and compare all shortlisted candidates for a specific open position              |
-| `* * *`  | Headhunter | add company profile                         | keep track of the companies I am headhunting for                                                 |
-| `* * *`  | Headhunter | delete company profile                      | remove the companies that have stopped using my headhunting services                             |
-| `* * *`  | Headhunter | list all company profile                    | view all companies I am headhunting for to get a high-level overview of my client base           |
-| `* *`    | Headhunter | add company details to company profile      | maintain comprehensive records of my clients' requirements and contact information               |
-| `* *`    | Headhunter | delete company details from company profile | keep my client records accurate by removing outdated or incorrect information                    |
-| `* *`    | Headhunter | list specific company profile               | review all the active job placements that particular client has hired me to fill                 |
+| Priority | As a …​    | I want to …​                              | So that I can…​                                                                                  |
+|----------|------------|-------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `* * *`  | Headhunter | add new candidate contacts                | build a database of potential hires for future placements                                        |
+| `* * *`  | Headhunter | delete contacts                           | keep my database uncluttered by removing irrelevant candidates contacts                          |
+| `* * *`  | Headhunter | list contacts                             | easily browse my talent pool to locate specific individuals                                      |
+| `* * *`  | Headhunter | add contact groups                        | keep track of which candidates are headhunted for the companies                                  |
+| `* * *`  | Headhunter | delete contact groups                     | remove the group for a role when it is already filled                                            |
+| `* * *`  | Headhunter | list contact groups                       | view a complete overview of all the job groups I have added to the system                        |
+| `* * *`  | Headhunter | add contacts to contact groups            | build a targeted shortlist of candidates for a specific job opening                              |
+| `* * *`  | Headhunter | delete contacts from contact groups       | keep my shortlist accurate by removing candidates who are no longer in the running for that role |
+| `* * *`  | Headhunter | list contact group members                | easily evaluate and compare all shortlisted candidates for a specific open position              |
+| `* * *`  | Headhunter | add company profile                       | keep track of the companies I am headhunting for                                                 |
+| `* * *`  | Headhunter | delete company profile                    | remove the companies that have stopped using my headhunting services                             |
+| `* * *`  | Headhunter | list all company profile                  | view all companies I am headhunting for to get a high-level overview of my client base           |
+| `* *`    | Headhunter | add company roles to company profile      | maintain comprehensive records of my clients' requirements and contact information               |
+| `* *`    | Headhunter | delete company roles from company profile | keep my client records accurate by removing outdated or incorrect information                    |
+| `* *`    | Headhunter | list specific company profile             | review all the active job placements that particular client has hired me to fill                 |
 
 *{More to be added}*
 

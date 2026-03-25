@@ -214,4 +214,162 @@ public class CompanyTest {
                 + "a product, ensuring it meets customer needs and business goals.]";
         assertEquals(company.toString(), expectedString);
     }
+
+    // Role-level operations tests
+
+    @Test
+    public void hasRole_nullRole_throwsNullPointerException() {
+        Company company = new CompanyBuilder().build();
+        assertThrows(NullPointerException.class, () -> company.hasRole(null));
+    }
+
+    @Test
+    public void hasRole_roleExists_returnsTrue() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+    }
+
+    @Test
+    public void hasRole_roleDoesNotExist_returnsFalse() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertFalse(company.hasRole(SOFTWARE_ENGINEER));
+    }
+
+    @Test
+    public void hasRole_emptyRoleList_returnsFalse() {
+        Company company = new CompanyBuilder().build();
+
+        assertFalse(company.hasRole(PRODUCT_MANAGER));
+    }
+
+    @Test
+    public void addRole_nullRole_throwsNullPointerException() {
+        Company company = new CompanyBuilder().build();
+        assertThrows(NullPointerException.class, () -> company.addRole(null));
+    }
+
+    @Test
+    public void addRole_validRole_success() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+    }
+
+    @Test
+    public void addRole_multipleRoles_success() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+        company.addRole(SOFTWARE_ENGINEER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+        assertTrue(company.hasRole(SOFTWARE_ENGINEER));
+    }
+
+    @Test
+    public void setRole_nullTarget_throwsNullPointerException() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertThrows(NullPointerException.class, () -> company.setRole(null, SOFTWARE_ENGINEER));
+    }
+
+    @Test
+    public void setRole_nullEditedRole_throwsNullPointerException() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertThrows(NullPointerException.class, () -> company.setRole(PRODUCT_MANAGER, null));
+    }
+
+    @Test
+    public void setRole_validRoles_success() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+
+        company.setRole(PRODUCT_MANAGER, SOFTWARE_ENGINEER);
+
+        assertFalse(company.hasRole(PRODUCT_MANAGER));
+        assertTrue(company.hasRole(SOFTWARE_ENGINEER));
+    }
+
+    @Test
+    public void removeRole_nullRole_throwsNullPointerException() {
+        Company company = new CompanyBuilder().build();
+        assertThrows(NullPointerException.class, () -> company.removeRole(null));
+    }
+
+    @Test
+    public void removeRole_validRole_success() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+
+        company.removeRole(PRODUCT_MANAGER);
+
+        assertFalse(company.hasRole(PRODUCT_MANAGER));
+    }
+
+    @Test
+    public void removeRole_roleFromMultipleRoles_success() {
+        Company company = new CompanyBuilder().build();
+        company.addRole(PRODUCT_MANAGER);
+        company.addRole(SOFTWARE_ENGINEER);
+
+        assertTrue(company.hasRole(PRODUCT_MANAGER));
+        assertTrue(company.hasRole(SOFTWARE_ENGINEER));
+
+        company.removeRole(PRODUCT_MANAGER);
+
+        assertFalse(company.hasRole(PRODUCT_MANAGER));
+        assertTrue(company.hasRole(SOFTWARE_ENGINEER));
+    }
+
+    @Test
+    public void equals_withSameRoles_returnsTrue() {
+        UniqueRoleList roleList = new UniqueRoleList();
+        roleList.add(PRODUCT_MANAGER);
+
+        Company company1 = new CompanyBuilder()
+                .withName("Valid Company Name")
+                .withDescription("Valid Company Description")
+                .withUniqueRoleList(new UniqueRoleList())
+                .build();
+        company1.addRole(PRODUCT_MANAGER);
+
+        Company company2 = new CompanyBuilder()
+                .withName("Valid Company Name")
+                .withDescription("Valid Company Description")
+                .withUniqueRoleList(new UniqueRoleList())
+                .build();
+        company2.addRole(PRODUCT_MANAGER);
+
+        assertTrue(company1.equals(company2));
+    }
+
+    @Test
+    public void equals_withDifferentRoles_returnsFalse() {
+        Company company1 = new CompanyBuilder()
+                .withName("Valid Company Name")
+                .withDescription("Valid Company Description")
+                .withUniqueRoleList(new UniqueRoleList())
+                .build();
+        company1.addRole(PRODUCT_MANAGER);
+
+        Company company2 = new CompanyBuilder()
+                .withName("Valid Company Name")
+                .withDescription("Valid Company Description")
+                .withUniqueRoleList(new UniqueRoleList())
+                .build();
+        company2.addRole(SOFTWARE_ENGINEER);
+
+        assertFalse(company1.equals(company2));
+    }
 }

@@ -16,7 +16,6 @@ import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY_DESC;
 import static hitlist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static hitlist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static hitlist.testutil.TypicalCompanies.GOOGLE;
-import static hitlist.testutil.TypicalRoles.PRODUCT_MANAGER;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,6 @@ import hitlist.logic.Messages;
 import hitlist.logic.commands.AddCompanyCommand;
 import hitlist.model.company.CompanyDescription;
 import hitlist.model.company.CompanyName;
-import hitlist.model.company.role.UniqueRoleList;
 
 public class AddCompanyCommandParserTest {
 
@@ -32,9 +30,6 @@ public class AddCompanyCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        UniqueRoleList roleList = new UniqueRoleList();
-        roleList.add(PRODUCT_MANAGER);
-
         assertParseSuccess(parser,
                 PREAMBLE_WHITESPACE
                         + COMPANY_NAME_DESC_GOOGLE
@@ -47,21 +42,18 @@ public class AddCompanyCommandParserTest {
         String expectedMessage =
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyCommand.MESSAGE_USAGE);
 
-        // missing company name prefix
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + VALID_COMPANY_NAME_GOOGLE
                         + COMPANY_DESC_GOOGLE,
                 expectedMessage);
 
-        // missing company description prefix
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + COMPANY_NAME_DESC_GOOGLE
                         + VALID_COMPANY_DESCRIPTION_GOOGLE,
                 expectedMessage);
 
-        // all prefixes missing
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + VALID_COMPANY_NAME_GOOGLE
@@ -71,7 +63,6 @@ public class AddCompanyCommandParserTest {
 
     @Test
     public void parse_repeatedNonUniqueFields_failure() {
-        // multiple company names
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + COMPANY_NAME_DESC_GOOGLE
@@ -79,7 +70,6 @@ public class AddCompanyCommandParserTest {
                         + COMPANY_NAME_DESC_META,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY));
 
-        // multiple company descriptions
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + COMPANY_NAME_DESC_GOOGLE
@@ -87,7 +77,6 @@ public class AddCompanyCommandParserTest {
                         + COMPANY_DESC_META,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY_DESC));
 
-        // multiple Company Name and Description
         assertParseFailure(parser,
                 PREAMBLE_WHITESPACE
                         + COMPANY_NAME_DESC_GOOGLE
@@ -99,23 +88,47 @@ public class AddCompanyCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        // invalid company name
         assertParseFailure(parser,
                 INVALID_COMPANY_NAME_DESC
                         + COMPANY_DESC_GOOGLE,
                 CompanyName.MESSAGE_CONSTRAINTS);
 
-        // invalid company description
         assertParseFailure(parser,
                 COMPANY_NAME_DESC_GOOGLE
                         + INVALID_COMPANY_DESC,
                 CompanyDescription.MESSAGE_CONSTRAINTS);
 
-        // non-empty preamble
         assertParseFailure(parser,
                 PREAMBLE_NON_EMPTY
                         + COMPANY_NAME_DESC_GOOGLE
                         + COMPANY_DESC_GOOGLE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_onlyOnePrefixPresent_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, COMPANY_NAME_DESC_GOOGLE, expectedMessage);
+
+        assertParseFailure(parser, COMPANY_DESC_GOOGLE, expectedMessage);
+    }
+
+    @Test
+    public void parse_nonEmptyPreamble_failure() {
+        assertParseFailure(parser,
+                "preamble /c Google Inc. /d A technology company",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCompanyCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicatePrefixes_failure() {
+        assertParseFailure(parser,
+                " /c Google Inc. /c Meta /d A technology company",
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY));
+
+        assertParseFailure(parser,
+                " /c Google Inc. /d Desc A /d Desc B",
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY_DESC));
     }
 }

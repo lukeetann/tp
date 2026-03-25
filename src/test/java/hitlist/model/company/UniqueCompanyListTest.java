@@ -238,4 +238,92 @@ public class UniqueCompanyListTest {
     public void toStringMethod() {
         assertEquals(uniqueCompanyList.asUnmodifiableObservableList().toString(), uniqueCompanyList.toString());
     }
+
+    @Test
+    public void setCompany_editedCompanyIsStrictlySameCompany_success() {
+        uniqueCompanyList.add(GOOGLE);
+        uniqueCompanyList.setCompany(GOOGLE, GOOGLE);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompany_editedCompanyIsDifferentAndNotContained_success() {
+        uniqueCompanyList.add(GOOGLE);
+        uniqueCompanyList.setCompany(GOOGLE, META);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(META);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompany_nullEditedCompanyThrowsNullPointerException() {
+        uniqueCompanyList.add(GOOGLE);
+        assertThrows(NullPointerException.class, () -> uniqueCompanyList.setCompany(GOOGLE, null));
+    }
+
+    @Test
+    public void setCompanies_listWithMultipleUniqueCompanies_success() {
+        List<Company> listWithUniqueCompanies = List.of(GOOGLE, META);
+        uniqueCompanyList.setCompanies(listWithUniqueCompanies);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        expectedUniqueCompanyList.add(META);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompanies_listWithDuplicatesSpacedOut_throwsDuplicateCompanyException() {
+        Company anotherGoogle = new CompanyBuilder(GOOGLE).build();
+        List<Company> listWithDuplicates = List.of(META, GOOGLE, anotherGoogle);
+
+        assertThrows(DuplicateCompanyException.class, () -> uniqueCompanyList.setCompanies(listWithDuplicates));
+    }
+
+    @Test
+    public void setCompanies_listWithSingleCompany_success() {
+        List<Company> singleCompanyList = List.of(GOOGLE);
+        uniqueCompanyList.setCompanies(singleCompanyList);
+
+        UniqueCompanyList expectedUniqueCompanyList = new UniqueCompanyList();
+        expectedUniqueCompanyList.add(GOOGLE);
+        assertEquals(expectedUniqueCompanyList, uniqueCompanyList);
+    }
+
+    @Test
+    public void setCompany_sameIdentity_replacesSuccessfully() {
+        UniqueCompanyList list = new UniqueCompanyList();
+        Company target = new CompanyBuilder().withName("Google Inc.").withDescription("Desc A").build();
+        Company edited = new CompanyBuilder().withName("Google Inc.").withDescription("Desc B").build();
+        list.add(target);
+
+        list.setCompany(target, edited);
+
+        assertFalse(list.contains(target));
+        assertTrue(list.contains(edited));
+    }
+
+    @Test
+    public void equals_branches() {
+        UniqueCompanyList list = new UniqueCompanyList();
+        list.add(new CompanyBuilder().withName("Google Inc.").build());
+
+        assertTrue(list.equals(list));
+        assertFalse(list.equals(null));
+        assertFalse(list.equals(1));
+    }
+
+    @Test
+    public void toString_nonEmptyList_containsCount() {
+        UniqueCompanyList list = new UniqueCompanyList();
+        list.add(new CompanyBuilder()
+                .withName("Google Inc.")
+                .withDescription("Valid Description").build());
+
+        assertTrue(list.toString().contains("Google Inc."));
+    }
 }
