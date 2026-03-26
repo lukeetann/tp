@@ -70,7 +70,7 @@ public class ListGroupCommand extends Command {
 
         if (toList == null) {
             // Simply display all groups
-            return new CommandResult(MESSAGE_SUCCESS_2, false, false, false, false, true);
+            return new CommandResult(MESSAGE_SUCCESS_2, false, false, false, true, false);
         } else {
             return executeWithGroup(model);
         }

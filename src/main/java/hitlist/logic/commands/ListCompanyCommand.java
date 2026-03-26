@@ -22,6 +22,7 @@ public class ListCompanyCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists the company details of the company that matches"
             + " the searched company. If no company is searched, lists all companies\n"
+            + "Parameters: " + "[" + PREFIX_COMPANY + " COMPANY_NAME]\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_COMPANY + " Google\n"
             + "Example: " + COMMAND_WORD;
 
