@@ -48,7 +48,7 @@ public class DeleteCompanyCommand extends Command {
 
         return new CommandResult(
                 String.format(MESSAGE_DELETE_COMPANY_SUCCESS,
-                        Messages.formatCompany(companyToDelete)));
+                        Messages.formatCompany(companyToDelete)), false, false, true);
     }
 
     @Override
