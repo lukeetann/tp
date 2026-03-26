@@ -12,7 +12,6 @@ import hitlist.model.company.CompanyName;
 import hitlist.model.company.UniqueCompanyList;
 import hitlist.model.company.exceptions.CompanyNotFoundException;
 import hitlist.model.company.role.Role;
-import hitlist.model.company.role.UniqueRoleList;
 import hitlist.model.group.Group;
 import hitlist.model.group.UniqueGroupList;
 import hitlist.model.person.Person;
@@ -26,7 +25,6 @@ import javafx.collections.ObservableList;
 public class HitList implements ReadOnlyHitList {
 
     private final UniquePersonList persons;
-    private final UniqueRoleList roles;
     private final UniqueCompanyList companies;
     private final UniqueGroupList groups;
 
@@ -39,7 +37,6 @@ public class HitList implements ReadOnlyHitList {
      */
     {
         persons = new UniquePersonList();
-        roles = new UniqueRoleList();
         companies = new UniqueCompanyList();
         groups = new UniqueGroupList();
     }
@@ -65,14 +62,6 @@ public class HitList implements ReadOnlyHitList {
     }
 
     /**
-     * Replaces the contents of the role list with {@code roles}.
-     * {@code roles} must not contain duplicate roles.
-     */
-    public void setRoles(List<Role> roles) {
-        this.roles.setRoles(roles);
-    }
-
-    /**
     * Replaces the contents of the company list with {@code companies}.
     * {@code companies} must not contain duplicate companies.
     */
@@ -95,7 +84,6 @@ public class HitList implements ReadOnlyHitList {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
-        setRoles(newData.getRoleList());
         setCompanies(newData.getCompanyList());
         setGroups(newData.getGroupList());
     }
@@ -292,11 +280,6 @@ public class HitList implements ReadOnlyHitList {
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
-    }
-
-    @Override
-    public ObservableList<Role> getRoleList() {
-        return roles.asUnmodifiableObservableList();
     }
 
     @Override
