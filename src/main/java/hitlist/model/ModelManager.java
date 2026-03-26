@@ -19,7 +19,6 @@ import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Name;
 import hitlist.model.person.Person;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
