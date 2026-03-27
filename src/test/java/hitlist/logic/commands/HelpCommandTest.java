@@ -2,6 +2,7 @@ package hitlist.logic.commands;
 
 import static hitlist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static hitlist.logic.commands.HelpCommand.SHOWING_HELP_MESSAGE;
+import static hitlist.ui.UiPaneVisibility.SHOW_HELP_MESSAGE;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class HelpCommandTest {
 
     @Test
     public void execute_help_success() {
-        CommandResult expectedCommandResult = new CommandResult(SHOWING_HELP_MESSAGE, true, false);
+        CommandResult expectedCommandResult = new CommandResult(SHOWING_HELP_MESSAGE, SHOW_HELP_MESSAGE);
         assertCommandSuccess(new HelpCommand(), model, expectedCommandResult, expectedModel);
     }
 }

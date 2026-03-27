@@ -2,6 +2,8 @@ package hitlist.logic.commands;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.model.Model.PREDICATE_SHOW_ALL_COMPANIES;
+import static hitlist.ui.UiPaneVisibility.SHOW_COMPANY_LIST;
+import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 import static java.util.Objects.requireNonNull;
 
 import hitlist.model.Model;
@@ -54,12 +56,12 @@ public class ListCompanyCommand extends Command {
         requireNonNull(model);
         if (isListAllCompanies()) {
             model.updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
-            return new CommandResult(DEFAULT_MESSAGE_SUCCESS, false, false, true);
+            return new CommandResult(DEFAULT_MESSAGE_SUCCESS, SHOW_COMPANY_LIST);
         } else if (model.hasCompanyByName(name)) {
             model.updateRoleList(name);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, name), false, false, false, false, true);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, name), SHOW_ROLE_LIST);
         } else {
-            return new CommandResult(String.format(MESSAGE_NO_COMPANY_FOUND, name), false, false, true);
+            return new CommandResult(String.format(MESSAGE_NO_COMPANY_FOUND, name), SHOW_COMPANY_LIST);
         }
     }
 }

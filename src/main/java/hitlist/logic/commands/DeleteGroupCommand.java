@@ -1,6 +1,7 @@
 package hitlist.logic.commands;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_GROUP;
+import static hitlist.ui.UiPaneVisibility.SHOW_GROUP_LIST;
 import static java.util.Objects.requireNonNull;
 
 import hitlist.commons.util.ToStringBuilder;
@@ -42,7 +43,7 @@ public class DeleteGroupCommand extends Command {
         }
 
         model.deleteGroup(toDelete);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatGroup(toDelete)));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatGroup(toDelete)), SHOW_GROUP_LIST);
     }
 
     @Override

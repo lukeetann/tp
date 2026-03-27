@@ -1,5 +1,8 @@
 package hitlist.ui;
 
+import static hitlist.ui.UiPaneVisibility.EXIT;
+import static hitlist.ui.UiPaneVisibility.SHOW_HELP_MESSAGE;
+import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,7 +100,7 @@ public class MainWindowTest {
         Platform.runLater(() -> {
             try {
                 MainWindow window = new MainWindow(new Stage(),
-                        new FixedResultLogicStub(new CommandResult("help", true, false, false)));
+                        new FixedResultLogicStub(new CommandResult("help", SHOW_HELP_MESSAGE)));
                 window.fillInnerParts();
 
                 Method executeCommand = MainWindow.class.getDeclaredMethod("executeCommand", String.class);
@@ -124,7 +127,7 @@ public class MainWindowTest {
         Platform.runLater(() -> {
             try {
                 MainWindow window = new MainWindow(new Stage(),
-                        new FixedResultLogicStub(new CommandResult("bye", false, true, false)));
+                        new FixedResultLogicStub(new CommandResult("bye", EXIT)));
                 window.fillInnerParts();
 
                 Method executeCommand = MainWindow.class.getDeclaredMethod("executeCommand", String.class);
@@ -150,8 +153,7 @@ public class MainWindowTest {
 
         Platform.runLater(() -> {
             try {
-                // CommandResult(feedback, showHelp, exit, showCompanyList, showGroupList, showRoleList)
-                CommandResult result = new CommandResult("role", false, false, false, false, true);
+                CommandResult result = new CommandResult("role", SHOW_ROLE_LIST);
 
                 MainWindow window = new MainWindow(new Stage(), new FixedResultLogicStub(result));
                 window.fillInnerParts();

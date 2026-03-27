@@ -2,6 +2,7 @@ package hitlist.logic.commands;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY_DESC;
+import static hitlist.ui.UiPaneVisibility.SHOW_COMPANY_LIST;
 import static java.util.Objects.requireNonNull;
 
 import hitlist.commons.util.ToStringBuilder;
@@ -50,8 +51,7 @@ public class AddCompanyCommand extends Command {
 
         model.addCompany(company);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCompany(company)),
-                false, false, false, false, true);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCompany(company)), SHOW_COMPANY_LIST);
     }
 
     @Override

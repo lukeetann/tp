@@ -1,6 +1,7 @@
 package hitlist.logic.commands;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
+import static hitlist.ui.UiPaneVisibility.SHOW_COMPANY_LIST;
 import static java.util.Objects.requireNonNull;
 
 import hitlist.commons.util.ToStringBuilder;
@@ -48,7 +49,7 @@ public class DeleteCompanyCommand extends Command {
 
         return new CommandResult(
                 String.format(MESSAGE_DELETE_COMPANY_SUCCESS,
-                        Messages.formatCompany(companyToDelete)), false, false, true);
+                        Messages.formatCompany(companyToDelete)), SHOW_COMPANY_LIST);
     }
 
     @Override

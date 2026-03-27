@@ -3,6 +3,8 @@ package hitlist.logic.commands;
 import static hitlist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static hitlist.model.Model.PREDICATE_SHOW_ALL_COMPANIES;
 import static hitlist.testutil.TypicalCompanies.getTypicalHitList;
+import static hitlist.ui.UiPaneVisibility.SHOW_COMPANY_LIST;
+import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,7 @@ public class ListCompanyCommandTest {
     public void execute_listIsNotFiltered_showsSameList() {
         expectedModel.updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
         assertCommandSuccess(new ListCompanyCommand(), model,
-                new CommandResult(ListCompanyCommand.DEFAULT_MESSAGE_SUCCESS, false, false, true), expectedModel);
+                new CommandResult(ListCompanyCommand.DEFAULT_MESSAGE_SUCCESS, SHOW_COMPANY_LIST), expectedModel);
     }
 
     @Test
@@ -42,8 +44,7 @@ public class ListCompanyCommandTest {
         // Execute branch that lists a specific company
         expectedModel.updateRoleList(companyName); // sets model to only show Google's roles
         assertCommandSuccess(command, model,
-                new CommandResult(String.format(ListCompanyCommand.MESSAGE_SUCCESS, companyName),
-                        false, false, false, false, true),
+                new CommandResult(String.format(ListCompanyCommand.MESSAGE_SUCCESS, companyName), SHOW_ROLE_LIST),
                 expectedModel);
     }
 }

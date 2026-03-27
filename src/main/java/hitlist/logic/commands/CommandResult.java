@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 
 import hitlist.commons.util.ToStringBuilder;
+import hitlist.ui.UiPaneVisibility;
 
 /**
  * Represents the result of a command execution.
@@ -31,7 +32,7 @@ public class CommandResult {
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser,
+    private CommandResult(String feedbackToUser,
                          boolean showHelp,
                          boolean exit,
                          boolean showCompanyList,
@@ -48,16 +49,11 @@ public class CommandResult {
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean showCompanyList) {
-        this(feedbackToUser, showHelp, exit, showCompanyList, false, false);
+    public CommandResult(String feedbackToUser, UiPaneVisibility paneToShow) {
+        this(feedbackToUser, paneToShow.isHelp(), paneToShow.isExit(), paneToShow.isCompanyList(),
+                paneToShow.isGroupList(), paneToShow.isRoleList());
     }
 
-    /**
-     * Constructs a {@code CommandResult} with the specified fields.
-     */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, false, false, false);
-    }
 
     /**
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},

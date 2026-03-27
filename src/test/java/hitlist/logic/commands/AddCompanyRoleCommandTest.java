@@ -57,7 +57,7 @@ public class AddCompanyRoleCommandTest {
                 commandResult.getFeedbackToUser());
         assertEquals(List.of(validCompanyRole), modelStub.companyRolesAdded);
         assertEquals(List.of(companyName), modelStub.companyNamesAdded);
-        assertTrue(commandResult.isShowCompanyList());
+        assertTrue(commandResult.isShowRoleList());
         assertFalse(commandResult.isShowHelp());
         assertFalse(commandResult.isExit());
     }

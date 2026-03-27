@@ -4,6 +4,7 @@ import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE;
 import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE_DESC;
+import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 import static java.util.Objects.requireNonNull;
 
 import hitlist.commons.util.ToStringBuilder;
@@ -55,8 +56,7 @@ public class AddCompanyRoleCommand extends Command {
 
         model.addCompanyRole(companyName, role);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, role.getRoleName()),
-                false, false, true);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, role.getRoleName()), SHOW_ROLE_LIST);
     }
 
     @Override

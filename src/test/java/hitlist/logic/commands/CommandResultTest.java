@@ -1,5 +1,7 @@
 package hitlist.logic.commands;
 
+import static hitlist.ui.UiPaneVisibility.EXIT;
+import static hitlist.ui.UiPaneVisibility.SHOW_HELP_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,7 +16,6 @@ public class CommandResultTest {
 
         // same values -> returns true
         assertTrue(commandResult.equals(new CommandResult("feedback")));
-        assertTrue(commandResult.equals(new CommandResult("feedback", false, false)));
 
         // same object -> returns true
         assertTrue(commandResult.equals(commandResult));
@@ -28,11 +29,11 @@ public class CommandResultTest {
         // different feedbackToUser value -> returns false
         assertFalse(commandResult.equals(new CommandResult("different")));
 
-        // different showHelp value -> returns false
-        assertFalse(commandResult.equals(new CommandResult("feedback", true, false)));
+        // different UiPaneVisibility value -> returns false
+        assertFalse(commandResult.equals(new CommandResult("feedback", EXIT)));
 
-        // different exit value -> returns false
-        assertFalse(commandResult.equals(new CommandResult("feedback", false, true)));
+        // different UiPaneVisibility value -> returns false
+        assertFalse(commandResult.equals(new CommandResult("feedback", SHOW_HELP_MESSAGE)));
     }
 
     @Test
@@ -45,11 +46,11 @@ public class CommandResultTest {
         // different feedbackToUser value -> returns different hashcode
         assertNotEquals(commandResult.hashCode(), new CommandResult("different").hashCode());
 
-        // different showHelp value -> returns different hashcode
-        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", true, false).hashCode());
+        // different UiPaneVisibility value -> returns different hashcode
+        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", EXIT).hashCode());
 
-        // different exit value -> returns different hashcode
-        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", false, true).hashCode());
+        // different UiPaneVisibility value -> returns different hashcode
+        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", SHOW_HELP_MESSAGE).hashCode());
     }
 
     @Test

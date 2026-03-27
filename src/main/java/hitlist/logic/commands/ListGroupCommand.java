@@ -1,6 +1,7 @@
 package hitlist.logic.commands;
 
 import static hitlist.logic.parser.CliSyntax.PREFIX_GROUP;
+import static hitlist.ui.UiPaneVisibility.SHOW_GROUP_LIST;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Predicate;
@@ -70,7 +71,7 @@ public class ListGroupCommand extends Command {
 
         if (toList == null) {
             // Simply display all groups
-            return new CommandResult(MESSAGE_SUCCESS_2, false, false, false, true, false);
+            return new CommandResult(MESSAGE_SUCCESS_2, SHOW_GROUP_LIST);
         } else {
             return executeWithGroup(model);
         }

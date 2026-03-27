@@ -3,6 +3,7 @@ package hitlist.logic.commands;
 import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE;
+import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
@@ -82,7 +83,7 @@ public class DeleteCompanyRoleCommand extends Command {
         company.getUniqueRoleList().remove(roleToDelete);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS,
-                roleToDelete.getRoleName(), company.getName()), false, false, false, false, true);
+                roleToDelete.getRoleName(), company.getName()), SHOW_ROLE_LIST);
     }
 
     private Role deleteByIndex(Company company) throws CommandException {

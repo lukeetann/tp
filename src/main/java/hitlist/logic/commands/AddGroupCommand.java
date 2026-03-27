@@ -3,6 +3,7 @@ package hitlist.logic.commands;
 import static hitlist.commons.util.CollectionUtil.requireAllNonNull;
 import static hitlist.logic.parser.CliSyntax.PREFIX_GROUP;
 import static hitlist.logic.parser.CliSyntax.PREFIX_NAME;
+import static hitlist.ui.UiPaneVisibility.SHOW_GROUP_LIST;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Set;
@@ -75,7 +76,7 @@ public class AddGroupCommand extends Command {
             toAdd.addMember(member);
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.getName()));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.getName()), SHOW_GROUP_LIST);
     }
 
     @Override
