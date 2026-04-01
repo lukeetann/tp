@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import hitlist.logic.Messages;
@@ -32,7 +34,17 @@ import hitlist.model.company.CompanyName;
  */
 public class DeleteCompanyCommandTest {
 
-    private Model model = new ModelManager(getTypicalHitList(), new UserPrefs());
+    private Model model;
+
+    @BeforeEach
+    public void setUp() {
+        model = new ModelManager(getTypicalHitList(), new UserPrefs());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        model = null;
+    }
 
     @Test
     public void constructor_nullCompanyName_throwsNullPointerException() {
@@ -113,10 +125,11 @@ public class DeleteCompanyCommandTest {
 
     @Test
     public void execute_caseInsensitiveCompanyName_throwsCommandException() {
-        CompanyName lowercaseCompanyName = new CompanyName("google inc.");
-        DeleteCompanyCommand deleteCompanyCommand = new DeleteCompanyCommand(lowercaseCompanyName);
+        CompanyName caseMismatchedExistingName = new CompanyName("netflix");
+        DeleteCompanyCommand deleteCompanyCommand = new DeleteCompanyCommand(caseMismatchedExistingName);
 
-        String expectedMessage = String.format(DeleteCompanyCommand.MESSAGE_COMPANY_NOT_FOUND, lowercaseCompanyName);
+        String expectedMessage = String.format(DeleteCompanyCommand.MESSAGE_COMPANY_NOT_FOUND,
+                caseMismatchedExistingName);
 
         assertCommandFailure(deleteCompanyCommand, model, expectedMessage);
     }
