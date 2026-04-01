@@ -150,6 +150,299 @@ Classes used by multiple components are in the `hitlist.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Company Profile
+
+A `Company` object represents a company profile. It has the following details:
+* `companyName` (required): The name of the company.
+* `companyDescription` (required): A description of the company.
+* `companyRoles` (optional): A list of roles that the headhunter is recruiting for within the company.
+
+A `Role` object represents a role that the headhunter is recruiting for within a company. It has the following details:
+* `companyRole` (required): The name of the role.
+* `companyRoleDescription` (required): A description of the role.
+
+#### Design considerations for Company Parameters:
+
+**Aspect: Company Field Requirements:**
+* **Alternative 1 (current choice):** Both company name and description are required fields.
+    * Pros: Ensures that all company profiles have a minimum level of information, which can be useful for the headhunter to quickly identify and differentiate between companies.
+    * Cons: May be too restrictive for users who want to quickly add a company profile with minimal information and fill in the details later.
+
+* **Alternative 2:** Only the company name is required, while the description is optional.
+    * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
+    * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
+
+**Aspect: Validation of Company Names:**
+* **Alternative 1:** Use strict regex ^[\p{Alnum}][\p{Alnum} ]*$ to only allow alphanumeric characters and spaces. 
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI formatting. 
+    * Cons: Prevents users from adding companies with valid symbols in their names (e.g., 'LEAK X'PRESS' PLUMBING & CONSTRUCTION).
+
+* **Alternative 2 (current choice):** Use a custom regex [^[^\s/][^/\v]{1,29}$] (Must not start with a space, contain / or have newlines and be within the length limit of 2 to 30 characters).
+    * Pros: Highly flexible for the user. 
+    * Cons: Could allow completely nonsensical company names like !!! or ???.
+
+**Aspect: Validation of Company Description:**
+* **Alternative 1:** Use strict regex ^[\p{Alnum}][\p{Alnum} ]*$ to only allow alphanumeric characters and spaces.
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI formatting.
+    * Cons: Prevents users from adding companies with valid symbols in their names (e.g., 'LEAK X'PRESS' PLUMBING & CONSTRUCTION).
+
+* **Alternative 2 (current choice):** Use a custom regex [^[^\s/][^/\v]{1,999}$] (Must not start with a space, contain / or have newlines and be within the length limit of 2 to 1000 characters).
+    * Pros: Highly flexible for the user.
+    * Cons: Could allow completely nonsensical company names like !!! or ???.
+
+#### Design considerations for Company Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/c` for company name, `/d` for description).
+    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+    * Cons: Requires users to remember and use specific prefixes.
+
+* **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `cmpadd Google Tech Company`).
+    * Pros: Simpler command format, less typing for users.
+    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+
+**Aspect: Handling Duplicate Companies:**
+
+* **Alternative 1 (current choice):** Check for duplicates based on company name and reject the addition if a duplicate is found.
+    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+    * Cons: Does not account for edge cases where two distinct companies might share the same names.
+
+* **Alternative 2:** Allow duplicates but provide a warning to the user.
+    * Pros: Provides flexibility for users who may want to add similar companies, avoids false positives in duplicate detection.
+    * Cons: Can lead to a cluttered HitList and make it harder for users to manage their contacts effectively.
+
+#### Adding a company
+
+The AddCompany mechanism is facilitated by `AddCompanyCommand` and its associated parser `AddCompanyCommandParser`. It allows users to add a new company to the HitList.
+The feature implements the following key operations:
+
+* `AddCompanyCommandParser#parse()` — Parses the user input to extract the company name (indicated by the `/c` prefix) and the description (indicated by the `/d` prefix). 
+* `AddCompanyCommand#execute()` — Executes the logic to add the parsed company to the model. 
+* `Model#addCompany()` — Updates the HitList within the Model state with the newly created company.
+
+Given below is an example usage scenario and how the AddCompany mechanism behaves at each step.
+
+Step 1. The user launches the application and types `cmpadd /c Google /d Tech Company` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("cmpadd /c Google /d Tech Company")`.
+
+Step 3. Recognizing the `cmpadd` command word, the `HitListParser` instantiates an `AddCompanyCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /c Google /d Tech Company")` method of the newly created `AddCompanyCommandParser`. The parser extracts the company details, creates a new Company object (representing Google), and passes it into the constructor of a new `AddCompanyCommand`.
+
+<puml src="diagrams/add-company/CompanyAddParsing.puml" alt="CompanyAddObjectDiagram" />
+
+Step 5. The `AddCompanyCommand` is returned to the `LogicManager`, and the `AddCompanyCommandParser` is subsequently destroyed.
+
+<puml src="diagrams/add-company/CompanAddExecution.puml" alt="CompanyAddObjectDiagram" />
+
+Step 6. `LogicManager` calls `AddCompanyCommand#execute()`. This command calls `Model#addCompany(companyToAdd)`, passing the parsed company object to update the internal `HitList` state.
+
+Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+<puml src="diagrams/add-company/CompanyAddPostExecution.puml" alt="CompanyAddObjectDiagram" />
+
+The following sequence diagram shows how an AddCompany operation goes through the Logic component:
+
+<puml src="diagrams/add-company/CompanyAddSequenceDiagram-Logic.puml" alt="CompanyAddSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `AddCompanyCommand` and `AddCompanyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `cmpadd` command:
+
+<puml src="diagrams/add-company/CompanyAddActivityDiagram.puml" width="250" />
+
+#### Deleting a company
+
+The DeleteCompany mechanism is facilitated by `DeleteCompanyCommand` and its associated parser `DeleteCompanyCommandParser`. It allows users to remove an existing company from `HitList`, either by specifying its exact name or its displayed index in the UI.
+The feature implements the following key operations:
+
+* `DeleteCompanyCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a company name (indicated by the `/c` prefix).
+* `DeleteCompanyCommand#execute()` — Executes the logic to verify the target's existence and remove it from the model.
+* `Model#deleteCompany()` — Updates the HitList within the Model state by removing the specified company.
+
+Given below is an example usage scenario and how the DeleteCompany mechanism behaves at each step.
+
+Step 1. The user launches the application and types `cmpdel /c Google` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("cmpdel /c Google")`.
+
+Step 3. Recognizing the `cmpdel` command word, the `HitListParser` instantiates a `DeleteCompanyCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it. (Note: If the user had typed `cmpdel 1`, the parser would extract the index instead).
+
+<puml src="diagrams/delete-company/CompanyDeleteParsing.puml" alt="CompanyDeleteObjectDiagram" />
+
+Step 5. The `DeleteCompanyCommand` is returned to the `LogicManager`, and the `DeleteCompanyCommandParser` is subsequently destroyed.
+
+<puml src="diagrams/delete-company/CompanyDeleteExecution.puml" alt="CompanyDeleteObjectDiagram" />
+
+Step 6. `LogicManager` calls `DeleteCompanyCommand#execute()`. The command retrieves the target company and calls `Model#deleteCompany(target)` to remove it from the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+<puml src="diagrams/delete-company/CompanyDeletePostExecution.puml" alt="CompanyDeleteObjectDiagram" />
+
+The following sequence diagram shows how an AddCompany operation goes through the Logic component:
+
+<puml src="diagrams/delete-company/CompanyDeleteSequenceDiagram-Logic.puml" alt="CompanyDeleteSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCompanyCommand` and `DeleteCompanyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `cmpdel` command:
+
+<puml src="diagrams/delete-company/CompanyDeleteActivityDiagram.puml" width="250" />
+
+#### Design considerations for Roles Parameters:
+
+**Aspect: Company Field Requirements:**
+* **Alternative 1 (current choice):** Both role name and role description are required fields.
+    * Pros: Ensures that all roles have a minimum level of information, which can be useful for the headhunter to quickly identify the requirements of clients request.
+    * Cons: May be too restrictive for users who want to quickly add a role without the description first and fill in the details later.
+
+* **Alternative 2:** Only the company name is required, while the description is optional.
+    * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
+    * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
+
+**Aspect: Validation of Role Names:**
+* **Alternative 1:** Use strict regex ^[\p{Alnum}][\p{Alnum} ]*$ to only allow alphanumeric characters and spaces.
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI formatting.
+    * Cons: Prevents users from adding companies with valid symbols in their names (e.g., Front-end Developer).
+
+* **Alternative 2 (current choice):** Use a custom regex [^[^\s/][^/\v]{1,49}$] (Must not start with a space, contain / or have newlines and be within the length limit of 2 to 50 characters).
+    * Pros: Highly flexible for the user.
+    * Cons: Could allow completely nonsensical company names like !!! or ???.
+
+**Aspect: Validation of Role Description:**
+* **Alternative 1:** Use strict regex ^[\p{Alnum}][\p{Alnum} ]*$ to only allow alphanumeric characters and spaces.
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI formatting.
+    * Cons: Prevents users from adding companies with valid symbols in their names (e.g., Art Direction + Brand Identity).
+
+* **Alternative 2 (current choice):** Use a custom regex [^[^\s/][^/\v]{1,999}$] (Must not start with a space, contain / or have newlines and be within the length limit of 2 to 1000 characters).
+    * Pros: Highly flexible for the user.
+    * Cons: Could allow completely nonsensical company names like !!! or ???.
+
+#### Design considerations for Roles Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/c` for role name, `/d` for role description).
+    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+    * Cons: Requires users to remember and use specific prefixes.
+
+* **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `roleadd Software Engineer Develops Software`).
+    * Pros: Simpler command format, less typing for users.
+    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+
+**Aspect: Handling Duplicate Roles:**
+
+* **Alternative 1 (current choice):** Check for duplicates based on role name and reject the addition if a duplicate is found.
+    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+    * Cons: Does not account for edge cases where two distinct role might share the same names.
+
+* **Alternative 2:** Allow duplicates but provide a warning to the user.
+    * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
+    * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
+
+#### Adding a role to a specified company
+
+The AddRole mechanism is facilitated by `AddCompanyRoleCommand` and its associated parser `AddCompanyRoleCommandParser`. It allows users to add a new role to an existing company in the HitList.
+The feature implements the following key operations:
+
+* `AddCompanyRoleCommandParser#parse()` — Parses the user input to extract the target company (indicated by the `/c` prefix), role name (indicated by the `/r` prefix) and role description (indicated by the `/d` prefix).
+* `AddCompanyRoleCommand#execute()` — Executes the logic to add the parsed role to the target company in the model.
+* `Model#addCompanyRole()` — Updates the HitList within the Model state by adding the new role to the target company.
+
+Given below is an example usage scenario and how the AddRole mechanism behaves at each step.
+
+Step 1. The user launches the application and types `roleadd /c Google /r Software Engineer /d Develops Software` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roleadd /c Google /r Software Engineer /d Develops Software")`.
+
+Step 3. Recognizing the `roleadd` command word, the `HitListParser` instantiates an `AddCompanyRoleCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer /d Develops Software")` method of the newly created `AddCompanyRoleCommandParser`. The parser extracts the target company name, role details, creates a new Role object (representing Software Engineer), and passes it into the constructor of a new `AddCompanyRoleCommand`.
+
+<puml src="diagrams/add-role/RoleAddParsing.puml" alt="RoleAddObjectDiagram" />
+
+Step 5. The `AddCompanyRoleCommand` is returned to the `LogicManager`, and the `AddCompanyRoleCommandParser` is subsequently destroyed.
+
+<puml src="diagrams/add-role/RoleAddExecution.puml" alt="RoleAddObjectDiagram" />
+
+Step 6. `LogicManager` calls `AddCompanyRoleCommand#execute()`. This command calls `Model#addCompanyRole(targetCompany, roleToAdd)`, passing the target company and the parsed role object to update the internal `HitList` state.
+
+Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+<puml src="diagrams/add-role/RoleAddPostExecution.puml" alt="RoleAddObjectDiagram" />
+
+The following sequence diagram shows how an AddRole operation goes through the Logic component:
+
+<puml src="diagrams/add-role/RoleAddSequenceDiagram-Logic.puml" alt="RoleAddSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `AddCompanyRoleCommand` and `AddCompanyRoleCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `roleadd` command:
+
+<puml src="diagrams/add-role/RoleAddActivityDiagram.puml" width="250" />
+
+#### Deleting a role from a specified company
+
+The DeleteRole mechanism is facilitated by `DeleteCompanyRoleCommand` and its associated parser `DeleteCompanyRoleCommandParser`. It allows users to remove an existing role from a company in the HitList, either by specifying the role's name or its displayed index in the UI.
+The feature implements the following key operations:
+
+* `DeleteCompanyRoleCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a role name (indicated by the `/r` prefix), as well as the target company (indicated by the `/c` prefix).
+* `DeleteCompanyRoleCommand#execute()` — Executes the logic to verify the target's existence and remove it from the target company in the model.
+* `Model#deleteCompanyRole()` — Updates the HitList within the Model state by removing the specified role from the target company.
+
+Given below is an example usage scenario and how the DeleteRole mechanism behaves at each step.
+
+Step 1. The user launches the application and types `roledel /c Google /r Software Engineer` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roledel /c Google /r Software Engineer")`.
+
+Step 3. Recognizing the `roledel` command word, the `HitListParser` instantiates a `DeleteCompanyRoleCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it. (Note: If the user had typed `roledel /c Google 1`, the parser would extract the role index instead).
+
+<puml src="diagrams/delete-role/RoleDeleteParsing.puml" alt="RoleDeleteObjectDiagram" />
+
+Step 5. The `DeleteCompanyRoleCommand` is returned to the `LogicManager`, and the `DeleteCompanyRoleCommandParser` is subsequently destroyed.
+
+<puml src="diagrams/delete-role/RoleDeleteExecution.puml" alt="RoleDeleteObjectDiagram" />
+
+Step 6. `LogicManager` calls `DeleteCompanyRoleCommand#execute()`. The command retrieves the target company and role, and calls `Model#deleteCompanyRole(targetCompany, targetRole)` to remove the role from the target company in the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+<puml src="diagrams/delete-role/RoleDeletePostExecution.puml" alt="RoleDeleteObjectDiagram" />
+
+The following sequence diagram shows how a DeleteRole operation goes through the Logic component:
+
+<puml src="diagrams/delete-role/RoleDeleteSequenceDiagram-Logic.puml" alt="RoleDeleteSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCompanyRoleCommand` and `DeleteCompanyRoleCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `roledel` command:
+
+<puml src="diagrams/delete-role/RoleDeleteActivityDiagram.puml" width="250" />
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
