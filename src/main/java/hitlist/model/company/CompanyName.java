@@ -61,7 +61,7 @@ public class CompanyName {
         }
 
         CompanyName otherName = (CompanyName) other;
-        return companyName.toUpperCase().equals(otherName.companyName.toUpperCase());
+        return companyName.equalsIgnoreCase(otherName.companyName);
     }
 
     @Override
