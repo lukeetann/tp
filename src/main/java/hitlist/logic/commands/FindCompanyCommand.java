@@ -16,8 +16,8 @@ public class FindCompanyCommand extends Command {
 
     public static final String COMMAND_WORD = "cmpfind";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all companies whose names match "
-        + "the provided prefix (case-insensitive).\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all companies whose names contains "
+        + "the provided substring (case-insensitive).\n"
         + "Parameters: [KEYWORD]...\n"
         + "Example: " + COMMAND_WORD + " Google";
 
