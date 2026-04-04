@@ -57,50 +57,60 @@ public class PersonMatchesFindPredicateTest {
     }
 
     @Test
-    void test_nullInputsContainsIgnoreCase_returnsFalse() {
-        // Covers: str == null
-        assertFalse(containsIgnoreCase(null, "search"), "Should return false when str is null");
-
-        // Covers: str != null && searchStr == null
-        assertFalse(containsIgnoreCase("text", null), "Should return false when searchStr is null");
-
-        // Covers: both are null
-        assertFalse(containsIgnoreCase(null, null), "Should return false when both are null");
+    void test_nullMainString_returnsFalse() {
+        assertFalse(containsIgnoreCase(null, "search"),
+                "Should return false when main string is null");
     }
 
     @Test
-    void test_inputsContainsIgnoreCase_returnsTrue() {
-        // Exact match
+    void test_nullSearchString_returnsFalse() {
+        assertFalse(containsIgnoreCase("text", null),
+                "Should return false when search string is null");
+    }
+
+    @Test
+    void test_bothStringsNull_returnsFalse() {
+        assertFalse(containsIgnoreCase(null, null),
+                "Should return false when both strings are null");
+    }
+
+    @Test
+    void test_exactMatch_success() {
         assertTrue(containsIgnoreCase("Hello World", "Hello World"));
+    }
 
-        // Lowercase search string against mixed case
-        assertTrue(containsIgnoreCase("Hello World", "world"));
+    @Test
+    void test_mixedCaseMatch_success() {
+        // Tests that case is ignored
+        assertTrue(containsIgnoreCase("Hello World", "wOrLd"));
+    }
 
-        // Uppercase search string against mixed case
-        assertTrue(containsIgnoreCase("Hello World", "HELLO"));
-
-        // Substring in the middle
+    @Test
+    void test_substringMatch_success() {
+        // Tests a substring spanning multiple words
         assertTrue(containsIgnoreCase("Hello World", "lo wo"));
     }
 
     @Test
-    void test_inputsContainsIgnoreCase_returnsFalse() {
-        // Completely different string
-        assertFalse(containsIgnoreCase("Hello World", "Java"));
+    void test_emptySearchString_success() {
+        // Any non-null string contains an empty string
+        assertTrue(containsIgnoreCase("Hello", ""));
+    }
 
-        // Search string is longer than the base string
+    @Test
+    void test_completelyDifferentString_failure() {
+        assertFalse(containsIgnoreCase("Hello World", "Java"));
+    }
+
+    @Test
+    void test_searchStringLonger_failure() {
+        // A shorter string cannot contain a longer string
         assertFalse(containsIgnoreCase("Hello", "Hello World"));
     }
 
     @Test
-    void test_emptyStringContainsIgnoreCase_success() {
-        // Any string technically "contains" an empty string
-        assertTrue(containsIgnoreCase("Hello", ""));
-
-        // Empty string contains empty string
-        assertTrue(containsIgnoreCase("", ""));
-
-        // Empty string does not contain text
+    void test_emptyMainString_failure() {
+        // An empty string cannot contain a populated string
         assertFalse(containsIgnoreCase("", "Hello"));
     }
 
