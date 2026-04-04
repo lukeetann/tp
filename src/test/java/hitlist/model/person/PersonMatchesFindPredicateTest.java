@@ -40,11 +40,11 @@ public class PersonMatchesFindPredicateTest {
     }
 
     @Test
-    public void test_nameMidWordSubstring_returnsFalse() {
+    public void test_nameMidWordSubstring_returnsTrue() {
         PersonMatchesFindPredicate predicate =
                 new PersonMatchesFindPredicate(Arrays.asList("ans"));
 
-        assertFalse(predicate.test(new PersonBuilder().withName("Hans Gruber").build()));
+        assertTrue(predicate.test(new PersonBuilder().withName("Hans Gruber").build()));
     }
 
     @Test
