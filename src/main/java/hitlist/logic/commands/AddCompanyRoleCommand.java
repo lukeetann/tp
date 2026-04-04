@@ -55,6 +55,7 @@ public class AddCompanyRoleCommand extends Command {
         }
 
         model.addCompanyRole(companyName, role);
+        model.updateRoleList(companyName);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, role.getRoleName()), SHOW_ROLE_LIST);
     }

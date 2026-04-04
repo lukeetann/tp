@@ -162,5 +162,9 @@ public class AddCompanyRoleCommandTest {
             companyNamesAdded.add(companyName);
             companyRolesAdded.add(role);
         }
+
+        @Override
+        public void updateRoleList(CompanyName companyName) {
+        }
     }
 }
