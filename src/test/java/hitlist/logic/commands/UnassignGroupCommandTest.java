@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,8 @@ public class UnassignGroupCommandTest {
     public void execute_validPersonAndGroup_removeSuccessful() throws Exception {
         Group validGroup = new Group(new GroupName(VALID_GROUP_NAME_STUDENTS));
         validGroup.addMember(AMY);
-        ModelStub modelStub = new ModelStubWithPersonAndGroup(AMY, validGroup);
+
+        ModelStubWithPersonAndGroup modelStub = new ModelStubWithPersonAndGroup(AMY, validGroup);
         UnassignGroupCommand command = new UnassignGroupCommand(AMY.getName(), validGroup.getName());
 
         CommandResult commandResult = command.execute(modelStub);
@@ -46,6 +48,7 @@ public class UnassignGroupCommandTest {
         assertEquals(String.format(UnassignGroupCommand.MESSAGE_SUCCESS, AMY.getName(), validGroup.getName()),
                 commandResult.getFeedbackToUser());
         assertFalse(validGroup.getMembers().contains(AMY));
+        assertTrue(modelStub.isUpdateFilteredPersonListCalled());
     }
 
     @Test
@@ -130,6 +133,7 @@ public class UnassignGroupCommandTest {
     private class ModelStubWithPersonAndGroup extends ModelStub {
         private final Person person;
         private final Group group;
+        private Predicate<Person> lastPredicate;
 
         ModelStubWithPersonAndGroup(Person person, Group group) {
             requireNonNull(person);
@@ -148,6 +152,16 @@ public class UnassignGroupCommandTest {
         public Optional<Group> getGroup(GroupName groupName) {
             requireNonNull(groupName);
             return group.getName().equals(groupName) ? Optional.of(group) : Optional.empty();
+        }
+
+        @Override
+        public void updateFilteredPersonList(Predicate<Person> predicate) {
+            requireNonNull(predicate);
+            lastPredicate = predicate;
+        }
+
+        boolean isUpdateFilteredPersonListCalled() {
+            return lastPredicate != null;
         }
     }
 
