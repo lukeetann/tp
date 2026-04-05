@@ -5,6 +5,7 @@ import static hitlist.logic.parser.CliSyntax.PREFIX_NAME;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import hitlist.commons.util.ToStringBuilder;
 import hitlist.logic.commands.exceptions.CommandException;
@@ -13,6 +14,7 @@ import hitlist.model.group.Group;
 import hitlist.model.group.GroupName;
 import hitlist.model.person.Name;
 import hitlist.model.person.Person;
+import hitlist.model.person.PersonInGroupPredicate;
 
 /**
  * Removes an existing contact from an existing group.
@@ -75,6 +77,9 @@ public class UnassignGroupCommand extends Command {
         }
 
         targetGroup.removeMember(personToUnassign);
+
+        Predicate<Person> predicate = new PersonInGroupPredicate(targetGroup);
+        model.updateFilteredPersonList(predicate);
 
         return new CommandResult(String.format(
                 MESSAGE_SUCCESS,
