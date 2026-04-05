@@ -1,5 +1,6 @@
 package hitlist.logic.commands;
 
+import static hitlist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static hitlist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static hitlist.model.Model.PREDICATE_SHOW_ALL_COMPANIES;
 import static hitlist.testutil.TypicalCompanies.getTypicalHitList;
@@ -54,13 +55,7 @@ public class ListCompanyCommandTest {
         CompanyName companyName = new CompanyName("NonExistentCompany");
         ListCompanyCommand command = new ListCompanyCommand(companyName);
 
-        // Expected model should remain unchanged except for filtered list reset
-        expectedModel.updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
-
-        assertCommandSuccess(command, model,
-                new CommandResult(
-                        String.format(ListCompanyCommand.MESSAGE_NO_COMPANY_FOUND, companyName),
-                        SHOW_COMPANY_LIST),
-                expectedModel);
+        assertCommandFailure(command, model,
+                String.format(ListCompanyCommand.MESSAGE_NO_COMPANY_FOUND, companyName));
     }
 }
