@@ -181,6 +181,14 @@ Deletes the specified contact group from HitList.
 
 Format: `grpdel /g GROUP_NAME`
 
+<box type="warning" header="Deleting a contact group **does not delete the contacts** in that group from HitList.">
+    For example, if `John Doe` is in the `Students` group, and the `Students` group is deleted, `John Doe` will still be in HitList but will no longer be associated with any contact group.
+</box>
+
+<box type="info">
+    Group Names are currently case-insensitive, so "Students" and "students" are considered different groups. Hence, deleting "students" will delete the "Students" group.
+</box>
+
 Examples:
 * `grpdel /g Admins`
 
@@ -189,12 +197,6 @@ Examples:
 * `grpdel /g Unemployed`
 
 <img width="738" height="601" alt="Deletion of group Unemployed in HitList" src="images/ug/Grpadd_Experienced.png" />
-
-> !NOTE
-> Deleting a contact group does not delete the contacts in that group from HitList. It only deletes the group itself and the association of the contacts to that group.
-> e.g. if `John Doe` is in the `Students` group, and the `Students` group is deleted, `John Doe` will still be in HitList but will no longer be associated with any contact group.
->
-> Group Names are currently case-sensitive, so `Students` and `students` are considered different groups. Hence, deleting `students` will not delete the `Students` group.
 
 ### Listing contacts in a contact group : `grplist`
 
