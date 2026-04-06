@@ -9,14 +9,14 @@ import hitlist.model.Model;
 import hitlist.model.company.CompanyMatchesFindPredicate;
 
 /**
- * Finds and lists all companies in hitlist whose company name contains any of the argument keywords.
+ * Finds and lists all companies in HitList whose company name contains any of the argument keywords.
  * Keyword matching is case-insensitive.
  */
 public class FindCompanyCommand extends Command {
 
     public static final String COMMAND_WORD = "cmpfind";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all companies whose names contains "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all companies whose names contain "
         + "the provided substring (case-insensitive).\n"
         + "Parameters: [KEYWORD]...\n"
         + "Example: " + COMMAND_WORD + " Google";
