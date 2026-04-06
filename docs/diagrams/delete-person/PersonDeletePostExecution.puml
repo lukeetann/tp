@@ -1,0 +1,16 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+object "<u>:HitList</u>" as HitList MODEL_COLOR
+object "<u>:UniquePersonList</u>" as UniquePersonList MODEL_COLOR
+
+ModelManager --> "1" HitList
+HitList --> "1" UniquePersonList
+note right of UniquePersonList
+The matching Person object
+has been removed
+end note
+@enduml

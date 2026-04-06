@@ -1,0 +1,15 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:LogicManager</u>" as LogicManager LOGIC_COLOR
+object "<u>c:DeleteGroupCommand</u>" as DeleteGroupCommand LOGIC_COLOR
+object "<u>toDelete:Group</u>" as Group MODEL_COLOR
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+
+LogicManager --> "1" DeleteGroupCommand : executes >
+DeleteGroupCommand --> "1" Group : contains >
+DeleteGroupCommand ..> ModelManager : passes target to >
+Group : groupName = "Students"
+@enduml

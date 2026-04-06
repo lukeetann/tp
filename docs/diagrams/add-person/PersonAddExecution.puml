@@ -1,0 +1,19 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:LogicManager</u>" as LogicManager LOGIC_COLOR
+object "<u>c:AddCommand</u>" as AddCommand LOGIC_COLOR
+object "<u>toAdd:Person</u>" as Person MODEL_COLOR
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+
+LogicManager --> "1" AddCommand : executes >
+AddCommand --> "1" Person : contains >
+AddCommand ..> ModelManager : passes toAdd to >
+
+Person : name = "John Doe"
+Person : phone = "98765432"
+Person : email = "johnd@example.com"
+Person : address = "311, Clementi Ave 2, #02-25"
+@enduml

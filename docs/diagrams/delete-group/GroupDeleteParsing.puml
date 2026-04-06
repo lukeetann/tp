@@ -1,0 +1,16 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:HitListParser</u>" as HitListParser LOGIC_COLOR
+object "<u>:DeleteGroupCommandParser</u>" as DeleteGroupCommandParser LOGIC_COLOR
+object "<u>c:DeleteGroupCommand</u>" as DeleteGroupCommand LOGIC_COLOR
+object "<u>toDelete:Group</u>" as Group MODEL_COLOR
+
+HitListParser ..> DeleteGroupCommandParser : creates >
+DeleteGroupCommandParser ..> DeleteGroupCommand : creates >
+DeleteGroupCommand --> "1" Group : contains >
+
+Group : groupName = "Students"
+@enduml

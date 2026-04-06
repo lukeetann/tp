@@ -1,0 +1,19 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:HitListParser</u>" as HitListParser LOGIC_COLOR
+object "<u>:AddCommandParser</u>" as AddCommandParser LOGIC_COLOR
+object "<u>c:AddCommand</u>" as AddCommand LOGIC_COLOR
+object "<u>toAdd:Person</u>" as Person MODEL_COLOR
+
+HitListParser ..> AddCommandParser : creates >
+AddCommandParser ..> AddCommand : creates >
+AddCommand --> "1" Person : contains >
+
+Person : name = "John Doe"
+Person : phone = "98765432"
+Person : email = "johnd@example.com"
+Person : address = "311, Clementi Ave 2, #02-25"
+@enduml

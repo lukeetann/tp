@@ -1,0 +1,18 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:LogicManager</u>" as LogicManager LOGIC_COLOR
+object "<u>c:AddGroupCommand</u>" as AddGroupCommand LOGIC_COLOR
+object "<u>toAdd:Group</u>" as Group MODEL_COLOR
+object "<u>memberNames:Set&lt;Name&gt;</u>" as MemberNames MODEL_COLOR
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+
+LogicManager --> "1" AddGroupCommand : executes >
+AddGroupCommand --> "1" Group : contains >
+AddGroupCommand --> "1" MemberNames : contains >
+AddGroupCommand ..> ModelManager : passes group to >
+Group : groupName = "Students"
+MemberNames : {"Alex Yeoh", "Bernice Yu"}
+@enduml

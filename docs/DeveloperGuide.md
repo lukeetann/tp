@@ -443,6 +443,276 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <puml src="diagrams/delete-role/RoleDeleteActivityDiagram.puml" width="250" />
 
+### Person
+
+A `Person` object represents a contact in the HitList. It has the following details:
+
+* `name` (required): The contact's name.
+* `phone` (required): The contact's phone number.
+* `email` (optional): The contact's email address.
+* `address` (optional): The contact's address.
+
+#### Design considerations for Person Parameters:
+
+**Aspect: Person Field Requirements:**
+
+* **Alternative 1 (current choice):** Require both name and phone, while keeping email and address optional.
+    * Pros: Ensures every contact has enough information for the headhunter to identify and reach out to the person.
+    * Cons: Requires slightly more typing than a minimal single-field command.
+* **Alternative 2:** Make only the phone number required and treat the name as optional.
+    * Pros: Speeds up quick data entry when the user only wants to capture a lead.
+    * Cons: Makes the contact list harder to read and distinguish during later follow-up.
+
+**Aspect: Handling Duplicate Persons:**
+
+* **Alternative 1 (current choice):** Reject duplicates based on the contact's phone number.
+    * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
+    * Cons: It does not handle the edge case where the same person legitimately uses more than one number.
+* **Alternative 2:** Reject duplicates based on the full set of person fields.
+    * Pros: Allows multiple entries that share a phone number but differ in other details.
+    * Cons: Makes duplicate detection weaker and increases the chance of cluttering HitList with repeated contacts.
+
+#### Design considerations for Person Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/n` for name, `/p` for phone, `/e` for email and `/a` for address).
+    * Pros: Clear and unambiguous parsing of parameters, especially when values contain spaces.
+    * Cons: Requires the user to remember the prefixes.
+* **Alternative 2:** Use a fixed parameter order without prefixes.
+    * Pros: Slightly shorter command format.
+    * Cons: Parsing becomes more brittle when optional fields are involved.
+
+#### Adding a person
+
+The AddPerson mechanism is facilitated by `AddCommand` and its associated parser `AddCommandParser`. It allows users to add a new contact to HitList.
+
+The feature implements the following key operations:
+
+* `AddCommandParser#parse()` — Parses the user input to extract the contact name, phone number, and any optional email or address.
+* `AddCommand#execute()` — Executes the logic to add the parsed person to the model.
+* `Model#addPerson()` — Updates the HitList within the Model state with the newly created person.
+
+Given below is an example usage scenario and how the AddPerson mechanism behaves at each step.
+
+Step 1. The user launches the application and types `add /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("add /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25")`.
+
+Step 3. Recognizing the `add` command word, the `HitListParser` instantiates an `AddCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25")` method of the newly created `AddCommandParser`. The parser extracts the person details, creates a new `Person` object (representing John Doe), and passes it into the constructor of a new `AddCommand`.
+
+Step 5. The `AddCommand` is returned to the `LogicManager`, and the `AddCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `AddCommand#execute()`. This command calls `Model#addPerson(toAdd)`, passing the parsed person object to update the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+![](diagrams/add-person/PersonAddParsing.puml)
+
+The following object diagram shows the important objects involved during execution:
+
+![](diagrams/add-person/PersonAddExecution.puml)
+
+The following object diagram shows the model state after successful execution:
+
+![](diagrams/add-person/PersonAddPostExecution.puml)
+
+The following sequence diagram shows how an AddPerson operation goes through the Logic component:
+
+![](diagrams/add-person/PersonAddSequenceDiagram-Logic.puml)
+
+**Note:** The lifeline for `AddCommand` and `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+The following activity diagram summarizes what happens when a user executes the `add` command:
+
+![](diagrams/add-person/PersonAddActivityDiagram.puml)
+
+#### Deleting a person
+
+The DeletePerson mechanism is facilitated by `DeleteCommand` and its associated parser `DeleteCommandParser`. It allows users to remove an existing person from HitList, either by specifying the displayed index in the UI or the person's exact name.
+
+The feature implements the following key operations:
+
+* `DeleteCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a name (indicated by the `/n` prefix).
+* `DeleteCommand#execute()` — Executes the logic to verify the target's existence and remove it from the model.
+* `Model#deletePerson()` — Updates the HitList within the Model state by removing the specified person.
+
+Given below is an example usage scenario and how the DeletePerson mechanism behaves at each step.
+
+Step 1. The user launches the application and types `delete /n John Doe` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("delete /n John Doe")`.
+
+Step 3. Recognizing the `delete` command word, the `HitListParser` instantiates a `DeleteCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /n John Doe")` method of the newly created `DeleteCommandParser`. The parser extracts the target name, creates a new `DeleteCommand` targeting `John Doe`, and returns it. (Note: If the user had typed `delete 1`, the parser would extract the index instead.)
+
+Step 5. The `DeleteCommand` is returned to the `LogicManager`, and the `DeleteCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `DeleteCommand#execute()`. The command retrieves the target person and calls `Model#deletePerson(target)` to remove it from the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+![](diagrams/delete-person/PersonDeleteParsing.puml)
+
+The following object diagram shows the important objects involved during execution:
+
+![](diagrams/delete-person/PersonDeleteExecution.puml)
+
+The following object diagram shows the model state after successful execution:
+
+![](diagrams/delete-person/PersonDeletePostExecution.puml)
+
+The following sequence diagram shows how a DeletePerson operation goes through the Logic component:
+
+![](diagrams/delete-person/PersonDeleteSequenceDiagram-Logic.puml)
+
+**Note:** The lifeline for `DeleteCommand` and `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+The following activity diagram summarizes what happens when a user executes the `delete` command:
+
+![](diagrams/delete-person/PersonDeleteActivityDiagram.puml)
+
+### Group
+
+A `Group` object represents a contact group in HitList. It has the following details:
+
+* `groupName` (required): The name of the group.
+* `members` (optional): A set of contacts that belong to the group.
+
+#### Design considerations for Group Parameters:
+
+**Aspect: Group Field Requirements:**
+
+* **Alternative 1 (current choice):** Require a group name and make member names optional.
+    * Pros: Allows users to create an empty group first and populate it later.
+    * Cons: The command may produce groups that are temporarily incomplete.
+* **Alternative 2:** Require at least one member when creating a group.
+    * Pros: Ensures every group is meaningful immediately after creation.
+    * Cons: Prevents users from creating placeholder groups for future shortlisting work.
+
+#### Design considerations for Group Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/g` for group name and repeated `/n` prefixes for member names).
+    * Pros: Supports variable numbers of members while keeping parsing explicit.
+    * Cons: Slightly increases typing for the user.
+* **Alternative 2:** Accept the group name first and treat all remaining tokens as member names.
+    * Pros: Shorter command format.
+    * Cons: Harder to parse correctly when names contain spaces.
+
+**Aspect: Handling Duplicate Groups:**
+
+* **Alternative 1 (current choice):** Reject duplicates based on group name.
+    * Pros: Prevents users from creating multiple groups with the same purpose and display name.
+    * Cons: Different groups that intentionally share a name cannot coexist.
+* **Alternative 2:** Allow duplicate group names and rely on the user to manage them manually.
+    * Pros: More flexible.
+    * Cons: Makes group operations such as deletion and listing more error-prone.
+
+#### Adding a group
+
+The AddGroup mechanism is facilitated by `AddGroupCommand` and its associated parser `AddGroupCommandParser`. It allows users to add a new contact group to HitList, optionally with members that already exist in the contact list.
+
+The feature implements the following key operations:
+
+* `AddGroupCommandParser#parse()` — Parses the user input to extract the group name (indicated by the `/g` prefix) and zero or more member names (indicated by the `/n` prefix).
+* `AddGroupCommand#execute()` — Executes the logic to add the parsed group to the model and resolve any provided member names against existing contacts.
+* `Model#addGroup()` — Updates the HitList within the Model state with the newly created group.
+
+Given below is an example usage scenario and how the AddGroup mechanism behaves at each step.
+
+Step 1. The user launches the application and types `grpadd /g Students /n Alex Yeoh /n Bernice Yu` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grpadd /g Students /n Alex Yeoh /n Bernice Yu")`.
+
+Step 3. Recognizing the `grpadd` command word, the `HitListParser` instantiates an `AddGroupCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /g Students /n Alex Yeoh /n Bernice Yu")` method of the newly created `AddGroupCommandParser`. The parser extracts the group details, creates a new `Group` object (representing `Students`) together with the set of member names, and passes them into the constructor of a new `AddGroupCommand`.
+
+Step 5. The `AddGroupCommand` is returned to the `LogicManager`, and the `AddGroupCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `AddGroupCommand#execute()`. This command calls `Model#addGroup(toAdd)` to add the group to the internal HitList state, and then resolves each provided member name against existing contacts before adding the matched `Person` objects to the group.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+![](diagrams/add-group/GroupAddParsing.puml)
+
+The following object diagram shows the important objects involved during execution:
+
+![](diagrams/add-group/GroupAddExecution.puml)
+
+The following object diagram shows the model state after successful execution:
+
+![](diagrams/add-group/GroupAddPostExecution.puml)
+
+The following sequence diagram shows how an AddGroup operation goes through the Logic component:
+
+![](diagrams/add-group/GroupAddSequenceDiagram-Logic.puml)
+
+**Note:** The lifeline for `AddGroupCommand` and `AddGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+The following activity diagram summarizes what happens when a user executes the `grpadd` command:
+
+![](diagrams/add-group/GroupAddActivityDiagram.puml)
+
+#### Deleting a group
+
+The DeleteGroup mechanism is facilitated by `DeleteGroupCommand` and its associated parser `DeleteGroupCommandParser`. It allows users to remove an existing contact group from HitList by specifying its exact name.
+
+The feature implements the following key operations:
+
+* `DeleteGroupCommandParser#parse()` — Parses the user input to extract the target group name (indicated by the `/g` prefix).
+* `DeleteGroupCommand#execute()` — Executes the logic to verify the target group's existence and remove it from the model.
+* `Model#deleteGroup()` — Updates the HitList within the Model state by removing the specified group.
+
+Given below is an example usage scenario and how the DeleteGroup mechanism behaves at each step.
+
+Step 1. The user launches the application and types `grpdel /g Students` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grpdel /g Students")`.
+
+Step 3. Recognizing the `grpdel` command word, the `HitListParser` instantiates a `DeleteGroupCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /g Students")` method of the newly created `DeleteGroupCommandParser`. The parser extracts the target group name, creates a new `DeleteGroupCommand` targeting `Students`, and returns it.
+
+Step 5. The `DeleteGroupCommand` is returned to the `LogicManager`, and the `DeleteGroupCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `DeleteGroupCommand#execute()`. The command retrieves the target group and calls `Model#deleteGroup(toDelete)` to remove it from the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+![](diagrams/delete-group/GroupDeleteParsing.puml)
+
+The following object diagram shows the important objects involved during execution:
+
+![](diagrams/delete-group/GroupDeleteExecution.puml)
+
+The following object diagram shows the model state after successful execution:
+
+![](diagrams/delete-group/GroupDeletePostExecution.puml)
+
+The following sequence diagram shows how a DeleteGroup operation goes through the Logic component:
+
+![](diagrams/delete-group/GroupDeleteSequenceDiagram-Logic.puml)
+
+**Note:** The lifeline for `DeleteGroupCommand` and `DeleteGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+The following activity diagram summarizes what happens when a user executes the `grpdel` command:
+
+![](diagrams/delete-group/GroupDeleteActivityDiagram.puml)
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation

@@ -1,0 +1,19 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+object "<u>:HitList</u>" as HitList MODEL_COLOR
+object "<u>:UniquePersonList</u>" as UniquePersonList MODEL_COLOR
+object "<u>:Person</u>" as Person MODEL_COLOR
+
+ModelManager --> "1" HitList
+HitList --> "1" UniquePersonList
+UniquePersonList --> "*" Person : contains >
+
+Person : name = "John Doe"
+Person : phone = "98765432"
+Person : email = "johnd@example.com"
+Person : address = "311, Clementi Ave 2, #02-25"
+@enduml

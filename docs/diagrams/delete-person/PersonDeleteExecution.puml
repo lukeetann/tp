@@ -1,0 +1,15 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+show objects
+
+object "<u>:LogicManager</u>" as LogicManager LOGIC_COLOR
+object "<u>c:DeleteCommand</u>" as DeleteCommand LOGIC_COLOR
+object "<u>targetName:Name</u>" as Name MODEL_COLOR
+object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+
+LogicManager --> "1" DeleteCommand : executes >
+DeleteCommand --> "1" Name : contains >
+DeleteCommand ..> ModelManager : passes target to >
+Name : fullName = "John Doe"
+@enduml

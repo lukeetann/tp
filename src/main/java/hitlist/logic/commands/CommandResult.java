@@ -47,7 +47,7 @@ public class CommandResult {
     }
 
     /**
-     * Constructs a {@code CommandResult} with the specified fields.
+     * Constructs a {@code CommandResult} with help/exit flags only.
      */
     public CommandResult(String feedbackToUser, UiPaneVisibility paneToShow) {
         this(feedbackToUser, paneToShow.isHelp(), paneToShow.isExit(), paneToShow.isCompanyList(),
@@ -93,7 +93,6 @@ public class CommandResult {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof CommandResult)) {
             return false;
         }
@@ -123,5 +122,4 @@ public class CommandResult {
                 .add("showRoleList", showRoleList)
                 .toString();
     }
-
 }
