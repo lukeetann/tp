@@ -6,6 +6,7 @@ import static hitlist.ui.UiPaneVisibility.SHOW_COMPANY_LIST;
 import static hitlist.ui.UiPaneVisibility.SHOW_ROLE_LIST;
 import static java.util.Objects.requireNonNull;
 
+import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.Model;
 import hitlist.model.company.CompanyName;
 
@@ -52,7 +53,7 @@ public class ListCompanyCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         if (isListAllCompanies()) {
             model.updateFilteredCompanyList(PREDICATE_SHOW_ALL_COMPANIES);
@@ -61,7 +62,7 @@ public class ListCompanyCommand extends Command {
             model.updateRoleList(name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name), SHOW_ROLE_LIST);
         } else {
-            return new CommandResult(String.format(MESSAGE_NO_COMPANY_FOUND, name), SHOW_COMPANY_LIST);
+            throw new CommandException(String.format(MESSAGE_NO_COMPANY_FOUND, name));
         }
     }
 }
