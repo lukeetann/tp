@@ -83,6 +83,21 @@ public class AddCompanyRoleCommandTest {
     }
 
     @Test
+    public void execute_companyNotFound_throwsCommandException() {
+        Role validCompanyRole = new RoleBuilder()
+                .withName("Valid Role Name")
+                .withDescription("Valid Role Description")
+                .build();
+        CompanyName companyName = new CompanyName("NonExistentCompany");
+        AddCompanyRoleCommand addCompanyRoleCommand = new AddCompanyRoleCommand(validCompanyRole, companyName);
+        ModelStub modelStub = new ModelStubWithNoCompany(validCompanyRole, companyName);
+
+        String expectedMessage = String.format(ListCompanyCommand.MESSAGE_NO_COMPANY_FOUND, companyName);
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCompanyRoleCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         Role roleA = new RoleBuilder()
                 .withName(VALID_ROLE_NAME_SOFTWARE_ENGINEER)
@@ -149,6 +164,26 @@ public class AddCompanyRoleCommandTest {
         @Override
         public boolean hasCompanyByName(CompanyName companyName) {
             return this.companyName.equals(companyName);
+        }
+
+        @Override
+        public boolean hasCompanyRole(CompanyName companyName, Role role) {
+            return this.companyName.equals(companyName) && this.role.isSameRole(role);
+        }
+    }
+
+    private static class ModelStubWithNoCompany extends ModelStub {
+        private final Role role;
+        private final CompanyName companyName;
+
+        ModelStubWithNoCompany(Role role, CompanyName companyName) {
+            this.role = role;
+            this.companyName = companyName;
+        }
+
+        @Override
+        public boolean hasCompanyByName(CompanyName companyName) {
+            return false;
         }
 
         @Override
