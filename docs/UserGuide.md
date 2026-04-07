@@ -475,10 +475,10 @@ Example:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before deletion of company Meta" src="images/ug/Before_Cmpdel_Google.png" />
+    <img class="img-fluid" alt="Before deletion of company Google" src="images/ug/Before_Cmpdel_Google.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of company Meta" src="images/ug/Cmpdel_Google.png" />
+    <img class="img-fluid" alt="Deletion of company Google" src="images/ug/Cmpdel_Google.png" />
   </div>
 </div>
 
