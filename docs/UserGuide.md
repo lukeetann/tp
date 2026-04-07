@@ -12,6 +12,39 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Table of Contents
+
+* [HitList User Guide](#hitlist-user-guide)
+    * [Quick start](#quick-start)
+    * [Features](#features)
+        * [Viewing help : `help`](#viewing-help--help)
+        * [Adding a contact : `add`](#adding-a-contact--add)
+        * [Editing a contact : `edit`](#editing-a-contact--edit)
+        * [Deleting a contact : `delete`](#deleting-a-contact--delete)
+        * [Listing all contacts : `list`](#listing-all-contacts--list)
+        * [Locating contacts : `find`](#locating-contacts--find)
+        * [Adding a contact group : `grpadd`](#adding-a-contact-group--grpadd)
+        * [Deleting a contact group : `grpdel`](#deleting-a-contact-group--grpdel)
+        * [Listing contacts in a contact group : `grplist`](#listing-contacts-in-a-contact-group--grplist)
+        * [Assigning a contact to a contact group : `grpassign`](#assigning-a-contact-to-a-contact-group--grpassign)
+        * [Unassigning a contact from a contact group : `grpunassign`](#unassigning-a-contact-from-a-contact-group--grpunassign)
+        * [Adding a company : `cmpadd`](#adding-a-company--cmpadd)
+        * [Deleting a company : `cmpdel`](#deleting-a-company--cmpdel)
+        * [Listing all Companies : `cmplist`](#listing-all-companies--cmplist)
+        * [Locating companies : `cmpfind`](#locating-companies--cmpfind)
+        * [Adding a role to a company : `roleadd`](#adding-a-role-to-a-company--roleadd)
+        * [Deleting a role from a company : `roledel`](#deleting-a-role-from-a-company--roledel)
+        * [Clearing all entries : `clear`](#clearing-all-entries--clear)
+        * [Exiting the program : `exit`](#exiting-the-program--exit)
+        * [Saving the data](#saving-the-data)
+        * [Editing the data file](#editing-the-data-file)
+        * [Archiving data files `[coming in v2.0]`](#archiving-data-files-coming-in-v20)
+    * [Glossary](#glossary)
+    * [FAQ](#faq)
+    * [Command summary](#command-summary)
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## Quick start
 
 1. Ensure you have Java `17` or above installed in your Computer.
@@ -32,11 +65,11 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 7. Type the command in the command box and press Enter to execute it.
    e.g. typing **`help`** and pressing Enter will open the help window.
 8. Some example commands you can try:
-   * `add /n John Doe /p 98765432` : Adds a contact named `John Doe` to the HitList.
-   * `list` : Lists all contacts.
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
-   * `clear` : Deletes all contacts.
-   * `exit` : Exits the app.
+    * `add /n John Doe /p 98765432` : Adds a contact named `John Doe` to the HitList.
+    * `list` : Lists all contacts.
+    * `delete 3` : Deletes the 3rd contact shown in the current list.
+    * `clear` : Deletes all contacts.
+    * `exit` : Exits the app.
 9. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------

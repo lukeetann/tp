@@ -11,6 +11,49 @@ pageNav: 3
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Table of Contents
+
+* [HitList Developer Guide](#hitlist-developer-guide)
+    * [Acknowledgements](#acknowledgements)
+    * [Setting up, getting started](#setting-up-getting-started)
+    * [Design](#design)
+        * [Architecture](#architecture)
+        * [UI component](#ui-component)
+        * [Logic component](#logic-component)
+        * [Model component](#model-component)
+        * [Storage component](#storage-component)
+        * [Common classes](#common-classes)
+    * [Implementation](#implementation)
+        * [Company Profile](#company-profile)
+            * [Design considerations for Company Parameters:](#design-considerations-for-company-parameters)
+            * [Design considerations for Company Commands:](#design-considerations-for-company-commands)
+            * [Adding a company](#adding-a-company)
+            * [Deleting a company](#deleting-a-company)
+            * [Design considerations for Roles Parameters:](#design-considerations-for-roles-parameters)
+            * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
+            * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
+            * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
+        * [\[Proposed\] Undo/redo feature](#proposed-undoredo-feature)
+            * [Proposed Implementation](#proposed-implementation)
+            * [Design considerations:](#design-considerations)
+        * [\[Proposed\] Data archiving](#proposed-data-archiving)
+    * [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+    * [Appendix: Requirements](#appendix-requirements)
+        * [Product scope](#product-scope)
+        * [User stories](#user-stories)
+        * [Use cases](#use-cases)
+        * [Non-Functional Requirements](#non-functional-requirements)
+        * [Contact Non-Functional Requirements](#contact-non-functional-requirements)
+        * [Contact Group Non-Functional Requirements](#contact-group-non-functional-requirements)
+        * [Company Profile Non-Functional Requirements](#company-profile-non-functional-requirements)
+        * [Glossary](#glossary)
+    * [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
+        * [Launch and shutdown](#launch-and-shutdown)
+        * [Deleting a person](#deleting-a-person)
+        * [Saving data](#saving-data)
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## **Acknowledgements**
 
 This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
