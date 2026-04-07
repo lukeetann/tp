@@ -263,7 +263,7 @@ Format: `find [KEYWORD]...`
   e.g. `han` matches `Hans`
 * Name search uses substring matching.
   e.g. `Ha` matches `Hans`
-  e.g. `an` does not match `Hans`
+  e.g. `an` matches `Hans`
 * If multiple name keywords are given, a contact matching any one of them is returned.
 
 Examples:
@@ -360,26 +360,27 @@ Examples:
 
 ### Listing contacts in a contact group : `grplist`
 
-Lists all the contacts who are members of a specified contact group.
+List all contact groups in HitList. Optionally, if a group name is specified, shows a list of contact members in that group.
 
-Format: `grplist /g GROUP_NAME`
+Format: `grplist [/g GROUP_NAME]`
 
 Examples:
-* `grplist /g Students`
+
+* `grplist`
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List group members of Students group" src="images/ug/Grplist_Students.png" />
+    <img class="img-fluid" alt="List all groups in HitList" src="images/ug/Grplist.png" />
   </div>
 </div>
 
 <br>
 
-* `grplist /g Experienced`
+* `grplist /g Students`
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List group members of Experienced group" src="images/ug/Grplist_Experienced.png" />
+    <img class="img-fluid" alt="List group members of Students group" src="images/ug/Grplist_Students.png" />
   </div>
 </div>
 
@@ -537,7 +538,7 @@ Example:
 
 ### Listing all Companies : `cmplist`
 
-Shows a list of all companies in the HitList.
+Shows a list of all companies in the HitList. Optionally, if a company name is specified, shows the details of that company and its roles.
 
 Format: `cmplist [/c COMPANY_NAME]`
 * If the company name is specified, shows the details of that company and its roles.
