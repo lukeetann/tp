@@ -75,8 +75,8 @@ public class DeleteCommand extends Command {
     }
 
     private CommandResult executeByName(Model model) throws CommandException {
-        List<Person> lastShownList = model.getFilteredPersonList();
-        Person personToDelete = lastShownList.stream()
+        List<Person> nameMatches = model.getPersonsByName(targetName);
+        Person personToDelete = nameMatches.stream()
                 .filter(person -> person.getName().equals(targetName))
                 .findFirst()
                 .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_PERSON_NOT_FOUND, targetName)));
