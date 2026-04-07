@@ -65,8 +65,6 @@ public class AddGroupCommand extends Command {
             throw new CommandException(String.format(MESSAGE_DUPLICATE_GROUP, toAdd.getName()));
         }
 
-        model.addGroup(toAdd);
-
         for (Name memberName : memberNames) {
             Person member = model.getHitList().getPersonList().stream()
                 .filter(person -> person.getName().equals(memberName))
@@ -75,6 +73,8 @@ public class AddGroupCommand extends Command {
 
             toAdd.addMember(member);
         }
+
+        model.addGroup(toAdd);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.getName()), SHOW_GROUP_LIST);
     }
