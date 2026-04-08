@@ -56,7 +56,7 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <pic src="/images/Ui.png" alt="Ui"></pic>
+    <pic src="images/ug/Ui.png" alt="Ui"></pic>
   </div>
 </div>
 
@@ -557,7 +557,13 @@ Example:
 
 * `cmplist /c Google Inc.`
 
-* <img width="738" height="601" alt="List details of company Google in HitList" src="images/ug/Cmplist_Google.png" />
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8">
+    <img class="img-fluid" alt="List details of company Google in HitList" src="images/ug/Cmplist_Google.png" />
+  </div>
+</div>
+
+<br>
 
 ### Locating companies : `cmpfind`
 
