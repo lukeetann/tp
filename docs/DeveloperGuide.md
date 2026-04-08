@@ -649,7 +649,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 For all use cases below, the **System** is the `HitList`, **Actor** is the `user` and **Precondition** is the `app actively runs and runs on Java 17`, unless specified otherwise
 
-**Use case 1: Add a contact**
+<box header="#### Use case 1: Add a contact">
 
 **MSS**
 
@@ -665,8 +665,9 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
     * 1a1. System shows previously added contact with the same phone number message
 
     Use case ends.
+</box>
 
-**Use case 2: Delete a contact**
+<box header="#### Use case 2: Delete a contact">
 
 **MSS**
 
@@ -682,8 +683,9 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
     * 1a1. System shows requested contact does not exist message
 
     Use case ends.
+</box>
 
-**Use case 3: Edit a contact's details**
+<box header="#### Use case 3: Edit a contact's details">
 
 **MSS**
 
@@ -692,8 +694,9 @@ Similar to Use case 1 (Add a contact), except the user requests to edit an exist
 **Extensions**
 
 Same as Use case 1 (Add a contact).
+</box>
 
-**Use case 4: List contacts**
+<box header="#### Use case 4: List contacts">
 
 **MSS**
 
@@ -708,8 +711,9 @@ Same as Use case 1 (Add a contact).
     * 2a1. System shows contact list is empty message
 
     Use case ends.
+</box>
 
-**Use case 5: Add a contact group**
+<box header="#### Use case 5: Add a contact group">
 
 **MSS**
 
@@ -721,8 +725,9 @@ Similar to Use case 1 (Add a contact), except the user requests to add a contact
     * 1a1. System shows contact group already exists message
 
     Use case ends.
+</box>
 
-**Use case 6: Delete a contact group**
+<box header="#### Use case 6: Delete a contact group">
 
 **MSS**
 
@@ -734,8 +739,9 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
     * 1a1. System shows contact group does not exist message
 
     Use case ends.
+</box>
 
-**Use case 7: List contact groups**
+<box header="#### Use case 7: List contact groups">
 
 **MSS**
 
@@ -747,8 +753,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
     * 2a1. System shows no contact groups message
 
     Use case ends.
+</box>
 
-**Use case 8: Add a contact to a contact group**
+<box header="#### Use case 8: Add a contact to a contact group">
 
 **MSS**
 
@@ -770,8 +777,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
     * 3c1. System shows contact does not exist message
 
     Use case ends.
+</box>
 
-**Use case 9: Remove contacts from contact group**
+<box header="#### Use case 9: Remove contacts from contact group">
 
 **MSS**
 
@@ -791,8 +799,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
     * 1c1. System shows contact does not exist message
 
     Use case ends.
+</box>
 
-**Use case 10: List contact group members**
+<box header="#### Use case 10: List contact group members">
 
 **MSS**
 
@@ -809,8 +818,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
     * 2a1. System shows contact group has no members message
 
   Use case ends.
+</box>
 
-**Use case 11: Add a company profile**
+<box header="#### Use case 11: Add a company profile">
 
 **MSS**
 
@@ -822,8 +832,9 @@ Similar to Use case 1 (Add a contact), except the user requests to add a company
     * 1a1. System shows company profile already exists message
 
     Use case ends.
+</box>
 
-**Use case 12: Delete a company profile**
+<box header="#### Use case 12: Delete a company profile">
 
 **MSS**
 
@@ -835,8 +846,9 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
     * 1a1. System shows company profile does not exist message
 
     Use case ends.
+</box>
 
-**Use case 13: List company profiles**
+<box header="#### Use case 13: List company profiles">
 
 **MSS**
 
@@ -848,8 +860,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
     * 2a1. System shows no company profiles message
 
     Use case ends.
+</box>
 
-**Use case 14: Add role to company profile**
+<box header="#### Use case 14: Add role to company profile">
 
 **MSS**
 
@@ -868,8 +881,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
     *  2b1. System shows company role already exists message
 
     Use case ends.
+</box>
 
-**Use case 15: Delete company role from company profile**
+<box header="#### Use case 15: Delete company role from company profile">
 
 **MSS**
 
@@ -887,8 +901,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
     * 1b1. System shows company role does not exist message
 
     Use case ends.
+</box>
 
-**Use case 16: List a specific company profile**
+<box header="#### Use case 16: List a specific company profile">
 
 **MSS**
 
@@ -906,6 +921,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
     * 3a1. System shows company has no active roles message
 
     Use case ends.
+</box>
 
 ---
 
