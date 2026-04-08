@@ -739,29 +739,29 @@ _Details coming soon ..._
 
 ## FAQ
 
-**Q**: Who is the intended user for HitList?
+<box header="Who is the intended user for HitList?" type="info" light>
+    HitList is optimized for headhunters managing extensive lists of contacts, roles, and companies, but it remains fully usable by anyone needing efficient contact management.
+</box>
 
-**A**: HitList is optimized for headhunters managing extensive lists of contacts, roles, and companies, but it remains fully usable by anyone needing efficient contact management.
+<box header="How do I save my progress?" type="info" light>
+    There is no need to save manually. HitList automatically saves all changes to a JSON file on your hard drive immediately after any command alters the data.
+</box>
 
-**Q**: How do I save my progress?
+<box header="Can I undo a deletion?" type="info" light>
+    No. Commands that remove data, such as deleting contacts, groups, companies, or clearing the entire list, are irreversible and execute immediately without a confirmation prompt. Exercise caution.
+</box>
 
-**A**: There is no need to save manually. HitList automatically saves all changes to a JSON file on your hard drive immediately after any command alters the data.
+<box header="How do I transfer my data to another computer?" type="info" light>
+    Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous HitList home folder.
+</box>
 
-**Q**: Can I undo a deletion?
+<box header="What should I do if the application opens offscreen after I disconnect a second monitor?" type="info" light>
+    Locate and delete the preferences.json file in your application folder. This will force HitList to regenerate its display settings and open visibly on your primary screen the next time you launch it.
+</box>
 
-**A**: No. Commands that remove data, such as deleting contacts, groups, companies, or clearing the entire list, are irreversible and execute immediately without a confirmation prompt. Exercise caution.
-
-**Q**: How do I transfer my data to another Computer?
-
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous HitList home folder.
-
-**Q**: What should I do if the application opens offscreen after I disconnect a second monitor?
-
-**A**: Locate and delete the preferences.json file in your application folder. This will force HitList to regenerate its display settings and open visibly on your primary screen the next time you launch it.
-
-**Q**: Can I edit the data file directly?
-
-**A**: Yes, advanced users can directly edit the hitlist.json file. However, if the formatting becomes invalid, the application will wipe the file and start fresh. It is highly recommended to back up your data before making direct edits.
+<box header="Can I edit the data file directly?" type="info" light>
+    Yes, advanced users can directly edit the hitlist.json file. However, if the formatting becomes invalid, the application will wipe the file and start fresh. It is highly recommended to back up your data before making direct edits.
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
