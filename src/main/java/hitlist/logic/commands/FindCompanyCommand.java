@@ -17,9 +17,14 @@ public class FindCompanyCommand extends Command {
     public static final String COMMAND_WORD = "cmpfind";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all companies whose names contain "
-        + "the provided substring (case-insensitive).\n"
-        + "Parameters: [KEYWORD]...\n"
-        + "Example: " + COMMAND_WORD + " Google";
+            + "the provided substring (case-insensitive).\n"
+            + "Parameters: KEYWORD...\n"
+            + "Note: Each keyword must be a valid company name format.\n"
+            + "Example: " + COMMAND_WORD + " Google";
+
+    public static final String MESSAGE_INVALID_KEYWORD = "Invalid search keyword: '%s'\n"
+            + "Search keywords must be valid company names. %s\n"
+            + "Example: " + COMMAND_WORD + " Google";
 
     private final CompanyMatchesFindPredicate predicate;
 
@@ -37,8 +42,8 @@ public class FindCompanyCommand extends Command {
         }
 
         return new CommandResult(
-            String.format(Messages.MESSAGE_COMPANY_LISTED_OVERVIEW,
-                    model.getFilteredCompanyList().size()), SHOW_COMPANY_LIST);
+                String.format(Messages.MESSAGE_COMPANY_LISTED_OVERVIEW,
+                        model.getFilteredCompanyList().size()), SHOW_COMPANY_LIST);
     }
 
     @Override
@@ -56,7 +61,7 @@ public class FindCompanyCommand extends Command {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .add("predicate", predicate)
-            .toString();
+                .add("predicate", predicate)
+                .toString();
     }
 }

@@ -77,6 +77,51 @@ public class FindCompanyCommandTest {
     }
 
     @Test
+    public void execute_singleKeyword_singleCompanyFound() {
+        String expectedMessage = String.format(MESSAGE_COMPANY_LISTED_OVERVIEW, 1);
+        CompanyMatchesFindPredicate predicate = preparePredicate("Google");
+
+        FindCompanyCommand command = new FindCompanyCommand(predicate);
+        expectedModel.updateFilteredCompanyList(predicate);
+
+        CommandResult expectedCommandResult = new CommandResult(
+                expectedMessage, UiPaneVisibility.SHOW_COMPANY_LIST);
+
+        assertCommandSuccess(command, model, expectedCommandResult, expectedModel);
+        assertEquals(Arrays.asList(GOOGLE), model.getFilteredCompanyList());
+    }
+
+    @Test
+    public void execute_partialKeywordMatch_companyFound() {
+        String expectedMessage = String.format(MESSAGE_COMPANY_LISTED_OVERVIEW, 1);
+        CompanyMatchesFindPredicate predicate = preparePredicate("Goo");
+
+        FindCompanyCommand command = new FindCompanyCommand(predicate);
+        expectedModel.updateFilteredCompanyList(predicate);
+
+        CommandResult expectedCommandResult = new CommandResult(
+                expectedMessage, UiPaneVisibility.SHOW_COMPANY_LIST);
+
+        assertCommandSuccess(command, model, expectedCommandResult, expectedModel);
+        assertEquals(Arrays.asList(GOOGLE), model.getFilteredCompanyList());
+    }
+
+    @Test
+    public void execute_keywordCaseInsensitive_companyFound() {
+        String expectedMessage = String.format(MESSAGE_COMPANY_LISTED_OVERVIEW, 1);
+        CompanyMatchesFindPredicate predicate = preparePredicate("google"); // lowercase
+
+        FindCompanyCommand command = new FindCompanyCommand(predicate);
+        expectedModel.updateFilteredCompanyList(predicate);
+
+        CommandResult expectedCommandResult = new CommandResult(
+                expectedMessage, UiPaneVisibility.SHOW_COMPANY_LIST);
+
+        assertCommandSuccess(command, model, expectedCommandResult, expectedModel);
+        assertEquals(Arrays.asList(GOOGLE), model.getFilteredCompanyList());
+    }
+
+    @Test
     public void toStringMethod() {
         CompanyMatchesFindPredicate predicate =
                 new CompanyMatchesFindPredicate(Arrays.asList("keyword"));
@@ -87,7 +132,7 @@ public class FindCompanyCommandTest {
     }
 
     /**
-     * Parses {@code userInput} into a {@code PersonMatchesFindPredicate}.
+     * Parses {@code userInput} into a {@code CompanyMatchesFindPredicate}.
      */
     private CompanyMatchesFindPredicate preparePredicate(String userInput) {
         return new CompanyMatchesFindPredicate(Arrays.asList(userInput.split("\\s+")));
