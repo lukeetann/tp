@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import hitlist.logic.Messages;
 import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.ModelStub;
+import hitlist.model.company.Company;
 import hitlist.model.company.CompanyName;
 import hitlist.model.company.role.Role;
 import hitlist.model.company.role.RoleDescription;
@@ -50,7 +51,9 @@ public class AddCompanyRoleCommandTest {
                 .withName("Valid Role Name")
                 .withDescription("Valid Role Description")
                 .build();
-        CompanyName companyName = new CompanyBuilder().withName(VALID_COMPANY_NAME_GOOGLE).build().getCompanyName();
+        Company google = new CompanyBuilder().withName(VALID_COMPANY_NAME_GOOGLE).build();
+        modelStub.addCompany(google);
+        CompanyName companyName = google.getCompanyName();
 
         CommandResult commandResult = new AddCompanyRoleCommand(validCompanyRole, companyName).execute(modelStub);
 
@@ -76,6 +79,21 @@ public class AddCompanyRoleCommandTest {
 
         String expectedMessage = String.format(AddCompanyRoleCommand.MESSAGE_DUPLICATE_COMPANY_ROLE,
                 validCompanyRole.getRoleName());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCompanyRoleCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_companyNotFound_throwsCommandException() {
+        Role validCompanyRole = new RoleBuilder()
+                .withName("Valid Role Name")
+                .withDescription("Valid Role Description")
+                .build();
+        CompanyName companyName = new CompanyName("NonExistentCompany");
+        AddCompanyRoleCommand addCompanyRoleCommand = new AddCompanyRoleCommand(validCompanyRole, companyName);
+        ModelStub modelStub = new ModelStubWithNoCompany(validCompanyRole, companyName);
+
+        String expectedMessage = String.format(ListCompanyCommand.MESSAGE_NO_COMPANY_FOUND, companyName);
 
         assertThrows(CommandException.class, expectedMessage, () -> addCompanyRoleCommand.execute(modelStub));
     }
@@ -147,6 +165,31 @@ public class AddCompanyRoleCommandTest {
         }
 
         @Override
+        public boolean hasCompanyByName(CompanyName companyName) {
+            return this.companyName.equals(companyName);
+        }
+
+        @Override
+        public boolean hasCompanyRole(CompanyName companyName, Role role) {
+            return this.companyName.equals(companyName) && this.role.isSameRole(role);
+        }
+    }
+
+    private static class ModelStubWithNoCompany extends ModelStub {
+        private final Role role;
+        private final CompanyName companyName;
+
+        ModelStubWithNoCompany(Role role, CompanyName companyName) {
+            this.role = role;
+            this.companyName = companyName;
+        }
+
+        @Override
+        public boolean hasCompanyByName(CompanyName companyName) {
+            return false;
+        }
+
+        @Override
         public boolean hasCompanyRole(CompanyName companyName, Role role) {
             return this.companyName.equals(companyName) && this.role.isSameRole(role);
         }
@@ -158,12 +201,21 @@ public class AddCompanyRoleCommandTest {
 
         @Override
         public boolean hasCompanyRole(CompanyName companyName, Role role) {
-            return companyNamesAdded.contains(companyName) && companyRolesAdded.contains(role);
+            return companyRolesAdded.contains(role);
+        }
+
+        @Override
+        public boolean hasCompanyByName(CompanyName companyName) {
+            return companyNamesAdded.contains(companyName);
+        }
+
+        @Override
+        public void addCompany(Company company) {
+            companyNamesAdded.add(company.getCompanyName());
         }
 
         @Override
         public void addCompanyRole(CompanyName companyName, Role role) {
-            companyNamesAdded.add(companyName);
             companyRolesAdded.add(role);
         }
 

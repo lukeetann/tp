@@ -6,11 +6,11 @@
 # HitList
 
 [![CI Status](https://github.com/AY2526S2-CS2103T-W11-2/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103T-W11-2/tp/actions)
-[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp/graph/badge.svg?token=Y8F23W06X3)](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp/graph/badge.svg)](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp)
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <pic src="/images/Ui.png" alt="Ui"></pic>
+    <pic src="images/ug/Ui.png" alt="Ui"></pic>
   </div>
 </div>
 

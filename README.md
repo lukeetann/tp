@@ -1,16 +1,18 @@
 [![CI Status](https://github.com/AY2526S2-CS2103T-W11-2/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103T-W11-2/tp/actions)
-[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp/graph/badge.svg?token=Y8F23W06X3)](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp/graph/badge.svg)](https://codecov.io/gh/AY2526S2-CS2103T-W11-2/tp)
 
 # HitList
 
-![Ui](docs/images/ug/Ui.png)
+<p align="center">
+  <img src="docs/images/ug/Ui.png" alt="Ui of HitList" width="80%">
+</p>
 
 # About
 
 HitList helps headhunters and recruiters to alleviate the logistics of matching candidates to clients.
 
 # Installation
-This project uses Java 17. Ensure that your system is setup with a Java 17 JDK.
+This project uses Java 17. Ensure that your system is set up with a Java 17 JDK.
 
 You can clone this project using the `git clone` command on the command line:
 ```
