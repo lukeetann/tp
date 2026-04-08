@@ -55,6 +55,10 @@ public class AddCompanyRoleCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        if (!model.hasCompanyByName(companyName)) {
+            throw new CommandException(String.format(ListCompanyCommand.MESSAGE_NO_COMPANY_FOUND, companyName));
+        }
+
         if (model.hasCompanyRole(companyName, role)) {
             throw new CommandException(String.format(MESSAGE_DUPLICATE_COMPANY_ROLE, role.getRoleName()));
         }
