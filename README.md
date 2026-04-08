@@ -3,11 +3,11 @@
 
 # HitList
 
-![Ui](docs/images/Ui.png)
+![Ui](docs/images/ug/Ui.png)
 
 # About
 
-HitList helps headhunters and recruiters to alleivate the logistics of matching candidates to clients.
+HitList helps headhunters and recruiters to alleviate the logistics of matching candidates to clients.
 
 # Installation
 This project uses Java 17. Ensure that your system is setup with a Java 17 JDK.
