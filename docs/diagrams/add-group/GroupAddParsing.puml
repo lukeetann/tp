@@ -1,4 +1,4 @@
-@startuml group-add-parsing /' Renames the file to kebab-case when exported as an image.'/
+@startuml group-add-parsing
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
@@ -10,14 +10,17 @@ skinparam ObjectBorderColor #FFFFFF
 show objects
 show members
 
-object "<u>:HitListParser</u>" as HitListParser LOGIC_COLOR
-object "<u>:AddGroupCommandParser</u>" as AddGroupCommandParser LOGIC_COLOR
-object "<u>c:AddGroupCommand</u>" as AddGroupCommand LOGIC_COLOR
-object "<u>toAdd:Group</u>" as Group MODEL_COLOR
+object ":HitListParser" as HitListParser LOGIC_COLOR
+object ":AddGroupCommandParser" as AddGroupCommandParser LOGIC_COLOR
+object "c:AddGroupCommand" as AddGroupCommand LOGIC_COLOR
+object "toAdd:Group" as Group MODEL_COLOR
+object "memberNames:Set<Name>" as MemberNames MODEL_COLOR
 
 HitListParser ..> AddGroupCommandParser : creates >
 AddGroupCommandParser ..> AddGroupCommand : creates >
 AddGroupCommand --> Group : contains >
+AddGroupCommand --> MemberNames : contains >
 
 Group : groupName = "Students"
+MemberNames : {"Alex Yeoh", "Bernice Yu"}
 @enduml

@@ -6,9 +6,6 @@ pageNav: 3
 
 # HitList Developer Guide
 
-<!-- * Table of Contents -->
-<page-nav-print />
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## Table of Contents
@@ -35,16 +32,6 @@ pageNav: 3
             * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
             * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
             * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
-        * [Groups](#groups)
-            * [Design considerations for Group Parameters:](#design-considerations-for-group-parameters)
-            * [Design considerations for Group Commands:](#design-considerations-for-group-commands)
-            * [Adding a group](#adding-a-group)
-            * [Deleting a group](#deleting-a-group)
-            * [Listing all groups](#listing-all-groups)
-            * [Finding a group](#finding-a-group)
-            * [Assigning a contact to a group](#adding-a-contact-to-a-group)
-            * [Removing a contact from a group](#removing-a-contact-from-a-group)
-            * [Listing all contacts in a group](#listing-all-contacts-in-a-group)
         * [\[Proposed\] Undo/redo feature](#proposed-undoredo-feature)
             * [Proposed Implementation](#proposed-implementation)
             * [Design considerations:](#design-considerations)
@@ -70,7 +57,6 @@ pageNav: 3
 
 This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
 
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
@@ -82,8 +68,6 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 ## **Design**
 
 ### Architecture
-
-<puml src="diagrams/ArchitectureDiagram.puml" width="280" />
 
 The ***Architecture Diagram*** given above explains the high-level design of the App.
 
@@ -117,7 +101,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point. For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface.
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -133,15 +117,16 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S2-CS2103T-W11-2/tp/blob/master/src/main/java/hitlist/ui/Ui.java)
 
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `CompanyListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 <div class="text-center">
   <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 </div>
 
 <br>
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `CompanyListPanel`,  `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103T-W11-2/tp/blob/master/src/main/java/hitlist/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103T-W11-2/tp/blob/master/src/main/resources/view/MainWindow.fxml)
+For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103T-W11-2/tp/blob/master/src/main/java/hitlist/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103T-W11-2/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -173,14 +158,13 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 <box type="info" seamless>
 
 **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</box>
 
 How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to a `HitListParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).
+1. Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -192,6 +176,7 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <br>
 
 How the parsing works:
+
 * When called upon to parse a user command, the `HitListParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `HitListParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
@@ -222,6 +207,7 @@ The `Model` component,
 <br>
 
 The `Storage` component,
+
 * can save both HitList data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `HitListStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
@@ -236,27 +222,305 @@ Classes used by multiple components are in the `hitlist.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Person
+
+A `Person` object represents a contact in the HitList. It has the following details:
+
+* `name` (required): The contact's name.
+* `phone` (required): The contact's phone number.
+* `email` (optional): The contact's email address.
+* `address` (optional): The contact's address.
+
+#### Design considerations for Person Parameters:
+
+**Aspect: Person Field Requirements:**
+
+* **Alternative 1 (current choice):** Require both name and phone, while keeping email and address optional.
+  * Pros: Ensures every contact has enough information for the headhunter to identify and reach out to the person.
+  * Cons: Requires slightly more typing than a minimal single-field command.
+* **Alternative 2:** Make only the phone number required and treat the name as optional.
+  * Pros: Speeds up quick data entry when the user only wants to capture a lead.
+  * Cons: Makes the contact list harder to read and distinguish during later follow-up.
+
+**Aspect: Handling Duplicate Persons:**
+
+* **Alternative 1 (current choice):** Reject duplicates based on the contact's phone number.
+  * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
+  * Cons: It does not handle the edge case where the same person legitimately uses more than one number.
+* **Alternative 2:** Reject duplicates based on the full set of person fields.
+  * Pros: Allows multiple entries that share a phone number but differ in other details.
+  * Cons: Makes duplicate detection weaker and increases the chance of cluttering HitList with repeated contacts.
+
+#### Design considerations for Person Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/n` for name, `/p` for phone, `/e` for email and `/a` for address).
+  * Pros: Clear and unambiguous parsing of parameters, especially when values contain spaces.
+  * Cons: Requires the user to remember the prefixes.
+* **Alternative 2:** Use a fixed parameter order without prefixes.
+  * Pros: Slightly shorter command format.
+  * Cons: Parsing becomes more brittle when optional fields are involved.
+
+#### Adding a person
+
+The AddPerson mechanism is facilitated by `AddCommand` and its associated parser `AddCommandParser`. It allows users to add a new contact to HitList. The feature implements the following key operations:
+
+* `AddCommandParser#parse()` — Parses the user input to extract the contact name, phone number, and any optional email or address.
+* `AddCommand#execute()` — Executes the logic to add the parsed person to the model.
+* `Model#addPerson()` — Updates the HitList within the Model state with the newly created person.
+
+Given below is an example usage scenario and how the AddPerson mechanism behaves at each step.
+
+Step 1. The user launches the application and types `add /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("add /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25")`.
+
+Step 3. Recognizing the `add` command word, the `HitListParser` instantiates an `AddCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25")` method of the newly created `AddCommandParser`. The parser extracts the person details, creates a new `Person` object (representing John Doe), and passes it into the constructor of a new `AddCommand`.
+
+Step 5. The `AddCommand` is returned to the `LogicManager`, and the `AddCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `AddCommand#execute()`. This command calls `Model#addPerson(toAdd)`, passing the parsed person object to update the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+<puml src="diagrams/add-person/PersonAddParsing.puml" alt="PersonAddParsing" />
+
+The following object diagram shows the important objects involved during execution:
+
+<puml src="diagrams/add-person/PersonAddExecution.puml" alt="PersonAddExecution" />
+
+The following object diagram shows the model state after successful execution:
+
+<puml src="diagrams/add-person/PersonAddPostExecution.puml" alt="PersonAddPostExecution" />
+
+The following sequence diagram shows how an AddPerson operation goes through the Logic component:
+
+<puml src="diagrams/add-person/PersonAddSequenceDiagram-Logic.puml" alt="PersonAddSequenceDiagramLogic" />
+
+<box type="info" seamless header="Note">
+**Note:** The lifeline for `AddCommand` and `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `add` command:
+
+<puml src="diagrams/add-person/PersonAddActivityDiagram.puml" alt="PersonAddActivityDiagram" />
+
+#### Deleting a person
+
+The DeletePerson mechanism is facilitated by `DeleteCommand` and its associated parser `DeleteCommandParser`. It allows users to remove an existing person from HitList, either by specifying the displayed index in the UI or the person's exact name.
+
+The feature implements the following key operations:
+
+* `DeleteCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a name (indicated by the `/n` prefix).
+* `DeleteCommand#execute()` — Executes the logic to verify the target's existence and remove it from the model.
+* `Model#deletePerson()` — Updates the HitList within the Model state by removing the specified person.
+
+Given below is an example usage scenario and how the DeletePerson mechanism behaves at each step.
+
+Step 1. The user launches the application and types `delete /n John Doe` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("delete /n John Doe")`.
+
+Step 3. Recognizing the `delete` command word, the `HitListParser` instantiates a `DeleteCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /n John Doe")` method of the newly created `DeleteCommandParser`. The parser extracts the target name, creates a new `DeleteCommand` targeting `John Doe`, and returns it. (Note: If the user had typed `delete 1`, the parser would extract the index instead.)
+
+Step 5. The `DeleteCommand` is returned to the `LogicManager`, and the `DeleteCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `DeleteCommand#execute()`. The command retrieves the target person and calls `Model#deletePerson(target)` to remove it from the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+<puml src="diagrams/delete-person/PersonDeleteParsing.puml" alt="PersonDeleteParsing" />
+
+The following object diagram shows the important objects involved during execution:
+
+<puml src="diagrams/delete-person/PersonDeleteExecution.puml" alt="PersonDeleteExecution" />
+
+The following object diagram shows the model state after successful execution:
+
+<puml src="diagrams/delete-person/PersonDeletePostExecution.puml" alt="PersonDeletePostExecution" />
+
+The following sequence diagram shows how a DeletePerson operation goes through the Logic component:
+
+<puml src="diagrams/delete-person/PersonDeleteSequenceDiagram-Logic.puml" alt="PersonDeleteSequenceDiagramLogic" />
+
+<box type="info" seamless header="Note">
+**Note:** The lifeline for `DeleteCommand` and `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `delete` command:
+
+<puml src="diagrams/delete-person/PersonDeleteActivityDiagram.puml" alt="PersonDeleteActivityDiagram" />
+
+### Group
+
+A `Group` object represents a contact group in HitList. It has the following details:
+
+* `groupName` (required): The name of the group.
+* `members` (optional): A set of contacts that belong to the group.
+
+#### Design considerations for Group Parameters:
+
+**Aspect: Group Field Requirements:**
+
+* **Alternative 1 (current choice):** Require a group name and make member names optional.
+  * Pros: Allows users to create an empty group first and populate it later.
+  * Cons: The command may produce groups that are temporarily incomplete.
+* **Alternative 2:** Require at least one member when creating a group.
+  * Pros: Ensures every group is meaningful immediately after creation.
+  * Cons: Prevents users from creating placeholder groups for future shortlisting work.
+
+#### Design considerations for Group Commands:
+
+**Aspect: Command Format for Parameters:**
+
+* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/g` for group name and repeated `/n` prefixes for member names).
+  * Pros: Supports variable numbers of members while keeping parsing explicit.
+  * Cons: Slightly increases typing for the user.
+* **Alternative 2:** Accept the group name first and treat all remaining tokens as member names.
+  * Pros: Shorter command format.
+  * Cons: Harder to parse correctly when names contain spaces.
+
+**Aspect: Handling Duplicate Groups:**
+
+* **Alternative 1 (current choice):** Reject duplicates based on group name.
+  * Pros: Prevents users from creating multiple groups with the same purpose and display name.
+  * Cons: Different groups that intentionally share a name cannot coexist.
+* **Alternative 2:** Allow duplicate group names and rely on the user to manage them manually.
+  * Pros: More flexible.
+  * Cons: Makes group operations such as deletion and listing more error-prone.
+
+#### Adding a group
+
+The AddGroup mechanism is facilitated by `AddGroupCommand` and its associated parser `AddGroupCommandParser`. It allows users to add a new contact group to HitList, optionally with members that already exist in the contact list.
+
+The feature implements the following key operations:
+
+* `AddGroupCommandParser#parse()` — Parses the user input to extract the group name (indicated by the `/g` prefix) and zero or more member names (indicated by the `/n` prefix).
+* `AddGroupCommand#execute()` — Executes the logic to add the parsed group to the model and resolve any provided member names against existing contacts.
+* `Model#addGroup()` — Updates the HitList within the Model state with the newly created group.
+
+Given below is an example usage scenario and how the AddGroup mechanism behaves at each step.
+
+Step 1. The user launches the application and types `grpadd /g Students /n Alex Yeoh /n Bernice Yu` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grpadd /g Students /n Alex Yeoh /n Bernice Yu")`.
+
+Step 3. Recognizing the `grpadd` command word, the `HitListParser` instantiates an `AddGroupCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /g Students /n Alex Yeoh /n Bernice Yu")` method of the newly created `AddGroupCommandParser`. The parser extracts the group details, creates a new `Group` object (representing `Students`) together with the set of member names, and passes them into the constructor of a new `AddGroupCommand`.
+
+Step 5. The `AddGroupCommand` is returned to the `LogicManager`, and the `AddGroupCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `AddGroupCommand#execute()`. This command calls `Model#addGroup(toAdd)` to add the group to the internal HitList state, and then resolves each provided member name against existing contacts before adding the matched `Person` objects to the group.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+<puml src="diagrams/add-group/GroupAddParsing.puml" alt="GroupAddParsing" />
+
+The following object diagram shows the important objects involved during execution:
+
+<puml src="diagrams/add-group/GroupAddExecution.puml" alt="GroupAddExecution" />
+
+The following object diagram shows the model state after successful execution:
+
+<puml src="diagrams/add-group/GroupAddPostExecution.puml" alt="GroupAddPostExecution" />
+
+The following sequence diagram shows how an AddGroup operation goes through the Logic component:
+
+<puml src="diagrams/add-group/GroupAddSequenceDiagram-Logic.puml" alt="GroupAddSequenceDiagramLogic" />
+
+<box type="info" seamless header="Note">
+**Note:** The lifeline for `AddGroupCommand` and `AddGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `grpadd` command:
+
+<puml src="diagrams/add-group/GroupAddActivityDiagram.puml" alt="GroupAddActivityDiagram" />
+
+#### Deleting a group
+
+The DeleteGroup mechanism is facilitated by `DeleteGroupCommand` and its associated parser `DeleteGroupCommandParser`. It allows users to remove an existing contact group from HitList by specifying its exact name.
+
+The feature implements the following key operations:
+
+* `DeleteGroupCommandParser#parse()` — Parses the user input to extract the target group name (indicated by the `/g` prefix).
+* `DeleteGroupCommand#execute()` — Executes the logic to verify the target group's existence and remove it from the model.
+* `Model#deleteGroup()` — Updates the HitList within the Model state by removing the specified group.
+
+Given below is an example usage scenario and how the DeleteGroup mechanism behaves at each step.
+
+Step 1. The user launches the application and types `grpdel /g Students` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grpdel /g Students")`.
+
+Step 3. Recognizing the `grpdel` command word, the `HitListParser` instantiates a `DeleteGroupCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" /g Students")` method of the newly created `DeleteGroupCommandParser`. The parser extracts the target group name, creates a new `DeleteGroupCommand` targeting `Students`, and returns it.
+
+Step 5. The `DeleteGroupCommand` is returned to the `LogicManager`, and the `DeleteGroupCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `DeleteGroupCommand#execute()`. The command retrieves the target group and calls `Model#deleteGroup(toDelete)` to remove it from the internal HitList state.
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+<puml src="diagrams/delete-group/GroupDeleteParsing.puml" alt="GroupDeleteParsing" />
+
+The following object diagram shows the important objects involved during execution:
+
+<puml src="diagrams/delete-group/GroupDeleteExecution.puml" alt="GroupDeleteExecution" />
+
+The following object diagram shows the model state after successful execution:
+
+<puml src="diagrams/delete-group/GroupDeletePostExecution.puml" alt="GroupDeletePostExecution" />
+
+The following sequence diagram shows how a DeleteGroup operation goes through the Logic component:
+
+<puml src="diagrams/delete-group/GroupDeleteSequenceDiagram-Logic.puml" alt="GroupDeleteSequenceDiagramLogic" />
+
+<box type="info" seamless header="Note">
+**Note:** The lifeline for `DeleteGroupCommand` and `DeleteGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `grpdel` command:
+
+<puml src="diagrams/delete-group/GroupDeleteActivityDiagram.puml" alt="GroupDeleteActivityDiagram" />
+
 ### Company Profile
 
 A `Company` object represents a company profile. It has the following details:
+
 * `companyName` (required): The name of the company.
 * `companyDescription` (required): A description of the company.
 * `companyRoles` (optional): A list of roles that the headhunter is recruiting for within the company.
 
 A `Role` object represents a role that the headhunter is recruiting for within a company. It has the following details:
+
 * `companyRole` (required): The name of the role.
 * `companyRoleDescription` (required): A description of the role.
 
 #### Design considerations for Company Parameters:
 
 **Aspect: Company Field Requirements:**
-* **Alternative 1 (current choice):** Both company name and description are required fields.
-    * Pros: Ensures that all company profiles have a minimum level of information, which can be useful for the headhunter to quickly identify and differentiate between companies.
-    * Cons: May be too restrictive for users who want to quickly add a company profile with minimal information and fill in the details later.
 
+* **Alternative 1 (current choice):** Both company name and description are required fields.
+  * Pros: Ensures that all company profiles have a minimum level of information, which can be useful for the headhunter to quickly identify and differentiate between companies.
+  * Cons: May be too restrictive for users who want to quickly add a company profile with minimal information and fill in the details later.
 * **Alternative 2:** Only the company name is required, while the description is optional.
-    * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
-    * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
+  * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
+  * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
 
 **Aspect: Validation of Company Names:**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces. 
@@ -281,31 +545,28 @@ A `Role` object represents a role that the headhunter is recruiting for within a
 **Aspect: Command Format for Parameters:**
 
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/c` for company name, `/d` for description).
-    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-    * Cons: Requires users to remember and use specific prefixes.
-
+  * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+  * Cons: Requires users to remember and use specific prefixes.
 * **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `cmpadd Google Tech Company`).
-    * Pros: Simpler command format, less typing for users.
-    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+  * Pros: Simpler command format, less typing for users.
+  * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
 
 **Aspect: Handling Duplicate Companies:**
 
 * **Alternative 1 (current choice):** Check for duplicates based on company name and reject the addition if a duplicate is found.
-    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
-    * Cons: Does not account for edge cases where two distinct companies might share the same names.
-
+  * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+  * Cons: Does not account for edge cases where two distinct companies might share the same names.
 * **Alternative 2:** Allow duplicates but provide a warning to the user.
-    * Pros: Provides flexibility for users who may want to add similar companies, avoids false positives in duplicate detection.
-    * Cons: Can lead to a cluttered HitList and make it harder for users to manage their contacts effectively.
+  * Pros: Provides flexibility for users who may want to add similar companies, avoids false positives in duplicate detection.
+  * Cons: Can lead to a cluttered HitList and make it harder for users to manage their contacts effectively.
 
 #### Adding a company
 
-The AddCompany mechanism is facilitated by `AddCompanyCommand` and its associated parser `AddCompanyCommandParser`. It allows users to add a new company to the HitList.
-The feature implements the following key operations:
+The AddCompany mechanism is facilitated by `AddCompanyCommand` and its associated parser `AddCompanyCommandParser`. It allows users to add a new company to the HitList. The feature implements the following key operations:
 
-* `AddCompanyCommandParser#parse()` — Parses the user input to extract the company name (indicated by the `/c` prefix) and the description (indicated by the `/d` prefix). 
-* `AddCompanyCommand#execute()` — Executes the logic to add the parsed company to the model. 
-* `Model#addCompany()` — Updates the HitList within the Model state with the newly created company.
+* `AddCompanyCommandParser#parse()` — Parses the user input to extract the company name (indicated by the `/c` prefix) and the description (indicated by the `/d` prefix).
+* `AddCompanyCommand#execute()` — Executes the logic to add the parsed company to the model.
+* `Model#addCompany()` — Updates the HitList within the Model state with the newly created company.
 
 Given below is an example usage scenario and how the AddCompany mechanism behaves at each step.
 
@@ -353,8 +614,6 @@ The following sequence diagram shows how an AddCompany operation goes through th
 
 **Note:** The lifeline for `AddCompanyCommand` and `AddCompanyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
-</box>
-
 The following activity diagram summarizes what happens when a user executes the `cmpadd` command:
 
 <div class="text-center">
@@ -366,11 +625,12 @@ The following activity diagram summarizes what happens when a user executes the 
 #### Deleting a company
 
 The DeleteCompany mechanism is facilitated by `DeleteCompanyCommand` and its associated parser `DeleteCompanyCommandParser`. It allows users to remove an existing company from `HitList`, either by specifying its exact name or its displayed index in the UI.
+
 The feature implements the following key operations:
 
-* `DeleteCompanyCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a company name (indicated by the `/c` prefix).
-* `DeleteCompanyCommand#execute()` — Executes the logic to verify the target's existence and remove it from the model.
-* `Model#deleteCompany()` — Updates the HitList within the Model state by removing the specified company.
+* `DeleteCompanyCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a company name (indicated by the `/c` prefix).
+* `DeleteCompanyCommand#execute()` — Executes the logic to verify the target's existence and remove it from the model.
+* `Model#deleteCompany()` — Updates the HitList within the Model state by removing the specified company.
 
 Given below is an example usage scenario and how the DeleteCompany mechanism behaves at each step.
 
@@ -417,8 +677,6 @@ The following sequence diagram shows how an AddCompany operation goes through th
 <box type="info" seamless>
 
 **Note:** The lifeline for `DeleteCompanyCommand` and `DeleteCompanyCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
 
 The following activity diagram summarizes what happens when a user executes the `cmpdel` command:
 
@@ -563,13 +821,13 @@ The following activity diagram summarizes what happens when a user executes the 
 #### Design considerations for Roles Parameters:
 
 **Aspect: Company Field Requirements:**
-* **Alternative 1 (current choice):** Both role name and role description are required fields.
-    * Pros: Ensures that all roles have a minimum level of information, which can be useful for the headhunter to quickly identify the requirements of clients request.
-    * Cons: May be too restrictive for users who want to quickly add a role without the description first and fill in the details later.
 
+* **Alternative 1 (current choice):** Both role name and role description are required fields.
+  * Pros: Ensures that all roles have a minimum level of information, which can be useful for the headhunter to quickly identify the requirements of clients request.
+  * Cons: May be too restrictive for users who want to quickly add a role without the description first and fill in the details later.
 * **Alternative 2:** Only the company name is required, while the description is optional.
-    * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
-    * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
+  * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
+  * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
 
 **Aspect: Validation of Role Names:**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
@@ -594,31 +852,28 @@ The following activity diagram summarizes what happens when a user executes the 
 **Aspect: Command Format for Parameters:**
 
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/c` for role name, `/d` for role description).
-    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-    * Cons: Requires users to remember and use specific prefixes.
-
+  * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+  * Cons: Requires users to remember and use specific prefixes.
 * **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `roleadd Software Engineer Develops Software`).
-    * Pros: Simpler command format, less typing for users.
-    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+  * Pros: Simpler command format, less typing for users.
+  * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
 
 **Aspect: Handling Duplicate Roles:**
 
 * **Alternative 1 (current choice):** Check for duplicates based on role name and reject the addition if a duplicate is found.
-    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
-    * Cons: Does not account for edge cases where two distinct role might share the same names.
-
+  * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+  * Cons: Does not account for edge cases where two distinct role might share the same names.
 * **Alternative 2:** Allow duplicates but provide a warning to the user.
-    * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
-    * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
+  * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
+  * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
 
 #### Adding a role to a specified company
 
-The AddRole mechanism is facilitated by `AddCompanyRoleCommand` and its associated parser `AddCompanyRoleCommandParser`. It allows users to add a new role to an existing company in the HitList.
-The feature implements the following key operations:
+The AddRole mechanism is facilitated by `AddCompanyRoleCommand` and its associated parser `AddCompanyRoleCommandParser`. It allows users to add a new role to an existing company in the HitList. The feature implements the following key operations:
 
-* `AddCompanyRoleCommandParser#parse()` — Parses the user input to extract the target company (indicated by the `/c` prefix), role name (indicated by the `/r` prefix) and role description (indicated by the `/d` prefix).
-* `AddCompanyRoleCommand#execute()` — Executes the logic to add the parsed role to the target company in the model.
-* `Model#addCompanyRole()` — Updates the HitList within the Model state by adding the new role to the target company.
+* `AddCompanyRoleCommandParser#parse()` — Parses the user input to extract the target company (indicated by the `/c` prefix), role name (indicated by the `/r` prefix) and role description (indicated by the `/d` prefix).
+* `AddCompanyRoleCommand#execute()` — Executes the logic to add the parsed role to the target company in the model.
+* `Model#addCompanyRole()` — Updates the HitList within the Model state by adding the new role to the target company.
 
 Given below is an example usage scenario and how the AddRole mechanism behaves at each step.
 
@@ -629,6 +884,8 @@ Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#pa
 Step 3. Recognizing the `roleadd` command word, the `HitListParser` instantiates an `AddCompanyRoleCommandParser`.
 
 Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer /d Develops Software")` method of the newly created `AddCompanyRoleCommandParser`. The parser extracts the target company name, role details, creates a new Role object (representing Software Engineer), and passes it into the constructor of a new `AddCompanyRoleCommand`.
+
+Step 5. The `AddCompanyRoleCommand` is returned to the `LogicManager`, and the `AddCompanyRoleCommandParser` is subsequently destroyed.
 
 <div class="text-center">
   <puml src="diagrams/add-role/RoleAddParsing.puml" alt="RoleAddObjectDiagram-Parsing" />
@@ -648,6 +905,8 @@ Step 6. `LogicManager` calls `AddCompanyRoleCommand#execute()`. This command cal
 
 Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
 
+The following sequence diagram shows how an AddRole operation goes through the Logic component:
+
 <div class="text-center">
   <puml src="diagrams/add-role/RoleAddPostExecution.puml" alt="RoleAddObjectDiagram-PostExecution" />
 </div>
@@ -666,8 +925,6 @@ The following sequence diagram shows how an AddRole operation goes through the L
 
 **Note:** The lifeline for `AddCompanyRoleCommand` and `AddCompanyRoleCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
-</box>
-
 The following activity diagram summarizes what happens when a user executes the `roleadd` command:
 
 <div class="text-center">
@@ -679,11 +936,12 @@ The following activity diagram summarizes what happens when a user executes the 
 #### Deleting a role from a specified company
 
 The DeleteRole mechanism is facilitated by `DeleteCompanyRoleCommand` and its associated parser `DeleteCompanyRoleCommandParser`. It allows users to remove an existing role from a company in the HitList, either by specifying the role's name or its displayed index in the UI.
+
 The feature implements the following key operations:
 
-* `DeleteCompanyRoleCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a role name (indicated by the `/r` prefix), as well as the target company (indicated by the `/c` prefix).
-* `DeleteCompanyRoleCommand#execute()` — Executes the logic to verify the target's existence and remove it from the target company in the model.
-* `Model#deleteCompanyRole()` — Updates the HitList within the Model state by removing the specified role from the target company.
+* `DeleteCompanyRoleCommandParser#parse()` — Parses the user input to determine if the deletion target is an index or a role name (indicated by the `/r` prefix), as well as the target company (indicated by the `/c` prefix).
+* `DeleteCompanyRoleCommand#execute()` — Executes the logic to verify the target's existence and remove it from the target company in the model.
+* `Model#deleteCompanyRole()` — Updates the HitList within the Model state by removing the specified role from the target company.
 
 Given below is an example usage scenario and how the DeleteRole mechanism behaves at each step.
 
@@ -693,7 +951,7 @@ Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#pa
 
 Step 3. Recognizing the `roledel` command word, the `HitListParser` instantiates a `DeleteCompanyRoleCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it. (Note: If the user had typed `roledel /c Google 1`, the parser would extract the role index instead).
+Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-role/RoleDeleteParsing.puml" alt="RoleDeleteObjectDiagram-Parsing" />
@@ -731,8 +989,6 @@ The following sequence diagram shows how a DeleteRole operation goes through the
 
 **Note:** The lifeline for `DeleteCompanyRoleCommand` and `DeleteCompanyRoleCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
-</box>
-
 The following activity diagram summarizes what happens when a user executes the `roledel` command:
 
 <div class="text-center">
@@ -741,111 +997,7 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <br>
 
-### Groups
-
-A `Group` object represents a set of `Person` objects. It has the following details:
-* `groupName` (required): The name of the group.
-* `UniquePersonList` (required): A list of `Person` objects that belong to the group.
-
-#### Design considerations for Group Parameters:
-
-**Aspect: Validation of Group Names:**
-* **Alternative 1 (current choice):** Use a custom regex `[\p{Alnum}][\p{Alnum} ]*` to only allow alphanumeric characters and spaces.
-    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI formatting.
-    * Cons: Prevents users from creating groups with symbols in their names (e.g., "Post-grads (NUS)").
-
-* **Alternative 2:** Use a more flexible regex `^[^\s/][^/\v]*$` (Must not start with a space, contain / or have newlines).
-    * Pros: Allows users to create groups with a wider variety of names, including those with symbols.
-    * Cons: Could allow completely nonsensical contact group names like !!! or ???.
-
-#### Design considerations for Group Commands:
-
-**Aspect: Command Format for Parameters:**
-
-* **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., /g for group name, /n for contact name).
-    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-    * Cons: Requires users to remember and use specific prefixes.
-
-* **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., grpadd Students Betsy Crowe).
-    * Pros: Simpler command format, less typing for users.
-    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
-
-#### Adding a group
-
-The AddGroup mechanism is facilitated by `AddGroupCommand` and its associated parser `AddGroupCommandParser`. It allows users to create a new contact group in the HitList.
-The feature implements the following key operations:
-
-* `AddGroupCommandParser#parse()` — Parses the user input to extract the group name (indicated by the `/g` prefix) and creates a new `Group` object with an empty `UniquePersonList`.
-* `AddGroupCommand#execute()` — Executes the logic to add the parsed group to the model.
-* `Model#addGroup()` — Updates the HitList within the Model state by adding the new group.
-
-Given below is an example usage scenario and how the AddGroup mechanism behaves at each step.
-
-Step 1. The user launches the application and types `grpadd /g Students` into the command box.
-
-Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grpadd /g Students")`.
-
-Step 3. Recognizing the `grpadd` command word, the `HitListParser` instantiates an `AddGroupCommandParser`.
-
-Step 4. The `HitListParser` calls the `parse(" /g Students")` method of the newly created `AddGroupCommandParser`. The parser extracts the group name, creates a new Group object (representing "Students"), and passes it into the constructor of a new `AddGroupCommand`.
-
-<div class="text-center">
-    <puml src="diagrams/add-group/GroupAddParsing.puml" alt="GroupAddObjectDiagram" />
-</div>
-
-<br>
-
-Step 5. The `AddGroupCommand` is returned to the `LogicManager`, and the `AddGroupCommandParser` is subsequently destroyed.
-
-<div class="text-center">
-    <puml src="diagrams/add-group/GroupAddExecution.puml" alt="GroupAddObjectDiagram" />
-</div>
-
-<br>
-
-Step 6. `LogicManager` calls `AddGroupCommand#execute()`. This command calls `Model#addGroup(groupToAdd)`, passing the parsed group object to update the internal `HitList` state.
-
-Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
-
-<div class="text-center">
-    <puml src="diagrams/add-group/GroupAddPostExecution.puml" alt="GroupAddObjectDiagram" />
-</div>
-
-<br>
-
-The following sequence diagram shows how an AddGroup operation goes through the Logic component:
-
-<div class="text-center">
-    <puml src="diagrams/add-group/GroupAddSequenceDiagramLogic.puml" alt="GroupAddSequenceDiagram" />
-</div>
-
-<br>
-
-<box type="info" seamless>
-**Note:** The lifeline for `AddGroupCommand` and `AddGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-</box>
-
-The following activity diagram summarizes what happens when a user executes the `grpadd` command:
-
-<div class="text-center">
-    <puml src="diagrams/add-group/GroupAddActivityDiagram.puml" alt="GroupAddActivityDiagram" />
-</div>
-
-<br>
-
-#### Deleting a contact group
-
-#### Listing all contact groups
-
-#### Finding a contact group
-
-#### Assigning a contact to a contact group
-
-#### Removing a contact from a contact group
-
-#### Listing all contacts in a contact group
-
-### \[Proposed\] Undo/redo feature
+### [Proposed] Undo/redo feature
 
 #### Design considerations:
 
@@ -864,9 +1016,9 @@ The following activity diagram summarizes what happens when a user executes the 
 
 The proposed undo/redo mechanism is facilitated by `VersionedHitList`. It extends `HitList` with an undo/redo history, stored internally as an `hitListStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
-* `VersionedHitList#commit()` — Saves the current HitList state in its history.
-* `VersionedHitList#undo()` — Restores the previous HitList state from its history.
-* `VersionedHitList#redo()` — Restores a previously undone HitList state from its history.
+* `VersionedHitList#commit()` — Saves the current HitList state in its history.
+* `VersionedHitList#undo()` — Restores the previous HitList state from its history.
+* `VersionedHitList#redo()` — Restores a previously undone HitList state from its history.
 
 These operations are exposed in the `Model` interface as `Model#commitHitList()`, `Model#undoHitList()` and `Model#redoHitList()` respectively.
 
@@ -900,8 +1052,6 @@ Step 3. The user executes `add n/David …​` to add a new person. The `add` co
 
 **Note:** If a command fails its execution, it will not call `Model#commitHitList()`, so HitList state will not be saved into the `hitListStateList`.
 
-</box>
-
 Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoHitList()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous HitList state, and restores HitList to that state.
 
 <div class="text-center">
@@ -929,8 +1079,6 @@ The following sequence diagram shows how an undo operation goes through the `Log
 
 **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
-</box>
-
 Similarly, how an undo operation goes through the `Model` component is shown below:
 
 <div class="text-center">
@@ -944,8 +1092,6 @@ The `redo` command does the opposite — it calls `Model#redoHitList()`, whi
 <box type="info" seamless>
 
 **Note:** If the `currentStatePointer` is at index `hitListStateList.size() - 1`, pointing to the latest HitList state, then there are no undone HitList states to restore. The `redo` command uses `Model#canRedoHitList()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</box>
 
 Step 5. The user then decides to execute the command `list`. Commands that do not modify HitList, such as `list`, will usually not call `Model#commitHitList()`, `Model#undoHitList()` or `Model#redoHitList()`. Thus, the `hitListStateList` remains unchanged.
 
@@ -971,10 +1117,9 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 <br>
 
-### \[Proposed\] Data archiving
+### [Proposed] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1001,7 +1146,6 @@ _{Explain here how the data archiving feature will be implemented}_
 * needs to keep track of candidates' status (unemployed/graduating/etc.)
 
 **Value proposition**: alleviate the logistics of matching candidates to clients
-
 
 ### User stories
 
@@ -1045,16 +1189,16 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 
 **MSS**
 
-1.  User requests to add a contact
-2.  System creates the contact
-3.  System confirms that the contact has been created
+1. User requests to add a contact
+2. System creates the contact
+3. System confirms that the contact has been created
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
 * 1a. System detects that a contact with the same phone number already exists.
-    * 1a1. System shows previously added contact with the same phone number message
+  * 1a1. System shows previously added contact with the same phone number message
 
     Use case ends.
 </box>
@@ -1063,16 +1207,16 @@ For all use cases below, the **System** is the `HitList`, **Actor** is the `user
 
 **MSS**
 
-1.  User requests to delete a contact
-2.  System deletes the contact
-3.  System confirms that the contact has been deleted
+1. User requests to delete a contact
+2. System deletes the contact
+3. System confirms that the contact has been deleted
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
 * 1a. System detects that the requested contact does not exist.
-    * 1a1. System shows requested contact does not exist message
+  * 1a1. System shows requested contact does not exist message
 
     Use case ends.
 </box>
@@ -1092,15 +1236,15 @@ Same as Use case 1 (Add a contact).
 
 **MSS**
 
-1.  User requests to list all contacts
-2.  System displays all contacts
+1. User requests to list all contacts
+2. System displays all contacts
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
 * 2a. System detects that the contact list is empty
-    * 2a1. System shows contact list is empty message
+  * 2a1. System shows contact list is empty message
 
     Use case ends.
 </box>
@@ -1128,7 +1272,7 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
 **Extensions**
 
 * 1a. System detects that the contact group does not exist.
-    * 1a1. System shows contact group does not exist message
+  * 1a1. System shows contact group does not exist message
 
     Use case ends.
 </box>
@@ -1142,7 +1286,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 **Extensions**
 
 * 2a. System detects that there are no contact groups
-    * 2a1. System shows no contact groups message
+  * 2a1. System shows no contact groups message
 
     Use case ends.
 </box>
@@ -1157,7 +1301,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 4. System adds the contact to the contact group
 5. System informs user that the contact has been added to the contact group
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1179,7 +1323,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 2. System removes the contact from the contact group
 3. System informs user that the contact has been removed from the contact group
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1197,10 +1341,10 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 
 **MSS**
 
-1.  User requests to list contact group members of a specified contact group
-2.  System displays all contact group members of the specified contact group
+1. User requests to list contact group members of a specified contact group
+2. System displays all contact group members of the specified contact group
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1221,7 +1365,7 @@ Similar to Use case 1 (Add a contact), except the user requests to add a company
 **Extensions**
 
 * 1a. System detects that a company profile with the same name already exists
-    * 1a1. System shows company profile already exists message
+  * 1a1. System shows company profile already exists message
 
     Use case ends.
 </box>
@@ -1263,7 +1407,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 3.  System updates the company profile with the new role
 4.  System confirms that the company role has been added
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1283,7 +1427,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 2.  System removes the company role from the company profile
 3.  System confirms that the company role has been deleted
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1303,7 +1447,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 2.  System retrieves the company profile
 3.  System displays the company name and all its associated company roles
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -1373,25 +1517,16 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 
 Given below are instructions to test the app manually.
 
-<box type="info" seamless>
-
-**Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
-
-</box>
+**Note:** These instructions only provide a starting point for testers to work on; testers are expected to do more *exploratory* testing.
 
 ### Launch and shutdown
 
 1. Initial launch
-
    1. Download the jar file and copy into an empty folder
-
-   2. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
-
+   2. Double-click the jar file
+      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 2. Saving window preferences
-
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
    2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 

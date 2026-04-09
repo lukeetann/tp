@@ -1,4 +1,4 @@
-@startuml group-add-execution /' Renames the file to kebab-case when exported as an image.'/
+@startuml group-add-execution
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
@@ -10,14 +10,17 @@ skinparam ObjectBorderColor #FFFFFF
 show objects
 show members
 
-object "<u>:LogicManager</u>" as LogicManager LOGIC_COLOR
-object "<u>c:AddGroupCommand</u>" as AddGroupCommand LOGIC_COLOR
-object "<u>toAdd:Group</u>" as Group MODEL_COLOR
-object "<u>:ModelManager</u>" as ModelManager MODEL_COLOR
+object ":LogicManager" as LogicManager LOGIC_COLOR
+object "c:AddGroupCommand" as AddGroupCommand LOGIC_COLOR
+object "toAdd:Group" as Group MODEL_COLOR
+object "memberNames:Set<Name>" as MemberNames MODEL_COLOR
+object ":ModelManager" as ModelManager MODEL_COLOR
 
 LogicManager --> AddGroupCommand : executes >
 AddGroupCommand --> Group : contains >
-AddGroupCommand ..> ModelManager : passes toAdd to >
+AddGroupCommand --> MemberNames : contains >
+AddGroupCommand ..> ModelManager : passes group to >
 
 Group : groupName = "Students"
+MemberNames : {"Alex Yeoh", "Bernice Yu"}
 @enduml

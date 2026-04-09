@@ -1,4 +1,4 @@
-@startuml group-add-post-execution
+@startuml person-add-post-execution
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
@@ -12,18 +12,15 @@ show members
 
 object ":ModelManager" as ModelManager MODEL_COLOR
 object ":HitList" as HitList MODEL_COLOR
-object ":UniqueGroupList" as UniqueGroupList MODEL_COLOR
-object ":Group" as Group MODEL_COLOR
+object ":UniquePersonList" as UniquePersonList MODEL_COLOR
+object ":Person" as Person MODEL_COLOR
 
 ModelManager --> HitList
-HitList --> UniqueGroupList
-UniqueGroupList --> Group : contains >
+HitList --> UniquePersonList
+UniquePersonList --> Person : contains >
 
-Group : groupName = "Students"
-
-note right of Group
-Members may include:
-Alex Yeoh
-Bernice Yu
-end note
+Person : name = "John Doe"
+Person : phone = "98765432"
+Person : email = "johnd@example.com"
+Person : address = "311, Clementi Ave 2, #02-25"
 @enduml

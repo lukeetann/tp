@@ -1,4 +1,4 @@
-@startuml group-add-post-execution
+@startuml group-delete-post-execution
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
@@ -13,17 +13,11 @@ show members
 object ":ModelManager" as ModelManager MODEL_COLOR
 object ":HitList" as HitList MODEL_COLOR
 object ":UniqueGroupList" as UniqueGroupList MODEL_COLOR
-object ":Group" as Group MODEL_COLOR
 
 ModelManager --> HitList
 HitList --> UniqueGroupList
-UniqueGroupList --> Group : contains >
 
-Group : groupName = "Students"
-
-note right of Group
-Members may include:
-Alex Yeoh
-Bernice Yu
+note right of UniqueGroupList
+The matching Group object has been removed
 end note
 @enduml
