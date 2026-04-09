@@ -2,6 +2,7 @@ package hitlist.logic.commands;
 
 import static hitlist.testutil.Assert.assertThrows;
 import static hitlist.testutil.TypicalPersons.ALICE;
+import static hitlist.testutil.TypicalPersons.BOB;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,6 +19,7 @@ import hitlist.model.ModelStub;
 import hitlist.model.ReadOnlyHitList;
 import hitlist.model.person.Person;
 import hitlist.testutil.PersonBuilder;
+import javafx.collections.FXCollections;
 
 public class AddCommandTest {
 
@@ -39,12 +41,68 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+    public void execute_duplicatePersonSameNameAndPhone_throwsCommandException() {
+        Person duplicatePerson = new PersonBuilder(ALICE).build();
+        AddCommand addCommand = new AddCommand(duplicatePerson);
+        ModelStub modelStub = new ModelStubWithPerson(duplicatePerson);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_SAME_PERSON,
+                duplicatePerson.getName(),
+                duplicatePerson.getPhone());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonSameNameOnly_throwsCommandException() {
+        Person existingPerson = new PersonBuilder(ALICE).withPhone("12345678").build();
+        Person newPersonWithSameName = new PersonBuilder(ALICE).withPhone("87654321").build();
+
+        AddCommand addCommand = new AddCommand(newPersonWithSameName);
+        ModelStub modelStub = new ModelStubWithPerson(existingPerson);
+
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_NAME,
+                newPersonWithSameName.getName());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonSamePhoneOnly_throwsCommandException() {
+        Person existingPerson = new PersonBuilder(ALICE).withName("Alice Wong").build();
+        Person newPersonWithSamePhone = new PersonBuilder()
+                .withName("Bob").withPhone(existingPerson.getPhone().value).build();
+
+        AddCommand addCommand = new AddCommand(newPersonWithSamePhone);
+        ModelStub modelStub = new ModelStubWithPerson(existingPerson);
+
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_PHONE,
+                newPersonWithSamePhone.getPhone());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentContactsNameAndPhone_throwsCommandException() {
+        // Create two different existing persons
+        Person existingPerson1 = new PersonBuilder(ALICE).withPhone("11111111").build(); // Same name as new person
+        Person existingPerson2 = new PersonBuilder(BOB).withName("Charlie").withPhone("22222222").build();
+
+        // New person has name matching existingPerson1 and phone matching existingPerson2
+        Person newPerson = new PersonBuilder(ALICE).withPhone("22222222").build();
+
+        AddCommand addCommand = new AddCommand(newPerson);
+        ModelStub modelStub = new ModelStubWithMultiplePersons(existingPerson1, existingPerson2);
+
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_BOTH,
+                newPerson.getName(),
+                newPerson.getPhone());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
     }
 
     @Test
@@ -94,6 +152,34 @@ public class AddCommandTest {
             requireNonNull(person);
             return this.person.isSamePerson(person);
         }
+
+        @Override
+        public javafx.collections.ObservableList<Person> getFilteredPersonList() {
+            return FXCollections.observableArrayList(person);
+        }
+    }
+
+    /**
+     * A Model stub that contains multiple persons.
+     */
+    private class ModelStubWithMultiplePersons extends ModelStub {
+        private final ArrayList<Person> persons = new ArrayList<>();
+
+        ModelStubWithMultiplePersons(Person... persons) {
+            requireNonNull(persons);
+            this.persons.addAll(Arrays.asList(persons));
+        }
+
+        @Override
+        public boolean hasPerson(Person person) {
+            requireNonNull(person);
+            return persons.stream().anyMatch(person::isSamePerson);
+        }
+
+        @Override
+        public javafx.collections.ObservableList<Person> getFilteredPersonList() {
+            return FXCollections.observableArrayList(persons);
+        }
     }
 
     /**
@@ -117,6 +203,11 @@ public class AddCommandTest {
         @Override
         public ReadOnlyHitList getHitList() {
             return new HitList();
+        }
+
+        @Override
+        public javafx.collections.ObservableList<Person> getFilteredPersonList() {
+            return FXCollections.observableArrayList(personsAdded);
         }
     }
 }
