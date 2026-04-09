@@ -193,6 +193,10 @@ Classes used by multiple components are in the `hitlist.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Person
+
+#### Deleting a person
+
 ### Company Profile
 
 A `Company` object represents a company profile. It has the following details:
