@@ -176,8 +176,8 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 <br>
 
-<box type="info" seamless>
-The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>DeleteCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </box>
 
 How the `Logic` component works:
@@ -364,7 +364,7 @@ The following sequence diagram shows how an AddPerson operation goes through the
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for <b>AddCommand</b> and <b>AddCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>AddCommand</code> and <code>AddCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `add` command:
@@ -428,7 +428,7 @@ The following sequence diagram shows how a DeletePerson operation goes through t
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for <b>DeleteCommand</b> and <b>DeleteCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>DeleteCommand</code> and <code>DeleteCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `delete` command:
@@ -498,6 +498,12 @@ The following sequence diagram shows how an EditPerson operation goes through th
 
 <br>
 
+<box type="info" seamless header="Note">
+
+The lifeline for <code>EditCommand</code> and <code>EditCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
 The following activity diagram summarizes what happens when a user executes the `edit` command:
 
 <div class="text-center">
@@ -553,9 +559,9 @@ The following sequence diagram shows how a List operation goes through the Logic
 
 <br>
 
-<box type="info" seamless>
+<box type="info" seamless header="Note">
 
-**Note:** The lifeline for `ListCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>ListCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
 </box>
 
@@ -629,7 +635,7 @@ The following sequence diagram shows how a FindPerson operation goes through the
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for <b>FindCommand</b> and <b>FindCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>FindCommand</code> and <code>FindCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `find` command:
@@ -738,7 +744,7 @@ The following sequence diagram shows how an AddGroup operation goes through the 
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for <b>AddGroupCommand</b> and <b>AddGroupCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>AddGroupCommand</code> and <code>AddGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpadd` command:
@@ -802,7 +808,7 @@ The following sequence diagram shows how a DeleteGroup operation goes through th
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for <b>DeleteGroupCommand</b> and <b>DeleteGroupCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>DeleteGroupCommand</code> and <code>DeleteGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpdel` command:
@@ -858,7 +864,7 @@ Step 7. Since the underlying data was not modified, `Storage` does not need to s
 <br>
 
 <box type="info" seamless header="Note">
-    The lifeline for `ListGroupCommand` and `ListGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>ListGroupCommand</code> and <code>ListGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grplist` command:
@@ -921,7 +927,7 @@ The following sequence diagram shows how an AssignGroup operation goes through t
 <br>
 
 <box type="info" seamless header="Note">
-**Note:** The lifeline for `AssignGroupCommand` and `AssignGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>AssignGroupCommand</code> and <code>AssignGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpassign` command:
@@ -984,7 +990,7 @@ The following sequence diagram shows how an UnassignGroup operation goes through
 <br>
 
 <box type="info" seamless header="Note">
-The lifeline for `UnassignGroupCommand` and `UnassignGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The lifeline for <code>UnassignGroupCommand</code> and <code>UnassignGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpunassign` command:
@@ -1105,8 +1111,8 @@ The following sequence diagram shows how an AddCompany operation goes through th
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>AddCompanyCommand</b> and <b>AddCompanyCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>AddCompanyCommand</code> and <code>AddCompanyCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `cmpadd` command:
@@ -1169,8 +1175,8 @@ The following sequence diagram shows how a DeleteCompany operation goes through 
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>DeleteCompanyCommand</b> and <b>DeleteCompanyCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>DeleteCompanyCommand</code> and <code>DeleteCompanyCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `cmpdel` command:
@@ -1235,8 +1241,8 @@ The following sequence diagram shows how a ListCompany operation goes through th
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>ListCompanyCommand</b> and <b>ListCompanyCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>ListCompanyCommand</code> and <code>ListCompanyCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `cmplist` command, highlighting the branching logic based on user input:
@@ -1297,8 +1303,8 @@ The following sequence diagram shows how a FindCompany operation goes through th
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>FindCompanyCommand</b> and <b>FindCompanyCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>FindCompanyCommand</code> and <code>FindCompanyCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `cmpfind` command:
@@ -1403,8 +1409,8 @@ The following sequence diagram shows how an AddRole operation goes through the L
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>AddCompanyRoleCommand</b> and <b>AddCompanyRoleCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>AddCompanyRoleCommand</code> and <code>AddCompanyRoleCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `roleadd` command:
@@ -1467,8 +1473,8 @@ The following sequence diagram shows how a DeleteRole operation goes through the
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>DeleteCompanyRoleCommand</b> and <b>DeleteCompanyRoleCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>DeleteCompanyRoleCommand</code> and <code>DeleteCompanyRoleCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `roledel` command:
@@ -1555,8 +1561,8 @@ The following sequence diagram shows how an undo operation goes through the `Log
 
 <br>
 
-<box type="info" seamless>
-The lifeline for <b>UndoCommand</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<box type="info" seamless header="Note">
+The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 Similarly, how an undo operation goes through the `Model` component is shown below:
