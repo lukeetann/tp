@@ -83,6 +83,12 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 ### Architecture
 
+<div class="text-center">
+  <puml src="diagrams/ArchitectureDiagram.puml" width="280" />
+</div>
+
+<br>
+
 The ***Architecture Diagram*** given above explains the high-level design of the App.
 
 Given below is a quick overview of main components and how they interact with each other.
@@ -428,6 +434,152 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <div class="text-center">
   <puml src="diagrams/delete-person/PersonDeleteActivityDiagram.puml" alt="PersonDeleteActivityDiagram" />
+</div>
+
+<br>
+
+#### Editing a person
+
+The **EditPerson mechanism** is facilitated by `EditCommand` and its associated parser `EditCommandParser`. It allows users to modify the details of an existing person in HitList by specifying the displayed index in the UI and providing new field values.
+
+The feature implements the following key operations:
+
+* `EditCommandParser#parse()` — Parses the user input to extract the target index and the fields to edit. It constructs an `EditPersonDescriptor` that encapsulates the new values.
+* `EditCommand#execute()` — Executes the logic to verify the target’s existence, apply the edits, and update the model.
+* `Model#setPerson()` — Updates the HitList within the Model state by replacing the specified person with the edited version.
+
+---
+
+Given below is an example usage scenario and how the EditPerson mechanism behaves at each step.
+
+<box seamless>
+    The full command is <code>edit 1 /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25</code>
+</box>
+
+Step 1. The user launches the application and types `edit 1 /n John Doe /p 98765432 ...` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("edit 1 /n John Doe /p 98765432 ...")`.
+
+Step 3. Recognizing the `edit` command word, the `HitListParser` instantiates an `EditCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" 1 /n John Doe /p 98765432 ...")` method of the newly created `EditCommandParser`.  
+The parser extracts the target index and new field values, creates an `EditPersonDescriptor`, then constructs a new `EditCommand` targeting the person at index `1`.
+
+<div class="text-center">
+  <puml src="diagrams/edit-person/PersonEditParsing.puml" alt="PersonEditParsing" />
+</div>
+
+<br>
+
+Step 5. The `EditCommand` is returned to the `LogicManager`, and the `EditCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `EditCommand#execute()`. The command retrieves the target person, applies the edits using the `EditPersonDescriptor`, and calls `Model#setPerson(personToEdit, editedPerson)` to update the internal HitList state.
+
+<div class="text-center">
+  <puml src="diagrams/edit-person/PersonEditExecution.puml" alt="PersonEditExecution" />
+</div>
+
+<br>
+
+Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
+
+<div class="text-center">
+  <puml src="diagrams/edit-person/PersonEditPostExecution.puml" alt="PersonEditPostExecution" />
+</div>
+
+<br>
+
+The following sequence diagram shows how an EditPerson operation goes through the Logic component:
+
+<div class="text-center">
+  <puml src="diagrams/edit-person/PersonEditSequenceDiagram-Logic.puml" alt="PersonEditSequenceDiagramLogic" />
+</div>
+
+<br>
+
+The following activity diagram summarizes what happens when a user executes the `edit` command:
+
+<div class="text-center">
+  <puml src="diagrams/edit-person/PersonEditActivityDiagram.puml" alt="PersonEditActivityDiagram" />
+</div>
+
+<br>
+
+#### Finding a person
+
+The **FindPerson mechanism** is facilitated by `FindCommand` and its associated parser `FindCommandParser`. It allows users to search for people in HitList by specifying keywords that match attributes such as name, phone number, or email.
+
+The feature implements the following key operations:
+
+* `HitListParser#parseCommand()` — Intercepts the user input and determines that the command word is `find`.
+* `FindCommandParser#parse()` — Parses the remaining input string (e.g., `"Alex Lee"`) and constructs a `PersonMatchesFindPredicate` object that encapsulates the search condition.
+* `FindCommand#execute()` — Executes the logic by applying the predicate to the model’s person list and updating the filtered list.
+* `Model#updateFilteredPersonList()` — Updates the internal state of the HitList to only show persons that match the predicate.
+
+---
+
+Given below is an example usage scenario and how the FindPerson mechanism behaves at each step.
+
+<box seamless>
+    The full command is <code>find Alex Lee</code>
+</box>
+
+Step 1. The user launches the application and types `find Alex Lee` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("find Alex Lee")`.
+
+Step 3. Recognizing the `find` command word, the `HitListParser` instantiates a `FindCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse(" Alex Lee")` method of the newly created `FindCommandParser`.  
+The parser constructs a `PersonMatchesFindPredicate` object based on the keywords `"Alex"` and `"Lee"`, then creates a new `FindCommand` with this predicate.
+
+Step 5. The `FindCommand` is returned to the `LogicManager`, and the `FindCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `FindCommand#execute()`. The command applies the predicate to the model’s person list, filtering out only those that match `"Alex"` or  `"Lee"`.  
+The `Model#updateFilteredPersonList(predicate)` method updates the internal HitList state accordingly.
+
+Step 7. Finally, the `LogicManager` returns the `CommandResult` to the UI to display the filtered list of persons to the user.
+
+The following object diagram shows the important objects created during parsing:
+
+<div class="text-center">
+  <puml src="diagrams/find-person/PersonFindParsing.puml" alt="PersonFindParsing" />
+</div>
+
+<br>
+
+The following object diagram shows the important objects involved during execution:
+
+<div class="text-center">
+  <puml src="diagrams/find-person/PersonFindExecution.puml" alt="PersonFindExecution" />
+</div>
+
+<br>
+
+The following object diagram shows the model state after successful execution:
+
+<div class="text-center">
+  <puml src="diagrams/find-person/PersonFindPostExecution.puml" alt="PersonFindPostExecution" />
+</div>
+
+<br>
+
+The following sequence diagram shows how a FindPerson operation goes through the Logic component:
+
+<div class="text-center">
+  <puml src="diagrams/find-person/PersonFindSequenceDiagram-Logic.puml" alt="PersonFindSequenceDiagramLogic" />
+</div>
+
+<br>
+
+<box type="info" seamless header="Note">
+The lifeline for <b>FindCommand</b> and <b>FindCommandParser</b> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `find` command:
+
+<div class="text-center">
+  <puml src="diagrams/find-person/PersonFindActivityDiagram.puml" alt="PersonFindActivityDiagram" />
 </div>
 
 <br>
