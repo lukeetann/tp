@@ -59,10 +59,6 @@ activate Model
 Model --> AssignGroupCommand : targetGroup
 deactivate Model
 
-AssignGroupCommand -> AssignGroupCommand : verify contact exists
-AssignGroupCommand -> AssignGroupCommand : verify group exists
-AssignGroupCommand -> AssignGroupCommand : verify contact not already in group
-
 AssignGroupCommand -> Model : targetGroup.addMember(contact)
 activate Model
 Model --> AssignGroupCommand

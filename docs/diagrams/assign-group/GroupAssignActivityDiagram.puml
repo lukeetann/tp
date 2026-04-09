@@ -2,13 +2,13 @@
 !include ../style.puml
 
 start
-:User executes "grpassign /n NAME /g GROUP" command;
+:User executes command;
 
 :Parse contact name and group name;
 
-if () then ([contact found?])
-    if () then ([group found?])
-        if () then ([contact already in group?])
+if () then ([contact found])
+    if () then ([group found])
+        if () then ([contact already in group])
             :Add contact to group;
             :Display success message;
         else ([contact already in group])

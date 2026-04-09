@@ -19,5 +19,5 @@ object ":ModelManager" as ModelManager MODEL_COLOR
 LogicManager --> AssignGroupCommand : executes >
 AssignGroupCommand --> Person : contains >
 AssignGroupCommand --> Group : contains >
-AssignGroupCommand ..>> ModelManager : passes targetGroup to >
+AssignGroupCommand ..> ModelManager : passes targetGroup to >
 @enduml

@@ -59,10 +59,6 @@ activate Model
 Model --> UnassignGroupCommand : targetGroup
 deactivate Model
 
-UnassignGroupCommand -> UnassignGroupCommand : verify contact exists
-UnassignGroupCommand -> UnassignGroupCommand : verify group exists
-UnassignGroupCommand -> UnassignGroupCommand : verify contact in group
-
 UnassignGroupCommand -> Model : targetGroup.removeMember(contact)
 activate Model
 Model --> UnassignGroupCommand

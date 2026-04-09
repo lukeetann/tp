@@ -2,13 +2,13 @@
 !include ../style.puml
 
 start
-:User executes "grpunassign /n NAME /g GROUP" command;
+:User executes command;
 
 :Parse contact name and group name;
 
-if () then ([contact found?])
-    if () then ([group found?])
-        if () then ([contact in group?])
+if () then ([contact found])
+    if () then ([group found])
+        if () then ([contact in group])
             :Remove contact from group;
             :Display success message;
         else ([contact not in group])
