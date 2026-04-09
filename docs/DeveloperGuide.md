@@ -360,6 +360,8 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <puml src="diagrams/delete-person/PersonDeleteActivityDiagram.puml" alt="PersonDeleteActivityDiagram" />
 
+
+
 ### Group
 
 A `Group` object represents a contact group in HitList. It has the following details:
@@ -682,6 +684,67 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteActivityDiagram.puml" alt="CompanyDeleteActivityDiagram" />
+</div>
+
+<br>
+
+#### Listing all contacts
+
+The List mechanism is facilitated by `ListCommand`. It allows users to list all person contacts in the HitList. The feature implements the following key operations:
+
+* `ListCommand#execute()` - Executes the logic to apply the `PREDICATE_SHOW_ALL_PERSONS` filter to the list of persons in the model.
+* `Model#updateFilteredPersonList()` - Updates the HitList's filtered list within the Model state to display all persons.
+
+Given below is an example usage scenario and how the List mechanism behaves at each step.
+
+Step 1. The user launches the application and types `list` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("list")`.
+
+Step 3. Recognizing the `list` command word, the `HitListParser` directly creates a `ListCommand` (since there are no arguments to parse).
+
+<div class="text-center">
+  <puml src="diagrams/list/ListParsing.puml" alt="ListObjectDiagram-Parsing" />
+</div>
+
+<br>
+
+Step 4. The `ListCommand` is returned to the `LogicManager`.
+
+<div class="text-center">
+  <puml src="diagrams/list/ListExecution.puml" alt="ListObjectDiagram-Execution" />
+</div>
+
+<br>
+
+Step 5. `LogicManager` calls `ListCommand#execute()`. This command calls `Model#updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)` to reset the filtered list in the internal `HitList` state to show all persons.
+
+Step 6. Since the underlying data was not modified, `Storage` does not need to save anything to the hard disk. The `LogicManager` simply returns the `CommandResult` to the UI to display the updated list and a success message to the user.
+
+<div class="text-center">
+  <puml src="diagrams/list/ListPostExecution.puml" alt="ListObjectDiagram-PostExecution" />
+</div>
+
+<br>
+
+The following sequence diagram shows how a List operation goes through the Logic component:
+
+<div class="text-center">
+  <puml src="diagrams/list/ListSequenceDiagram.puml" alt="ListSequenceDiagram-Logic" />
+</div>
+
+<br>
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `ListCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `list` command:
+
+<div class="text-center">
+  <puml src="diagrams/list/ListActivityDiagram.puml" alt="ListActivityDiagram" />
 </div>
 
 <br>
