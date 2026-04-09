@@ -6,6 +6,7 @@ import static hitlist.logic.commands.CommandTestUtil.INVALID_COMPANY_NAME;
 import static hitlist.logic.commands.CommandTestUtil.INVALID_ROLE_NAME;
 import static hitlist.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static hitlist.logic.commands.CommandTestUtil.VALID_COMPANY_NAME_GOOGLE;
+import static hitlist.logic.commands.CommandTestUtil.VALID_ROLE_NAME_PRODUCT_MANAGER;
 import static hitlist.logic.commands.CommandTestUtil.VALID_ROLE_NAME_SOFTWARE_ENGINEER;
 import static hitlist.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static hitlist.logic.parser.CliSyntax.PREFIX_ROLE;
@@ -120,13 +121,24 @@ public class DeleteCompanyRoleCommandParserTest {
     }
 
     @Test
-    public void parse_duplicatePrefixes_failure() {
+    public void parse_duplicateCompanyPrefixes_failure() {
         String expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY);
 
         assertParseFailure(parser,
                 PREFIX_ROLE + VALID_ROLE_NAME_SOFTWARE_ENGINEER
                         + COMPANY_NAME_DESC_GOOGLE
                         + " " + PREFIX_COMPANY + "Meta",
+                expectedMessage);
+    }
+
+    @Test
+    public void parse_duplicateRolePrefixes_failure() {
+        String expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ROLE);
+
+        assertParseFailure(parser,
+                PREFIX_ROLE + VALID_ROLE_NAME_SOFTWARE_ENGINEER + " "
+                        + PREFIX_ROLE + VALID_ROLE_NAME_PRODUCT_MANAGER
+                        + COMPANY_NAME_DESC_GOOGLE,
                 expectedMessage);
     }
 
@@ -148,6 +160,17 @@ public class DeleteCompanyRoleCommandParserTest {
 
         assertParseFailure(parser,
                 PREAMBLE_NON_EMPTY + "1" + COMPANY_NAME_DESC_GOOGLE,
+                expectedMessage);
+    }
+
+    @Test
+    public void parse_roleNameAndRoleIndex_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                DeleteCompanyRoleCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser,
+                "1 " + PREFIX_ROLE + VALID_ROLE_NAME_SOFTWARE_ENGINEER
+                        + COMPANY_NAME_DESC_GOOGLE,
                 expectedMessage);
     }
 }

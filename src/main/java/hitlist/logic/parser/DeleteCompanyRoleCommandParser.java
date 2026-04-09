@@ -28,16 +28,17 @@ public class DeleteCompanyRoleCommandParser implements Parser<DeleteCompanyRoleC
                     DeleteCompanyRoleCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COMPANY);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COMPANY, PREFIX_ROLE);
         CompanyName companyName = ParserUtil.parseCompanyName(companyNameValue.get());
 
         Optional<String> roleNameValue = argMultimap.getValue(PREFIX_ROLE);
-        if (roleNameValue.isPresent()) {
+
+        if (roleNameValue.isPresent() && preamble.isEmpty()) { // use role name as identifier
             RoleName roleName = ParserUtil.parseRoleName(roleNameValue.get());
             return new DeleteCompanyRoleCommand(roleName, companyName);
         }
 
-        if (!preamble.isEmpty()) {
+        if (roleNameValue.isEmpty() && !preamble.isEmpty()) { // use index as identifier
             try {
                 Index roleIndex = ParserUtil.parseIndex(preamble);
                 return new DeleteCompanyRoleCommand(roleIndex, companyName);
