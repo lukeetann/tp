@@ -553,7 +553,7 @@ The following sequence diagram shows how a List operation goes through the Logic
 
 <br>
 
-<box type="info" seamless>[DeveloperGuide.md](DeveloperGuide.md)
+<box type="info" seamless>
 
 **Note:** The lifeline for `ListCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
