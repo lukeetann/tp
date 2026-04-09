@@ -21,17 +21,31 @@ pageNav: 3
         * [Storage component](#storage-component)
         * [Common classes](#common-classes)
     * [Implementation](#implementation)
-        * [Company Profile](#company-profile)
-            * [Design considerations for Company Parameters:](#design-considerations-for-company-parameters)
-            * [Design considerations for Company Commands:](#design-considerations-for-company-commands)
-            * [Adding a company](#adding-a-company)
-            * [Deleting a company](#deleting-a-company)
-            * [Listing company profiles](#listing-company-profiles)
-            * [Finding company profiles](#finding-company-profiles)
-            * [Design considerations for Roles Parameters:](#design-considerations-for-roles-parameters)
-            * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
-            * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
-            * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
+      * [Person](#person)
+          * [Design considerations for Person Parameters:](#design-considerations-for-person-parameters)
+          * [Design considerations for Person Commands:](#design-considerations-for-person-commands)
+          * [Adding a person](#adding-a-person)
+          * [Deleting a person](#deleting-a-person)
+      * [Group](#group)
+          * [Design considerations for Group Parameters:](#design-considerations-for-group-parameters)
+          * [Design considerations for Group Commands:](#design-considerations-for-group-commands)
+          * [Adding a group](#adding-a-group)
+          * [Deleting a group](#deleting-a-group)
+          * [Listing groups](#listing-groups)
+          * [Finding groups](#finding-groups)
+          * [Assigning a contact to a group](#assigning-a-contact-to-a-group)
+          * [Removing a contact from a group](#removing-a-contact-from-a-group)
+      * [Company Profile](#company-profile)
+          * [Design considerations for Company Parameters:](#design-considerations-for-company-parameters)
+          * [Design considerations for Company Commands:](#design-considerations-for-company-commands)
+          * [Adding a company](#adding-a-company)
+          * [Deleting a company](#deleting-a-company)
+          * [Listing company profiles](#listing-company-profiles)
+          * [Finding company profiles](#finding-company-profiles)
+          * [Design considerations for Roles Parameters:](#design-considerations-for-roles-parameters)
+          * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
+          * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
+          * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
         * [\[Proposed\] Undo/redo feature](#proposed-undoredo-feature)
             * [Proposed Implementation](#proposed-implementation)
             * [Design considerations:](#design-considerations)
@@ -499,6 +513,62 @@ The following sequence diagram shows how a DeleteGroup operation goes through th
 The following activity diagram summarizes what happens when a user executes the `grpdel` command:
 
 <puml src="diagrams/delete-group/GroupDeleteActivityDiagram.puml" alt="GroupDeleteActivityDiagram" />
+
+#### Listing groups
+
+The ListGroups mechanism is facilitated by `ListGroupsCommand` and its associated parser `ListGroupsCommandParser`. It allows users to list all existing contact groups in HitList. The feature implements the following key operations:
+
+* `ListGroupsCommandParser#parse()` — Parses the user input to ensure it matches the expected format for listing groups.
+* `ListGroupsCommand#execute()` — Executes the logic to retrieve all groups from the model and prepare them for display.
+* `Model#getGroupList()` — Provides access to the complete list of groups stored in the Model.
+
+Step 1. The user launches the application and types `grplist` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grplist")`.
+
+Step 3. Recognizing the `grplist` command word, the `HitListParser` instantiates a `ListGroupsCommandParser`.
+
+Step 4. The `HitListParser` calls the `parse()` method of the newly created `ListGroupsCommandParser`. The parser checks the arguments:
+
+If no argument is provided: It creates a `ListGroupCommand` with the default behaviour.
+
+If an argument is provided: It extracts the group name and creates a `ListGroupCommand` containing the group name of target group.
+
+<div class="text-center">
+    <puml src="diagrams/list-groups/GroupListParsing.puml" alt="GroupListParsing" />
+</div>
+
+<br>
+
+Step 5. The `ListGroupsCommand` is returned to the `LogicManager`, and the `ListGroupsCommandParser` is subsequently destroyed.
+
+<div class="text-center">
+    <puml src="diagrams/list-groups/GroupListExecution.puml" alt="GroupListExecution" />
+</div>
+
+<br>
+
+Step 6. `LogicManager` calls `ListGroupsCommand#execute()`. The command calls `Model#getGroupList()` to retrieve the list of groups from the internal HitList state, or sends `toList` to the model.
+
+Step 7. Since the underlying data was not modified, `Storage` does not need to save anything to the hard disk. The `LogicManager` returns the `CommandResult` containing the list of groups to the UI to display to the user.
+
+<div class="text-center">
+    <puml src="diagrams/list-groups/GroupListSequenceDiagram-Logic.puml" alt="GroupListSequenceDiagramLogic" />
+</div>
+
+<br>
+
+<info type="info" seamless header="Note">
+**Note:** The lifeline for `ListGroupsCommand` and `ListGroupsCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</info>
+
+The following activity diagram summarizes what happens when a user executes the `grplist` command:
+
+<div class="text-center">
+    <puml src="diagrams/list-groups/GroupListActivityDiagram.puml" alt="GroupListActivityDiagram" />
+</div>
+
+<br>
 
 ### Company Profile
 
