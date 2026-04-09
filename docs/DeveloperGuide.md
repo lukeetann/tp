@@ -26,6 +26,9 @@ pageNav: 3
           * [Design considerations for Person Commands:](#design-considerations-for-person-commands)
           * [Adding a person](#adding-a-person)
           * [Deleting a person](#deleting-a-person)
+          * [Editing a person](#editing-a-person)
+          * [Listing a person](#listing-a-person)
+          * [Finding a person](#finding-a-person)
       * [Group](#group)
           * [Design considerations for Group Parameters:](#design-considerations-for-group-parameters)
           * [Design considerations for Group Commands:](#design-considerations-for-group-commands)
@@ -421,7 +424,7 @@ Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `
 The following sequence diagram shows how a DeletePerson operation goes through the Logic component:
 
 <div class="text-center">
-  <puml src="diagrams/delete-person/PersonDeleteSequenceDiagram-Logic.puml" alt="PersonDeleteSequenceDiagramLogic" />
+  <puml src="diagrams/delete-person/PersonDeleteSequenceDiagram-Logic.puml" alt="PersonDeleteSequenceDiagram-Logic" />
 </div>
 
 <br>
@@ -466,7 +469,7 @@ Step 4. The `HitListParser` calls the `parse(" 1 /n John Doe /p 98765432 ...")` 
 The parser extracts the target index and new field values, creates an `EditPersonDescriptor`, then constructs a new `EditCommand` targeting the person at index `1`.
 
 <div class="text-center">
-  <puml src="diagrams/edit-person/PersonEditParsing.puml" alt="PersonEditParsing" />
+  <puml src="diagrams/edit-person/PersonEditParsing.puml" alt="PersonEdit-Parsing" />
 </div>
 
 <br>
@@ -476,7 +479,7 @@ Step 5. The `EditCommand` is returned to the `LogicManager`, and the `EditComman
 Step 6. `LogicManager` calls `EditCommand#execute()`. The command retrieves the target person, applies the edits using the `EditPersonDescriptor`, and calls `Model#setPerson(personToEdit, editedPerson)` to update the internal HitList state.
 
 <div class="text-center">
-  <puml src="diagrams/edit-person/PersonEditExecution.puml" alt="PersonEditExecution" />
+  <puml src="diagrams/edit-person/PersonEditExecution.puml" alt="PersonEdit-Execution" />
 </div>
 
 <br>
@@ -484,7 +487,7 @@ Step 6. `LogicManager` calls `EditCommand#execute()`. The command retrieves the 
 Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
 
 <div class="text-center">
-  <puml src="diagrams/edit-person/PersonEditPostExecution.puml" alt="PersonEditPostExecution" />
+  <puml src="diagrams/edit-person/PersonEditPostExecution.puml" alt="PersonEdit-PostExecution" />
 </div>
 
 <br>
@@ -492,7 +495,7 @@ Step 7. Finally, `Storage` saves the updated HitList to the hard disk, and the `
 The following sequence diagram shows how an EditPerson operation goes through the Logic component:
 
 <div class="text-center">
-  <puml src="diagrams/edit-person/PersonEditSequenceDiagram-Logic.puml" alt="PersonEditSequenceDiagramLogic" />
+  <puml src="diagrams/edit-person/PersonEditSequenceDiagram-Logic.puml" alt="PersonEditSequenceDiagram-Logic" />
 </div>
 
 <br>
@@ -501,6 +504,67 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <div class="text-center">
   <puml src="diagrams/edit-person/PersonEditActivityDiagram.puml" alt="PersonEditActivityDiagram" />
+</div>
+
+<br>
+
+#### Listing a person
+
+The List mechanism is facilitated by `ListCommand`. It allows users to list all person contacts in the HitList. The feature implements the following key operations:
+
+* `ListCommand#execute()` - Executes the logic to apply the `PREDICATE_SHOW_ALL_PERSONS` filter to the list of persons in the model.
+* `Model#updateFilteredPersonList()` - Updates the HitList's filtered list within the Model state to display all persons.
+
+Given below is an example usage scenario and how the List mechanism behaves at each step.
+
+Step 1. The user launches the application and types `list` into the command box.
+
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("list")`.
+
+Step 3. Recognizing the `list` command word, the `HitListParser` directly creates a `ListCommand` (since there are no arguments to parse).
+
+<div class="text-center">
+  <puml src="diagrams/list/ListParsing.puml" alt="ListObjectDiagram-Parsing" />
+</div>
+
+<br>
+
+Step 4. The `ListCommand` is returned to the `LogicManager`.
+
+<div class="text-center">
+  <puml src="diagrams/list/ListExecution.puml" alt="ListObjectDiagram-Execution" />
+</div>
+
+<br>
+
+Step 5. `LogicManager` calls `ListCommand#execute()`. This command calls `Model#updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)` to reset the filtered list in the internal `HitList` state to show all persons.
+
+Step 6. Since the underlying data was not modified, `Storage` does not need to save anything to the hard disk. The `LogicManager` simply returns the `CommandResult` to the UI to display the updated list and a success message to the user.
+
+<div class="text-center">
+  <puml src="diagrams/list/ListPostExecution.puml" alt="ListObjectDiagram-PostExecution" />
+</div>
+
+<br>
+
+The following sequence diagram shows how a List operation goes through the Logic component:
+
+<div class="text-center">
+  <puml src="diagrams/list/ListSequenceDiagram.puml" alt="ListSequenceDiagram-Logic" />
+</div>
+
+<br>
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `ListCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+</box>
+
+The following activity diagram summarizes what happens when a user executes the `list` command:
+
+<div class="text-center">
+  <puml src="diagrams/list/ListActivityDiagram.puml" alt="ListActivityDiagram" />
 </div>
 
 <br>
@@ -543,7 +607,7 @@ Step 7. Finally, the `LogicManager` returns the `CommandResult` to the UI to dis
 The following object diagram shows the important objects created during parsing:
 
 <div class="text-center">
-  <puml src="diagrams/find-person/PersonFindParsing.puml" alt="PersonFindParsing" />
+  <puml src="diagrams/find-person/PersonFindParsing.puml" alt="PersonFind-Parsing" />
 </div>
 
 <br>
@@ -551,7 +615,7 @@ The following object diagram shows the important objects created during parsing:
 The following object diagram shows the important objects involved during execution:
 
 <div class="text-center">
-  <puml src="diagrams/find-person/PersonFindExecution.puml" alt="PersonFindExecution" />
+  <puml src="diagrams/find-person/PersonFindExecution.puml" alt="PersonFind-Execution" />
 </div>
 
 <br>
@@ -559,7 +623,7 @@ The following object diagram shows the important objects involved during executi
 The following object diagram shows the model state after successful execution:
 
 <div class="text-center">
-  <puml src="diagrams/find-person/PersonFindPostExecution.puml" alt="PersonFindPostExecution" />
+  <puml src="diagrams/find-person/PersonFindPostExecution.puml" alt="PersonFind-PostExecution" />
 </div>
 
 <br>
@@ -567,7 +631,7 @@ The following object diagram shows the model state after successful execution:
 The following sequence diagram shows how a FindPerson operation goes through the Logic component:
 
 <div class="text-center">
-  <puml src="diagrams/find-person/PersonFindSequenceDiagram-Logic.puml" alt="PersonFindSequenceDiagramLogic" />
+  <puml src="diagrams/find-person/PersonFindSequenceDiagram-Logic.puml" alt="PersonFindSequenceDiagram-Logic" />
 </div>
 
 <br>
@@ -778,7 +842,7 @@ If no argument is provided: It creates a `ListGroupCommand` with the default beh
 If an argument is provided: It extracts the group name and creates a `ListGroupCommand` containing the group name of target group.
 
 <div class="text-center">
-    <puml src="diagrams/list-groups/GroupListParsing.puml" alt="GroupListParsing" />
+    <puml src="diagrams/list-groups/GroupListParsing.puml" alt="GroupList-Parsing" />
 </div>
 
 <br>
@@ -786,7 +850,7 @@ If an argument is provided: It extracts the group name and creates a `ListGroupC
 Step 5. The `ListGroupsCommand` is returned to the `LogicManager`, and the `ListGroupsCommandParser` is subsequently destroyed.
 
 <div class="text-center">
-    <puml src="diagrams/list-groups/GroupListExecution.puml" alt="GroupListExecution" />
+    <puml src="diagrams/list-groups/GroupListExecution.puml" alt="GroupList-Execution" />
 </div>
 
 <br>
@@ -796,7 +860,7 @@ Step 6. `LogicManager` calls `ListGroupsCommand#execute()`. The command calls `M
 Step 7. Since the underlying data was not modified, `Storage` does not need to save anything to the hard disk. The `LogicManager` returns the `CommandResult` containing the list of groups to the UI to display to the user.
 
 <div class="text-center">
-    <puml src="diagrams/list-groups/GroupListSequenceDiagram-Logic.puml" alt="GroupListSequenceDiagramLogic" />
+    <puml src="diagrams/list-groups/GroupListSequenceDiagram-Logic.puml" alt="GroupListSequenceDiagram-Logic" />
 </div>
 
 <br>
@@ -864,10 +928,8 @@ The following sequence diagram shows how an AssignGroup operation goes through t
 
 <br>
 
-<box type="info" seamless>
-
+<box type="info" seamless header="Note">
 **Note:** The lifeline for `AssignGroupCommand` and `AssignGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpassign` command:
@@ -929,10 +991,8 @@ The following sequence diagram shows how an UnassignGroup operation goes through
 
 <br>
 
-<box type="info" seamless>
-
-**Note:** The lifeline for `UnassignGroupCommand` and `UnassignGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
+<box type="info" seamless header="Note">
+The lifeline for `UnassignGroupCommand` and `UnassignGroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpunassign` command:
@@ -1125,67 +1185,6 @@ The following activity diagram summarizes what happens when a user executes the 
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteActivityDiagram.puml" alt="CompanyDeleteActivityDiagram" />
-</div>
-
-<br>
-
-#### Listing all contacts
-
-The List mechanism is facilitated by `ListCommand`. It allows users to list all person contacts in the HitList. The feature implements the following key operations:
-
-* `ListCommand#execute()` - Executes the logic to apply the `PREDICATE_SHOW_ALL_PERSONS` filter to the list of persons in the model.
-* `Model#updateFilteredPersonList()` - Updates the HitList's filtered list within the Model state to display all persons.
-
-Given below is an example usage scenario and how the List mechanism behaves at each step.
-
-Step 1. The user launches the application and types `list` into the command box.
-
-Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("list")`.
-
-Step 3. Recognizing the `list` command word, the `HitListParser` directly creates a `ListCommand` (since there are no arguments to parse).
-
-<div class="text-center">
-  <puml src="diagrams/list/ListParsing.puml" alt="ListObjectDiagram-Parsing" />
-</div>
-
-<br>
-
-Step 4. The `ListCommand` is returned to the `LogicManager`.
-
-<div class="text-center">
-  <puml src="diagrams/list/ListExecution.puml" alt="ListObjectDiagram-Execution" />
-</div>
-
-<br>
-
-Step 5. `LogicManager` calls `ListCommand#execute()`. This command calls `Model#updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)` to reset the filtered list in the internal `HitList` state to show all persons.
-
-Step 6. Since the underlying data was not modified, `Storage` does not need to save anything to the hard disk. The `LogicManager` simply returns the `CommandResult` to the UI to display the updated list and a success message to the user.
-
-<div class="text-center">
-  <puml src="diagrams/list/ListPostExecution.puml" alt="ListObjectDiagram-PostExecution" />
-</div>
-
-<br>
-
-The following sequence diagram shows how a List operation goes through the Logic component:
-
-<div class="text-center">
-  <puml src="diagrams/list/ListSequenceDiagram.puml" alt="ListSequenceDiagram-Logic" />
-</div>
-
-<br>
-
-<box type="info" seamless>
-
-**Note:** The lifeline for `ListCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
-
-The following activity diagram summarizes what happens when a user executes the `list` command:
-
-<div class="text-center">
-  <puml src="diagrams/list/ListActivityDiagram.puml" alt="ListActivityDiagram" />
 </div>
 
 <br>
