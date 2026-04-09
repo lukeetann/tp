@@ -121,7 +121,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point).
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -215,7 +215,7 @@ The `Model` component,
 
 * stores HitList data i.e., all `Person`, `Group` and `Company` objects (which are contained in a `UniquePersonList`, `UniqueGroupList` and `UniqueCompanyList` object).
 * stores the currently 'selected' `Person`, `Group` or `Company` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>`, `ObservableList<Group>` or `ObservableList<Company>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 ### Storage component
@@ -827,6 +827,8 @@ The ListGroups mechanism is facilitated by `ListGroupCommand` and its associated
 * `ListGroupCommand#execute()` — Executes the logic to retrieve all groups from the model and prepare them for display.
 * `Model#getGroupList()` — Provides access to the complete list of groups stored in the Model.
 
+Given below is an example usage scenario and how the ListGroup mechanism behaves at each step.
+
 Step 1. The user launches the application and types `grplist` into the command box.
 
 Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("grplist")`.
@@ -1354,7 +1356,7 @@ The following activity diagram summarizes what happens when a user executes the 
 **Aspect: Handling Duplicate Roles:**
 * **Alternative 1 (current choice):** Check for duplicates based on role name and reject the addition if a duplicate is found.
   * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
-  * Cons: Does not account for edge cases where two distinct role might share the same names.
+  * Cons: Does not account for edge cases where two distinct roles might share the same names.
 * **Alternative 2:** Allow duplicates but provide a warning to the user.
   * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
   * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
