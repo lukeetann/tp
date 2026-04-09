@@ -1167,7 +1167,7 @@ Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the
 
 <br>
 
-The following sequence diagram shows how an AddCompany operation goes through the Logic component:
+The following sequence diagram shows how a DeleteCompany operation goes through the Logic component:
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteSequenceDiagram-Logic.puml" alt="CompanyDeleteSequenceDiagram-Logic" />
@@ -1377,8 +1377,6 @@ Step 3. Recognizing the `roleadd` command word, the `HitListParser` instantiates
 
 Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer /d Develops Software")` method of the newly created `AddCompanyRoleCommandParser`. The parser extracts the target company name, role details, creates a new Role object (representing Software Engineer), and passes it into the constructor of a new `AddCompanyRoleCommand`.
 
-Step 5. The `AddCompanyRoleCommand` is returned to the `LogicManager`, and the `AddCompanyRoleCommandParser` is subsequently destroyed.
-
 <div class="text-center">
   <puml src="diagrams/add-role/RoleAddParsing.puml" alt="RoleAddObjectDiagram-Parsing" />
 </div>
@@ -1396,8 +1394,6 @@ Step 5. The `AddCompanyRoleCommand` is returned to the `LogicManager`, and the `
 Step 6. `LogicManager` calls `AddCompanyRoleCommand#execute()`. This command calls `Model#addCompanyRole(targetCompany, roleToAdd)`, passing the target company and the parsed role object to update the internal `HitList` state.
 
 Step 7. Finally, `Storage` saves the updated `HitList` to the hard disk, and the `LogicManager` returns the `CommandResult` to the UI to display a success message to the user.
-
-The following sequence diagram shows how an AddRole operation goes through the Logic component:
 
 <div class="text-center">
   <puml src="diagrams/add-role/RoleAddPostExecution.puml" alt="RoleAddObjectDiagram-PostExecution" />
