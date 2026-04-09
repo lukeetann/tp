@@ -595,22 +595,16 @@ Step 3. Recognizing the `find` command word, the `HitListParser` instantiates a 
 Step 4. The `HitListParser` calls the `parse(" Alex Lee")` method of the newly created `FindCommandParser`.  
 The parser constructs a `PersonMatchesFindPredicate` object based on the keywords `"Alex"` and `"Lee"`, then creates a new `FindCommand` with this predicate.
 
-Step 5. The `FindCommand` is returned to the `LogicManager`, and the `FindCommandParser` is subsequently destroyed.
-
-Step 6. `LogicManager` calls `FindCommand#execute()`. The command applies the predicate to the model’s person list, filtering out only those that match `"Alex"` or  `"Lee"`.  
-The `Model#updateFilteredPersonList(predicate)` method updates the internal HitList state accordingly.
-
-Step 7. Finally, the `LogicManager` returns the `CommandResult` to the UI to display the filtered list of persons to the user.
-
-The following object diagram shows the important objects created during parsing:
-
 <div class="text-center">
   <puml src="diagrams/find-person/PersonFindParsing.puml" alt="PersonFind-Parsing" />
 </div>
 
 <br>
 
-The following object diagram shows the important objects involved during execution:
+Step 5. The `FindCommand` is returned to the `LogicManager`, and the `FindCommandParser` is subsequently destroyed.
+
+Step 6. `LogicManager` calls `FindCommand#execute()`. The command applies the predicate to the model’s person list, filtering out only those that match `"Alex"` or  `"Lee"`.  
+The `Model#updateFilteredPersonList(predicate)` method updates the internal HitList state accordingly.
 
 <div class="text-center">
   <puml src="diagrams/find-person/PersonFindExecution.puml" alt="PersonFind-Execution" />
@@ -618,7 +612,7 @@ The following object diagram shows the important objects involved during executi
 
 <br>
 
-The following object diagram shows the model state after successful execution:
+Step 7. Finally, the `LogicManager` returns the `CommandResult` to the UI to display the filtered list of persons to the user.
 
 <div class="text-center">
   <puml src="diagrams/find-person/PersonFindPostExecution.puml" alt="PersonFind-PostExecution" />
