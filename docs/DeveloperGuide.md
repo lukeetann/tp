@@ -346,7 +346,7 @@ The feature implements the following key operations:
 Given below is an example usage scenario and how the EditPerson mechanism behaves at each step.
 
 <box seamless>
-    The full command is `edit 1 /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25`
+    The full command is <code>edit 1 /n John Doe /p 98765432 /e johnd@example.com /a 311, Clementi Ave 2, #02-25</code>
 </box>
 
 Step 1. The user launches the application and types `edit 1 /n John Doe /p 98765432 ...` into the command box.
