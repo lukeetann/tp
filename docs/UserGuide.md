@@ -17,28 +17,28 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 * [HitList User Guide](#hitlist-user-guide)
     * [Quick start](#quick-start)
     * [Features](#features)
-        * [Viewing help : `help`](#viewing-help--help)
-        * [Adding a contact : `add`](#adding-a-contact--add)
-        * [Editing a contact : `edit`](#editing-a-contact--edit)
-        * [Deleting a contact : `delete`](#deleting-a-contact--delete)
-        * [Listing all contacts : `list`](#listing-all-contacts--list)
-        * [Locating contacts : `find`](#locating-contacts--find)
-        * [Adding a contact group : `grpadd`](#adding-a-contact-group--grpadd)
-        * [Deleting a contact group : `grpdel`](#deleting-a-contact-group--grpdel)
-        * [Listing contacts in a contact group : `grplist`](#listing-contacts-in-a-contact-group--grplist)
-        * [Assigning a contact to a contact group : `grpassign`](#assigning-a-contact-to-a-contact-group--grpassign)
-        * [Unassigning a contact from a contact group : `grpunassign`](#unassigning-a-contact-from-a-contact-group--grpunassign)
-        * [Adding a company : `cmpadd`](#adding-a-company--cmpadd)
-        * [Deleting a company : `cmpdel`](#deleting-a-company--cmpdel)
-        * [Listing all Companies : `cmplist`](#listing-all-companies--cmplist)
-        * [Locating companies : `cmpfind`](#locating-companies--cmpfind)
-        * [Adding a role to a company : `roleadd`](#adding-a-role-to-a-company--roleadd)
-        * [Deleting a role from a company : `roledel`](#deleting-a-role-from-a-company--roledel)
-        * [Clearing all entries : `clear`](#clearing-all-entries--clear)
-        * [Exiting the program : `exit`](#exiting-the-program--exit)
+        * [Viewing help : `help`](#viewing-help-help)
+        * [Adding a contact : `add`](#adding-a-contact-add)
+        * [Editing a contact : `edit`](#editing-a-contact-edit)
+        * [Deleting a contact : `delete`](#deleting-a-contact-delete)
+        * [Listing all contacts : `list`](#listing-all-contacts-list)
+        * [Locating contacts : `find`](#locating-contacts-find)
+        * [Adding a contact group : `grpadd`](#adding-a-contact-group-grpadd)
+        * [Deleting a contact group : `grpdel`](#deleting-a-contact-group-grpdel)
+        * [Listing contacts in a contact group : `grplist`](#listing-contacts-in-a-contact-group-grplist)
+        * [Assigning a contact to a contact group : `grpassign`](#assigning-a-contact-to-a-contact-group-grpassign)
+        * [Unassigning a contact from a contact group : `grpunassign`](#unassigning-a-contact-from-a-contact-group-grpunassign)
+        * [Adding a company : `cmpadd`](#adding-a-company-cmpadd)
+        * [Deleting a company : `cmpdel`](#deleting-a-company-cmpdel)
+        * [Listing all Companies : `cmplist`](#listing-all-companies-cmplist)
+        * [Locating companies : `cmpfind`](#locating-companies-cmpfind)
+        * [Adding a role to a company : `roleadd`](#adding-a-role-to-a-company-roleadd)
+        * [Deleting a role from a company : `roledel`](#deleting-a-role-from-a-company-roledel)
+        * [Clearing all entries : `clear`](#clearing-all-entries-clear)
+        * [Exiting the program : `exit`](#exiting-the-program-exit)
         * [Saving the data](#saving-the-data)
         * [Editing the data file](#editing-the-data-file)
-        * [Archiving data files `[coming in v2.0]`](#archiving-data-files-coming-in-v20)
+        * [Archiving data files `[coming in v2.0]`](#archiving-data-files-coming-in-v2-0)
     * [Glossary](#glossary)
     * [FAQ](#faq)
     * [Command summary](#command-summary)
@@ -63,7 +63,7 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 <br>
 
 7. Type the command in the command box and press Enter to execute it.
-   e.g. typing **`help`** and pressing Enter will open the help window.
+   e.g. typing `help` and pressing Enter will open the help window.
 8. Some example commands you can try:
     * `add /n John Doe /p 98765432` : Adds a contact named `John Doe` to the HitList.
     * `list` : Lists all contacts.
@@ -92,15 +92,15 @@ HitList is targeted towards recruiters and headhunters who need to manage a larg
 
 Shows a message explaining how to access the help page.
 
+Format: `help`
+
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Help message" src="images/ug/helpMessage.png" />
+    <img class="img-fluid" alt="Help message" src="images/ug/help-message.png" />
   </div>
 </div>
 
 <br>
-
-Format: `help`
 
 ### Adding a contact : `add`
 
@@ -116,10 +116,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Adding John Doe to HitList" src="images/ug/BeforeAddContact_Optional.png" />
+    <img class="img-fluid" alt="Before Adding John Doe to HitList" src="images/ug/add-contact-optional-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Add John Doe to HitList" src="images/ug/AddContact_Optional.png" />
+    <img class="img-fluid" alt="Add John Doe to HitList" src="images/ug/add-contact-optional-after.png" />
   </div>
 </div>
 
@@ -129,10 +129,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Adding Betsy Crowe to HitList" src="images/ug/BeforeAddContact_Full.png" />
+    <img class="img-fluid" alt="Before Adding Betsy Crowe to HitList" src="images/ug/add-contact-full-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Add Betsy Crowe to HitList" src="images/ug/AddContact_Full.png" />
+    <img class="img-fluid" alt="Add Betsy Crowe to HitList" src="images/ug/add-contact-full-after.png" />
   </div>
 </div>
 
@@ -156,10 +156,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Edit of HitList" src="images/ug/BeforeEdit.png" />
+    <img class="img-fluid" alt="Before Edit of HitList" src="images/ug/edit-contact-phone-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Edit 1st Contact number in HitList" src="images/ug/AfterEdit_Contact.png" />
+    <img class="img-fluid" alt="Edit 1st Contact number in HitList" src="images/ug/edit-contact-phone-after.png" />
   </div>
 </div>
 
@@ -169,10 +169,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Editing 2nd Contact" src="images/ug/BeforeEdit_Contact2.png" />
+    <img class="img-fluid" alt="Before Editing 2nd Contact" src="images/ug/edit-contact-name-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Edit 2nd Contact Name to Betsy Crowe in HitList" src="images/ug/AfterEdit_Contact2.png" />
+    <img class="img-fluid" alt="Edit 2nd Contact Name to Betsy Crowe in HitList" src="images/ug/edit-contact-name-after.png" />
   </div>
 </div>
 
@@ -182,21 +182,28 @@ Examples:
 
 Deletes the specified contact from HitList.
 
-Format: `delete INDEX`
+<box theme="danger" header="**CAUTION**">
+    This command deletes the selected contact in HitList. Use with caution.
+    The action is irreversible and there is no confirmation prompt before the action is executed.
+</box>
 
-* Deletes the contact at the specified `INDEX`.
+Format: `delete INDEX` or `delete /n NAME` or `del INDEX` or `del /n NAME`
+
+* Deletes the contact at the specified `INDEX` or the contact with the specified `NAME` from HitList.
 * The index refers to the index number shown in the displayed HitList.
 * The index **must be a positive integer** `1, 2, 3, …`
+* The contact name (case-insensitive) must exactly match an existing contact in HitList.
+* Either the index or the name can be used to delete a contact, but not both at the same time.
 
 Examples:
 * `list` followed by `delete 2` deletes the second contact in HitList
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Listing of HitList" src="images/ug/BeforeDelete.png" />
+    <img class="img-fluid" alt="Listing of HitList" src="images/ug/delete-index-list-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deleting of Contact in HitList" src="images/ug/AfterDelete_Index.png" />
+    <img class="img-fluid" alt="Deleting of Contact in HitList" src="images/ug/delete-index-list-after.png" />
   </div>
 </div>
 
@@ -206,38 +213,27 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Find Irfan in HitList" src="images/ug/Find_Irfan.png" />
+    <img class="img-fluid" alt="Find Irfan in HitList" src="images/ug/delete-index-find-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deleting Irfan in HitList" src="images/ug/AfterDelete.png" />
+    <img class="img-fluid" alt="Deleting Irfan in HitList" src="images/ug/delete-index-find-after.png" />
   </div>
 </div>
 
 <br>
 
-Format `delete /n CONTACT_NAME`
-
-* Deletes the contact with the specified name from HitList.
-* The contact name must exactly match an existing contact in HitList.
-
-Example:
 * `list` followed by `delete /n David Li` deletes the contact named `David Li` from HitList
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Listing of HitList" src="images/ug/BeforeDelete_ByName.png" />
+    <img class="img-fluid" alt="Listing of HitList" src="images/ug/delete-name-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deleting David Li in HitList" src="images/ug/AfterDelete_ByName.png" />
+    <img class="img-fluid" alt="Deleting David Li in HitList" src="images/ug/delete-name-after.png" />
   </div>
 </div>
 
 <br>
-
-<box theme="danger" header="**CAUTION**">
-    This command deletes the selected contact in HitList. Use with caution.
-    The action is irreversible and there is no confirmation prompt before the action is executed.
-</box>
 
 ### Listing all contacts : `list`
 
@@ -247,7 +243,7 @@ Format: `list`
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Before Edit of HitList" src="images/ug/List.png" />
+    <img class="img-fluid" alt="Before Edit of HitList" src="images/ug/list.png" />
   </div>
 </div>
 
@@ -257,7 +253,7 @@ Format: `list`
 
 Finds contacts whose names match the given substring.
 
-Format: `find [KEYWORD]...`
+Format: `find KEYWORD...`
 
 * Name search is case-insensitive.
   e.g. `han` matches `Hans`
@@ -271,7 +267,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Finding john" src="images/ug/Find_John.png" />
+    <img class="img-fluid" alt="Find john" src="images/ug/find-john.png" />
   </div>
 </div>
 
@@ -281,7 +277,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Find Alex and krishnan in HitList" src="images/ug/Find_Alex_krishnan.png" />
+    <img class="img-fluid" alt="Find Alex and krishnan in HitList" src="images/ug/find-alex-krishnan.png" />
   </div>
 </div>
 
@@ -291,17 +287,17 @@ Examples:
 
 Adds a contact group to the HitList. Optionally, existing contacts can be added to the group at the time of group creation.
 
-Format: `grpadd /g GROUP_NAME [/n CONTACT_NAME]...`
+Format: `grpadd /g GROUP_NAME [/n NAME]...`
 
 Examples:
 * `grpadd /g Experienced`
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before creation of group Experienced in HitList" src="images/ug/Before_Grpadd_Experienced.png" />
+    <img class="img-fluid" alt="Before creation of group Experienced in HitList" src="images/ug/grpadd-experienced-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Creation of group Experienced in HitList" src="images/ug/Grpadd_Experienced.png" />
+    <img class="img-fluid" alt="Creation of group Experienced in HitList" src="images/ug/grpadd-experienced-after.png" />
   </div>
 </div>
 
@@ -311,10 +307,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before creation of group Admins in HitList" src="images/ug/Before_Grpadd_Admins.png" />
+    <img class="img-fluid" alt="Before creation of group Admins in HitList" src="images/ug/grpadd-admins-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Creation of group Admins in HitList" src="images/ug/Grpadd_Admins.png" />
+    <img class="img-fluid" alt="Creation of group Admins in HitList" src="images/ug/grpadd-admins-after.png" />
   </div>
 </div>
 
@@ -324,6 +320,14 @@ Examples:
 
 Deletes the specified contact group from HitList.
 
+<box type="warning" header="**WARNING: Irreversible Action**">
+    This command instantly deletes the selected contact group. <b>There is no confirmation prompt.</b>
+</box>
+
+<box type="info" seamless>
+    Please note that this <b>only</b> deletes the group itself and the association of contacts to that group. The actual contacts (e.g., `John Doe`) are not deleted from HitList.
+</box>
+
 Format: `grpdel /g GROUP_NAME`
 
 Examples:
@@ -331,10 +335,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Listing of groups" src="images/ug/Before_Grpdel_Admins.png" />
+    <img class="img-fluid" alt="Listing of groups" src="images/ug/grpdel-admins-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of group Admins in HitList" src="images/ug/Grpdel_Admins.png" />
+    <img class="img-fluid" alt="Deletion of group Admins in HitList" src="images/ug/grpdel-admins-after.png" />
   </div>
 </div>
 
@@ -344,19 +348,14 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Listing of groups" src="images/ug/Before_Grpdel_Unemployed.png" />
+    <img class="img-fluid" alt="Listing of groups" src="images/ug/grpdel-unemployed-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of group Unemployed in HitList" src="images/ug/Grpdel_Unemployed.png" />
+    <img class="img-fluid" alt="Deletion of group Unemployed in HitList" src="images/ug/grpdel-unemployed-after.png" />
   </div>
 </div>
 
 <br>
-
-<box type="warning" header="**WARNING: Irreversible Action**">
-    This command instantly deletes the selected contact group. **There is no confirmation prompt.**
-    Please note that this *only* deletes the group itself and the association of contacts to that group. The actual contacts (e.g., `John Doe`) are not deleted from HitList.
-</box>
 
 ### Listing contacts in a contact group : `grplist`
 
@@ -370,7 +369,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List all groups in HitList" src="images/ug/Grplist.png" />
+    <img class="img-fluid" alt="List all groups in HitList" src="images/ug/grplist.png" />
   </div>
 </div>
 
@@ -380,7 +379,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List group members of Students group" src="images/ug/Grplist_Students.png" />
+    <img class="img-fluid" alt="List group members of Students group" src="images/ug/grplist-students.png" />
   </div>
 </div>
 
@@ -400,10 +399,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Assigning Alex Yeoh to Experienced Group" src="images/ug/BeforeGrpassign_Experienced.png" />
+    <img class="img-fluid" alt="Before Assigning Alex Yeoh to Experienced Group" src="images/ug/grpassign-experienced-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="After Assigning Alex Yeoh to Experienced Group" src="images/ug/AfterGrpassign_Experienced.png" />
+    <img class="img-fluid" alt="After Assigning Alex Yeoh to Experienced Group" src="images/ug/grpassign-experienced-after.png" />
   </div>
 </div>
 
@@ -413,10 +412,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before Assigning Betsy Crowe to Students Group" src="images/ug/BeforeGrpassign_Students.png" />
+    <img class="img-fluid" alt="Before Assigning Betsy Crowe to Students Group" src="images/ug/grpassign-students-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="After Assigning Betsy Crowe to Students Group" src="images/ug/AfterGrpassign_Students.png" />
+    <img class="img-fluid" alt="After Assigning Betsy Crowe to Students Group" src="images/ug/grpassign-students-after.png" />
   </div>
 </div>
 
@@ -437,10 +436,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before unassigning of Alex Yeoh from Experienced group" src="images/ug/BeforeGrpunassign_Experienced.png" />
+    <img class="img-fluid" alt="Before unassigning of Alex Yeoh from Experienced group" src="images/ug/grpunassign-experienced-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="After unassigning of Alex Yeoh from Experienced group" src="images/ug/AfterGrpunassign_Experienced.png" />
+    <img class="img-fluid" alt="After unassigning of Alex Yeoh from Experienced group" src="images/ug/grpunassign-experienced-after.png" />
   </div>
 </div>
 
@@ -450,10 +449,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before unassigning of Betsy Crowe from Students group" src="images/ug/BeforeGrpunassign_Students.png" />
+    <img class="img-fluid" alt="Before unassigning of Betsy Crowe from Students group" src="images/ug/grpunassign-students-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="After unassigning of Betsy Crowe from Students group" src="images/ug/AfterGrpunassign_Students.png" />
+    <img class="img-fluid" alt="After unassigning of Betsy Crowe from Students group" src="images/ug/grpunassign-students-after.png" />
   </div>
 </div>
 
@@ -473,10 +472,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before creation of company Google with description Tech giant" src="images/ug/Before_Cmpadd_Google.png" />
+    <img class="img-fluid" alt="Before creation of company Google with description Tech giant" src="images/ug/cmpadd-google-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Creation of company Google with description Tech giant" src="images/ug/Cmpadd_Google.png" />
+    <img class="img-fluid" alt="Creation of company Google with description Tech giant" src="images/ug/cmpadd-google-after.png" />
   </div>
 </div>
 
@@ -486,10 +485,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before creation of company Meta with description Social media giant" src="images/ug/Before_Cmpadd_Meta.png" />
+    <img class="img-fluid" alt="Before creation of company Meta with description Social media giant" src="images/ug/cmpadd-meta-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Creation of company Meta with description Social media giant" src="images/ug/Cmpadd_Meta.png" />
+    <img class="img-fluid" alt="Creation of company Meta with description Social media giant" src="images/ug/cmpadd-meta-after.png" />
   </div>
 </div>
 
@@ -498,6 +497,11 @@ Examples:
 ### Deleting a company : `cmpdel`
 
 Deletes the specified company from HitList.
+
+<box theme="danger" header="**CAUTION: Cascading Deletion**">
+    This command instantly deletes the specified company. <b>There is no confirmation prompt.</b>
+    Please note that <b>all roles associated with this company will also be permanently deleted</b> from HitList. Use with extreme caution.
+</box>
 
 Format: `cmpdel /c COMPANY_NAME`
 
@@ -509,10 +513,10 @@ Example:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before deletion of company Google" src="images/ug/Before_Cmpdel_Google.png" />
+    <img class="img-fluid" alt="Before deletion of company Google" src="images/ug/cmpdel-google-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of company Google" src="images/ug/Cmpdel_Google.png" />
+    <img class="img-fluid" alt="Deletion of company Google" src="images/ug/cmpdel-google-after.png" />
   </div>
 </div>
 
@@ -522,19 +526,14 @@ Example:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before deletion of company Meta" src="images/ug/Before_Cmpdel_Meta.png" />
+    <img class="img-fluid" alt="Before deletion of company Meta" src="images/ug/cmpdel-meta-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of company Meta" src="images/ug/Cmpdel_Meta.png" />
+    <img class="img-fluid" alt="Deletion of company Meta" src="images/ug/cmpdel-meta-after.png" />
   </div>
 </div>
 
 <br>
-
-<box theme="danger" header="**CAUTION: Cascading Deletion**">
-    This command instantly deletes the specified company. **There is no confirmation prompt.**
-    Please note that **all roles associated with this company will also be permanently deleted** from HitList. Use with extreme caution.
-</box>
 
 ### Listing all Companies : `cmplist`
 
@@ -549,7 +548,7 @@ Example:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List all companies in HitList" src="images/ug/Cmplist.png" />
+    <img class="img-fluid" alt="List all companies in HitList" src="images/ug/cmplist.png" />
   </div>
 </div>
 
@@ -559,7 +558,7 @@ Example:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="List details of company Google in HitList" src="images/ug/Cmplist_Google.png" />
+    <img class="img-fluid" alt="List details of company Google in HitList" src="images/ug/cmplist-google.png" />
   </div>
 </div>
 
@@ -569,7 +568,7 @@ Example:
 
 Finds companies whose names match any given substring.
 
-Format: `cmpfind [KEYWORD]...`
+Format: `cmpfind KEYWORD...`
 
 * Company name search is case-insensitive.
   e.g. `google` matches `Google`
@@ -582,7 +581,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Finding Inc" src="images/ug/Find_Inc.png" />
+    <img class="img-fluid" alt="Finding Inc" src="images/ug/cmpfind-inc.png" />
   </div>
 </div>
 
@@ -592,7 +591,7 @@ Examples:
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
-    <img class="img-fluid" alt="Find Google and Netflix in HitList" src="images/ug/Find_Google_Netflix.png" />
+    <img class="img-fluid" alt="Find Google and Netflix in HitList" src="images/ug/cmpfind-google-flix.png" />
   </div>
 </div>
 
@@ -614,10 +613,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before addition of Quality Assurance Engineer role to company Google Inc." src="images/ug/Before_Roleadd_QualityAssurance.png" />
+    <img class="img-fluid" alt="Before addition of Quality Assurance Engineer role to company Google Inc." src="images/ug/roleadd-quality-assurance-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Addition of Quality Assurance Engineer role to company Google Inc." src="images/ug/Roleadd_QualityAssurance.png" />
+    <img class="img-fluid" alt="Addition of Quality Assurance Engineer role to company Google Inc." src="images/ug/roleadd-quality-assurance-after.png" />
   </div>
 </div>
 
@@ -627,10 +626,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/Before_Roleadd_Devops.png" />
+    <img class="img-fluid" alt="Before addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/roleadd-devops-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/Roleadd_Devops.png" />
+    <img class="img-fluid" alt="Addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/roleadd-devops-after.png" />
   </div>
 </div>
 
@@ -639,6 +638,11 @@ Examples:
 ### Deleting a role from a company : `roledel`
 
 Deletes a role from a specified existing company in the HitList.
+
+<box theme="danger" header="**CAUTION**">
+    This command deletes the specified role from the company in HitList. Use with caution.
+    The action is irreversible and there is no confirmation prompt before the action is executed.
+</box>
 
 Format: `roledel /r ROLE_NAME /c COMPANY_NAME` or `roledel INDEX /c COMPANY_NAME`
 
@@ -653,10 +657,10 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before deletion of Quality Assurance Engineer role from company Google Inc." src="images/ug/Before_Roledel_QualityAssurance.png" />
+    <img class="img-fluid" alt="Before deletion of Quality Assurance Engineer role from company Google Inc." src="images/ug/roledel-quality-assurance-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of Quality Assurance Engineer role from company Google Inc." src="images/ug/Roledel_QualityAssurance.png" />
+    <img class="img-fluid" alt="Deletion of Quality Assurance Engineer role from company Google Inc." src="images/ug/roledel-quality-assurance-after.png" />
   </div>
 </div>
 
@@ -666,30 +670,25 @@ Examples:
 
 <div class="row">
   <div class="col">
-    <img class="img-fluid" alt="Before deletion of first role from company Meta Platforms, Inc." src="images/ug/Before_Roledel_Index.png" />
+    <img class="img-fluid" alt="Before deletion of first role from company Meta Platforms, Inc." src="images/ug/roledel-index-before.png" />
   </div>
   <div class="col">
-    <img class="img-fluid" alt="Deletion of first role from company Meta Platforms, Inc." src="images/ug/Roledel_Index.png" />
+    <img class="img-fluid" alt="Deletion of first role from company Meta Platforms, Inc." src="images/ug/roledel-index-after.png" />
   </div>
 </div>
 
 <br>
 
-<box theme="danger" header="**CAUTION**">
-    This command deletes the specified role from the company in HitList. Use with caution.
-    The action is irreversible and there is no confirmation prompt before the action is executed.
-</box>
-
 ### Clearing all entries : `clear`
 
 Clears all entries from the HitList.
-
-Format: `clear`
 
 <box theme="danger" header="**CAUTION**">
     This command deletes all contacts, contact groups, companies, and roles from the HitList. Use with caution.
     The action is irreversible and there is no confirmation prompt before the action is executed.
 </box>
+
+Format: `clear`
 
 ### Exiting the program : `exit`
 

@@ -490,7 +490,7 @@ The following activity diagram summarizes what happens when a user executes the 
 
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedHitList`. It extends `HitList` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed undo/redo mechanism is facilitated by `VersionedHitList`. It extends `HitList` with an undo/redo history, stored internally as an `hitListStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
 * `VersionedHitList#commit()` — Saves the current HitList state in its history.
 * `VersionedHitList#undo()` — Restores the previous HitList state from its history.
@@ -556,7 +556,7 @@ Step 5. The user then decides to execute the command `list`. Commands that do no
 
 <puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `hitListStateList`, all HitList states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitHitList()`. Since the `currentStatePointer` is not pointing at the end of the `hitListStateList`, all HitList states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
 
 <puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
 

@@ -24,7 +24,7 @@ public class ListGroupCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all contact groups,"
             + "or all contacts in a specified contact group.\n"
             + "Parameters: "
-            + "[" + PREFIX_GROUP + " GROUP]\n"
+            + "[" + PREFIX_GROUP + " GROUP_NAME]\n"
             + "Example:\n"
             + COMMAND_WORD + " " + PREFIX_GROUP + " Students\n"
             + COMMAND_WORD;
