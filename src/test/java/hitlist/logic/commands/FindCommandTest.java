@@ -73,6 +73,56 @@ public class FindCommandTest {
     }
 
     @Test
+    public void execute_singleKeyword_singlePersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        PersonMatchesFindPredicate predicate = preparePredicate("Elle");
+
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ELLE), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_keywordWithHyphen_personFound() {
+        // Assuming there's a person with hyphenated name in TypicalPersons
+        // If not, this test would need a custom model setup
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        PersonMatchesFindPredicate predicate = preparePredicate("Jean-Luc");
+
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // Assert based on your test data
+    }
+
+    @Test
+    public void execute_keywordCaseInsensitive_personsFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        PersonMatchesFindPredicate predicate = preparePredicate("elle"); // lowercase
+
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ELLE), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_partialKeywordMatch_personsFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
+        PersonMatchesFindPredicate predicate = preparePredicate("Ku"); // Matches Kurz and Kunz
+
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(CARL, FIONA), model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
         PersonMatchesFindPredicate predicate =
                 new PersonMatchesFindPredicate(Arrays.asList("keyword"));

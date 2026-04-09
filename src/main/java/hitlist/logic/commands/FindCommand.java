@@ -16,9 +16,14 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names match "
-            + "any given prefix (case-insensitive).\n"
-            + "Parameters: [KEYWORD]... \n"
+            + "any given keyword (case-insensitive).\n"
+            + "Parameters: KEYWORD... \n"
+            + "Note: Each keyword must be a valid name format.\n"
             + "Example: " + COMMAND_WORD + " Han";
+
+    public static final String MESSAGE_INVALID_KEYWORD = "Invalid search keyword: '%s'\n"
+            + "Search keywords must be valid names. %s\n"
+            + "Example: find John Doe";
 
     private final PersonMatchesFindPredicate predicate;
 
