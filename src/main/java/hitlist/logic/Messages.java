@@ -46,9 +46,9 @@ public class Messages {
                 .append("; Phone: ")
                 .append(person.getPhone())
                 .append("; Email: ")
-                .append(person.getEmail().map(e -> e.toString()).orElse(""))
+                .append(person.getEmail().map(e -> e.toString()).orElse("<none>"))
                 .append("; Address: ")
-                .append(person.getAddress().map(e -> e.toString()).orElse(""))
+                .append(person.getAddress().map(e -> e.toString()).orElse("<none>"))
                 .append(";");
 
         return builder.toString();

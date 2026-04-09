@@ -67,9 +67,9 @@ public class HitListParser {
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
-        case DeleteCommand.COMMAND_WORD:
-            // Fallthrough to support command alias "del"
         case DeleteCommand.COMMAND_WORD_ALIAS:
+            // Fallthrough to support command alias "del"
+        case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
