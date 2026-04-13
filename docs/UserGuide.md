@@ -8,7 +8,7 @@ pageNav: 3
 
 HitList is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HitList can get your contact management tasks done faster than traditional GUI apps.
 
-HitList is targeted towards recruiters and headhunters who need to manage a large number of contacts and companies.
+HitList is targeted towards recruiters and headhunters who are fast typist and need to manage a large number of contacts and companies.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -299,7 +299,7 @@ Adds a contact group to the HitList. Optionally, existing contacts can be added 
 Format: `grpadd /g GROUP_NAME [/n NAME]...`
 
 Examples:
-* `grpadd /g Experienced`
+* `grplist` followed by `grpadd /g Experienced`
 
 <div class="row">
   <div class="col">
@@ -312,7 +312,7 @@ Examples:
 
 <br>
 
-* `grpadd /g Admins /n Betsy Crowe`
+* `grplist` followed by `grpadd /g Admins /n Betsy Crowe`
 
 <div class="row">
   <div class="col">
@@ -340,7 +340,7 @@ Deletes the specified contact group from HitList.
 Format: `grpdel /g GROUP_NAME`
 
 Examples:
-* `grpdel /g Admins`
+* `grplist` followed by `grpdel /g Admins`
 
 <div class="row">
   <div class="col">
@@ -353,7 +353,7 @@ Examples:
 
 <br>
 
-* `grpdel /g Unemployed`
+* `grplist` followed by `grpdel /g Unemployed`
 
 <div class="row">
   <div class="col">
@@ -552,11 +552,11 @@ Example:
 
 ### Listing all companies : `cmplist`
 
-Shows a list of all companies in the HitList. Optionally, if a company name is specified, shows the details of that company and its roles.
+Shows a list of all companies and the description in the HitList. Optionally, if a company name is specified, shows the roles of the company.
 
 Format: `cmplist [/c COMPANY_NAME]`
-* If the company name is specified, shows the details of that company and its roles.
-* If the company name is not specified, shows a list of all companies in HitList.
+* If the company name is specified, shows the roles of the company.
+* If the company name is not specified, shows a list of all companies with its description in HitList.
 
 Example:
 * `cmplist`
