@@ -1151,7 +1151,7 @@ Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#pa
 
 Step 3. Recognizing the `cmpdel` command word, the `HitListParser` instantiates a `DeleteCompanyCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it. (Note: If the user had typed `cmpdel 1`, the parser would extract the index instead).
+Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteParsing.puml" alt="CompanyDeleteObjectDiagram-Parsing" />
