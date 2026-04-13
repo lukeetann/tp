@@ -652,7 +652,8 @@ Format: `roledel /r ROLE_NAME /c COMPANY_NAME` or `roledel INDEX /c COMPANY_NAME
 * The role name must be an existing role within the company.
 * The index refers to the position of the role in the company's role list (1-based indexing).
 * The company name must be an existing company in HitList.
-* The company name typed must be the exact company name registered in HitList.
+* The company name search is **case-insensitive** (e.g., `google` matches `Google`).
+* The company will be displayed with its original registered name (e.g., `Google`) after the operation.
 
 Examples:
 * `roledel /r Quality Assurance Engineer /c Google Inc.` deletes the role named `Quality Assurance Engineer` from the company `Google Inc.`
