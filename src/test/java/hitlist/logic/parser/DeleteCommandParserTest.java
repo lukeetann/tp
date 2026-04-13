@@ -27,7 +27,7 @@ public class DeleteCommandParserTest {
         assertParseSuccess(parser, "1", new DeleteCommand(INDEX_FIRST_PERSON));
     }
 
-     @Test
+    @Test
     public void parse_validNameArgs_returnsDeleteCommand() {
         assertParseSuccess(parser, PREFIX_NAME + " Alice Pauline",
                 new DeleteCommand(new Name("Alice Pauline")));
