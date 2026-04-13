@@ -63,7 +63,7 @@ DeleteCompanyRoleCommand -> Model : updateRoleList(companyName)
 activate Model
 
 create CommandResult
-DeleteCompanyRoleCommand -> CommandResult : new CommandResult(message, SHOW_ROLE_LIST)
+DeleteCompanyRoleCommand -> CommandResult
 activate CommandResult
 
 CommandResult --> DeleteCompanyRoleCommand : r
