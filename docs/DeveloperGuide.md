@@ -307,7 +307,6 @@ A `Person` object represents a contact in the HitList. It has the following deta
   * Cons: Parsing becomes more brittle when optional fields are involved.
 
 **Aspect: Handling Duplicate Persons:**
-
 * **Alternative 1 (current choice):** Reject duplicates based on the contact's name.
     * Pros: Using the name as the primary identifier makes commands highly readable
     * Cons: Duplicate names have to be disambiguated via the name field itself, leading to ad hoc naming conventions.
