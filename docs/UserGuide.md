@@ -764,6 +764,12 @@ _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Known issues
+
+1. When the hitlist.json file is corrupted, HitList will wipe the file and start with an empty data file. The application does not show visual feedback to the user regarding the error. The error is generically logged in the log file. Users may not understand that their data file has been wiped and that they have lost all their data. A better implementation would be to show a pop-up message to the user when this error occurs, informing them of the issue and the loss of data.
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## Command summary
 
 | Action                          | Format                                                                          | Examples                                                                              |
