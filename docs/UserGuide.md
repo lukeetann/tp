@@ -506,7 +506,8 @@ Deletes the specified company from HitList.
 Format: `cmpdel /c COMPANY_NAME`
 
 * The company name must be an existing company in HitList.
-* The company name typed must be the exact company name registered in HitList.
+* The company name search is **case-insensitive** (e.g., `google` matches `Google`).
+* The company will be displayed with its original registered name (e.g., `Google`) after the operation.
 
 Example:
 * `cmpdel /c Google` deletes a company named `Google` from HitList.
