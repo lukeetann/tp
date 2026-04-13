@@ -70,7 +70,8 @@ pageNav: 4
 
 ## **Acknowledgements**
 
-This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+* The UML diagrams in this document were generated using Gemini and subsequently adapted by the team.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -267,7 +268,7 @@ A `Person` object represents a contact in the HitList. It has the following deta
 * **Alternative 1:** Use strict alphanumeric regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow letters, numbers, and spaces.
     * **Pros:** Highly secure and prevents users from entering symbols, scripts, or malformed data that could break CLI formatting.
     * **Cons:** Culturally exclusive and restrictive. It blocks completely valid names that contain punctuation (e.g., O'Connor, Mary-Jane).
-* **Alternative 2:** Use a custom regex `^[A-Za-z’-][A-Za-z\s'-]*$` to enforce starting with a letter, allowing only spaces, apostrophes, and hyphens thereafter.
+* **Alternative 2 (current choice):** Use a custom regex `^[A-Za-z’-][A-Za-z\s'-]*$` to enforce starting with a letter, allowing only spaces, apostrophes, and hyphens thereafter.
     * **Pros:** Accommodates common Western naming conventions and punctuation while still blocking nonsensical symbols like `???` or `!!!`.
     * **Cons:** Excludes non-English characters (e.g., accents like `é` or Asian characters) and fails on valid names with periods (e.g., `St. John`).
 
@@ -275,7 +276,7 @@ A `Person` object represents a contact in the HitList. It has the following deta
 * **Alternative 1:** Use strict regex `^[0-9]{8}$` to explicitly require exactly 8 digits.
     * **Pros:** Enforces strict data consistency, ensuring all numbers match local (Singaporean) phone number formats perfectly.
     * **Cons:** Completely breaks down if a user needs to input international numbers, country codes (e.g., `+65`), or extensions.
-* **Alternative 2:** Use a custom regex `^\d{3,}$` to allow any string of digits with a minimum length of 3.
+* **Alternative 2 (current choice):** Use a custom regex `^\d{3,}$` to allow any string of digits with a minimum length of 3.
     * **Pros:** Highly flexible, easily accommodating international numbers of varying lengths.
     * **Cons:** Too permissive; it allows users to enter obviously fake numbers (like `123`) and doesn't enforce standard spacing or formatting.
 
@@ -283,12 +284,12 @@ A `Person` object represents a contact in the HitList. It has the following deta
 * **Alternative 1:** Use a standard, widely accepted email regex like `^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$`.
     * **Pros:** Easier to read, maintain, and debug. It catches 99% of standard email formats without overcomplicating the codebase.
     * **Cons:** May reject highly obscure but technically valid emails defined by edge cases in the RFC 5322 specification.
-* **Alternative 2:** Use the strict, custom regex `^[^\W_]+([+_.-][^\W_]+)*@([^\W_]+(-[^\W_]+)*\.)*([^\W_]+(-[^\W_]+)*){2,}$` to tightly control character placement.
+* **Alternative 2 (current choice):** Use the strict, custom regex `^[^\W_]+([+_.-][^\W_]+)*@([^\W_]+(-[^\W_]+)*\.)*([^\W_]+(-[^\W_]+)*){2,}$` to tightly control character placement.
     * **Pros:** Extremely precise validation that enforces strict alphanumeric boundaries for local and domain parts, ensuring very clean data.
     * **Cons:** The regex is highly complex, difficult to read, and hard to update if email validation rules need to be adjusted in the future.
 
 **Aspect: Validation of Address**
-* **Alternative 1:** Use a controlled regex `^[\p{Alnum}][\p{Alnum}\s,.-/#]*$` that allows alphanumeric characters and standard address punctuation (spaces, commas, periods, hyphens, slashes, and hashes).
+* **Alternative 1 (current choice):** Use a controlled regex `^[\p{Alnum}][\p{Alnum}\s,.-/#]*$` that allows alphanumeric characters and standard address punctuation (spaces, commas, periods, hyphens, slashes, and hashes).
     * **Pros:** Prevents garbled input while comfortably allowing standard address formatting, including unit numbers (e.g., #12-34) and block/street divisions.
     * **Cons:** Requires maintaining a list of allowed symbols. If an unexpected but valid symbol is used internationally, the address will be rejected.
 * **Alternative 2:** Use a custom regex `^[^\s].*` to simply enforce that the string cannot start with a whitespace character.
@@ -575,7 +576,7 @@ The following activity diagram summarizes what happens when a user executes the 
 
 #### Finding a person
 
-The **FindPerson mechanism** is facilitated by `FindCommand` and its associated parser `FindCommandParser`. It allows users to search for people in HitList by specifying keywords that match attributes such as name, phone number, or email.
+The **FindPerson mechanism** is facilitated by `FindCommand` and its associated parser `FindCommandParser`. It allows users to search for people in HitList by specifying keywords that match the person's name.
 
 The feature implements the following key operations:
 
@@ -1031,7 +1032,7 @@ A `Role` object represents a role that the headhunter is recruiting for within a
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
   * Pros: Enforces clean data entry and prevents users from accidentally entering malformed data or symbols that might break CLI formatting.
   * Cons: Overly restrictive. It prevents users from adding companies with perfectly valid punctuation in their registered names (e.g., `Macy's`, `AT&T`, or `LEAK X'PRESS PLUMBING & CONSTRUCTION`).
-* **Alternative 2 (current choice):** Use a custom regex `^[^\s/][^/\v]{1,29}$` (Must not start with a space, cannot contain `/` or newlines, and must be between 2 and 30 characters).
+* **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,49}$` (Must not contain `/` or newlines, and must be between 2 and 50 characters).
   * Pros: Highly flexible, allowing users to accurately input diverse company names exactly as they are legally registered, including standard punctuation.
   * Cons: Too permissive; it could allow users to create completely nonsensical company names consisting entirely of random punctuation marks like `!!!` or `???`.
 
@@ -1039,7 +1040,7 @@ A `Role` object represents a role that the headhunter is recruiting for within a
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
   * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
   * Cons: Extremely restrictive for a text-heavy field. It prevents users from using basic, necessary punctuation to write readable sentences (e.g., blocking commas, periods, and hyphens in a description like "A fast-growing B2B startup, founded in 2023.").
-* **Alternative 2 (current choice):** Use a custom regex `^[^\s/][^/\v]{1,999}$` (Must not start with a space, cannot contain `/` or newlines, and must be between 2 and 1000 characters).
+* **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,999}$` (Must not contain `/` or newlines, and must be between 2 and 1000 characters).
   * Pros: Highly flexible, allowing users to write detailed, naturally formatted descriptions using full sentences and helpful punctuation.
   * Cons: Extremely permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
 
@@ -1331,7 +1332,7 @@ The following activity diagram summarizes what happens when a user executes the 
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
   * Pros: Enforces clean data entry, preventing users from accidentally entering malformed data or symbols that might disrupt CLI parsing.
   * Cons: Too restrictive. It prevents users from adding perfectly valid roles that rely on standard industry punctuation (e.g., "Front-end Developer", "C++ Engineer", or "UI/UX Designer").
-* **Alternative 2 (current choice):** Use a custom regex `^[^\s/][^/\v]{1,49}$` (Must not start with a space, cannot contain `/` or newlines, and must be between 2 and 50 characters).
+* **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,49}$` (Must not contain `/` or newlines, and must be between 2 and 50 characters).
   * Pros: Highly flexible, allowing users to accurately input diverse job titles exactly as they appear in the market, including standard punctuation.
   * Cons: Extremely permissive; it could allow users to create completely nonsensical role titles consisting entirely of random punctuation marks like `!!!` or `???`.
 
@@ -1339,7 +1340,7 @@ The following activity diagram summarizes what happens when a user executes the 
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
   * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
     * Cons: Highly impractical for a descriptive field. It prevents users from writing natural sentences and using basic punctuation (e.g., blocking commas, periods, and symbols like `+` or `&` in a description such as `Requires 5+ years of experience in C++ & Python.`).
-* **Alternative 2 (current choice):** Use a custom regex `^[^\s/][^/\v]{1,999}$` (Must not start with a space, cannot contain `/` or newlines, and must be between 2 and 1000 characters).
+* **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,999}$` (Must not contain `/` or newlines, and must be between 2 and 1000 characters).
   * Pros: Maximum flexibility, allowing users to write detailed, naturally formatted role requirements and descriptions.
   * Cons: Too permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
 
@@ -1435,13 +1436,13 @@ The feature implements the following key operations:
 
 Given below is an example usage scenario and how the DeleteRole mechanism behaves at each step.
 
-Step 1. The user launches the application and types `roledel /c Google /r Software Engineer` into the command box.
+Step 1. The user launches the application and types `roledel /c Google /r SE` into the command box.
 
-Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roledel /c Google /r Software Engineer")`.
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roledel /c Google /r SE")`.
 
 Step 3. Recognizing the `roledel` command word, the `HitListParser` instantiates a `DeleteCompanyRoleCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it.
+Step 4. The `HitListParser` calls the `parse(" /c Google /r SE")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-role/RoleDeleteParsing.puml" alt="RoleDeleteObjectDiagram-Parsing" />
@@ -1644,26 +1645,30 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | Headhunter | find candidate contacts                   | pull up a specific individual's profile instantly during an unscheduled phone call                        |
 | `* * *`  | Headhunter | add contact groups                        | keep track of which candidates are headhunted for the companies                                           |
 | `* * *`  | Headhunter | delete contact groups                     | remove the group for a role when it is already filled                                                     |
-| `* *`    | Headhunter | edit contact group details                | rename talent segments to stay aligned with evolving job market titles                                    |
 | `* * *`  | Headhunter | list contact groups                       | get a high-level overview of all the active talent niches I am currently managing.                        |
-| `* *`    | Headhunter | find contact groups                       | jump directly to the specific talent pool needed for a new client request                                 |
 | `* * *`  | Headhunter | add contacts to contact groups            | build a targeted shortlist of candidates for a specific job opening                                       |
 | `* * *`  | Headhunter | delete contacts from contact groups       | keep my shortlist accurate by removing candidates who are no longer in the running for that role          |
-| `* *`    | Headhunter | edit contacts in contact groups           | adjust which pipeline a candidate belongs to as their skills evolve                                       |
 | `* * *`  | Headhunter | list contact group members                | easily evaluate and compare all shortlisted candidates for a specific open position                       |
 | `* *`    | Headhunter | find group members                        | identify a subset of candidates within a large shortlist who best match a specific company's requirements |
 | `* * *`  | Headhunter | add company profile                       | keep track of the companies I am headhunting for                                                          |
 | `* * *`  | Headhunter | delete company profile                    | remove the companies that have stopped using my headhunting services                                      |
-| `* *`    | Headhunter | edit company profile                      | ensure the database reflects accurate details if a client rebrands                                        |
 | `* * *`  | Headhunter | list all company profile                  | assess the diversity and volume of my current client portfolio                                            |
 | `* * *`  | Headhunter | list specific company profile             | review the details of a particular client to understand their requirements and preferences                |
 | `* *`    | Headhunter | find specific company profile             | access the history of a client while preparing a contract                                                 |
 | `* * *`  | Headhunter | add company roles to company profile      | maintain comprehensive records of my clients' requirements and contact information                        |
 | `* * *`  | Headhunter | delete company roles from company profile | keep my client records accurate by removing outdated or incorrect information                             |
-| `* *`    | Headhunter | edit company roles                        | update job descriptions as requirements shift                                                             |
 | `* * *`  | Headhunter | list roles for a specific company profile | review all the active job placements that particular client has hired me to fill                          |
-| `* *`    | Headhunter | find roles for a specific company         | match a candidate's unique skillset to a specific opening within a client's firm                          |
-| `* *`    | Headhunter | undo a deletion command                   | restore accidentally removed records without manually re-entering the data.                               |
+
+The following user stories are not implemented in the current version of HitList, but are planned for future iterations:
+
+| Priority | As a …​    | I want to …​                          | So that I can…​                                                                  |
+|----------|------------|---------------------------------------|----------------------------------------------------------------------------------|
+| `* *`    | Headhunter | edit contact group details            | rename talent segments to stay aligned with evolving job market titles           |
+| `* *`    | Headhunter | find contact groups                   | jump directly to the specific talent pool needed for a new client request        |
+| `* *`    | Headhunter | edit company profile                  | ensure the database reflects accurate details if a client rebrands               |
+| `* *`    | Headhunter | undo an addition command              | quickly remove accidentally added records without manually deleting them.        |
+| `* *`    | Headhunter | find roles for a specific company     | match a candidate's unique skillset to a specific opening within a client's firm |
+| `* *`    | Headhunter | edit company roles in company profile | update job descriptions as requirements shift                                    |
 
 ### Use cases
 
@@ -1681,10 +1686,12 @@ Use case ends.
 
 **Extensions**
 
-* 1a. System detects that a contact with the same phone number already exists.
-  * 1a1. System shows previously added contact with the same phone number message
+* 1a. System detects that a contact with the same name already exists.
+  * 1a1. System shows previously added contact with the same name message
+* 1b. System detects that a contact with the same phone number already exists.
+  * 1b1. System shows previously added contact with the same phone number message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 2: Delete a contact">
@@ -1702,7 +1709,7 @@ Use case ends.
 * 1a. System detects that the requested contact does not exist.
   * 1a1. System shows requested contact does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 3: Edit a contact's details">
@@ -1713,7 +1720,16 @@ Similar to Use case 1 (Add a contact), except the user requests to edit an exist
 
 **Extensions**
 
-Same as Use case 1 (Add a contact).
+* 1a. System detects that the requested contact does not exist.
+  * 1a1. System shows requested contact does not exist message.
+* 1b. System detects that the new contact details conflict with an existing contact (e.g. same name or same phone number).
+  * 1b1. System shows contact details conflict with existing contact message.
+* 1c. System detects that the new contact details are the same as the existing contact details.
+  * 1c1. System shows contact details are the same as existing contact message.
+* 1d. System detects that the new contact details are invalid (e.g. invalid phone number format).
+  * 1d1. System shows invalid contact details message.
+
+Use case ends.
 </box>
 
 <box header="#### Use case 4: List contacts">
@@ -1730,7 +1746,7 @@ Use case ends.
 * 2a. System detects that the contact list is empty
   * 2a1. System shows contact list is empty message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 5: Add a contact group">
@@ -1742,9 +1758,9 @@ Similar to Use case 1 (Add a contact), except the user requests to add a contact
 **Extensions**
 
 * 1a. System detects that a contact group with the same name already exists
-    * 1a1. System shows contact group already exists message
+  * 1a1. System shows contact group already exists message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 6: Delete a contact group">
@@ -1758,7 +1774,7 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
 * 1a. System detects that the contact group does not exist.
   * 1a1. System shows contact group does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 7: List contact groups">
@@ -1772,7 +1788,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 * 2a. System detects that there are no contact groups
   * 2a1. System shows no contact groups message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 8: Add a contact to a contact group">
@@ -1790,13 +1806,13 @@ Use case ends.
 **Extensions**
 
 * 3a. System detects that the contact is already in the contact group
-    * 3a1. System shows contact is already in the contact group message
+  * 3a1. System shows contact is already in the contact group message
 * 3b. System detects that contact group does not exist
-    * 3b1. System shows contact group does not exist message
+  * 3b1. System shows contact group does not exist message
 * 3c. System detects that contact does not exist
-    * 3c1. System shows contact does not exist message
+  * 3c1. System shows contact does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 9: Remove contacts from contact group">
@@ -1812,13 +1828,13 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects there is no such contact in the contact group
-    * 1a1. System shows contact is not in the contact group message
+  * 1a1. System shows contact is not in the contact group message
 * 1b. System detects that contact group does not exist
-    * 1b1. System shows contact group does not exist message
+  * 1b1. System shows contact group does not exist message
 * 1c. System detects that contact does not exist
-    * 1c1. System shows contact does not exist message
+  * 1c1. System shows contact does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 10: List contact group members">
@@ -1833,11 +1849,11 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified contact group does not exist
-    * 1a1. System shows contact group does not exist message
+  * 1a1. System shows contact group does not exist message
 * 2a. System detects that the specified contact group has no members
-    * 2a1. System shows contact group has no members message
+  * 2a1. System shows contact group has no members message
 
-  Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 11: Add a company profile">
@@ -1851,7 +1867,7 @@ Similar to Use case 1 (Add a contact), except the user requests to add a company
 * 1a. System detects that a company profile with the same name already exists
   * 1a1. System shows company profile already exists message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 12: Delete a company profile">
@@ -1863,9 +1879,9 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
 **Extensions**
 
 * 1a. System detects that the specified company does not exist
-    * 1a1. System shows company profile does not exist message
+  * 1a1. System shows company profile does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 13: List company profiles">
@@ -1877,9 +1893,9 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 **Extensions**
 
 * 2a. System detects that there are no company profiles
-    * 2a1. System shows no company profiles message
+  * 2a1. System shows no company profiles message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 14: Add role to company profile">
@@ -1896,11 +1912,11 @@ Use case ends.
 **Extensions**
 
 * 2a. System detects that the specified company profile does not exist
-    * 2a1. System shows company profile does not exist message
+  * 2a1. System shows company profile does not exist message
 * 2b. System detects that the company role already exists in the company profile
-    *  2b1. System shows company role already exists message
+  *  2b1. System shows company role already exists message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 15: Delete company role from company profile">
@@ -1916,11 +1932,11 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified company profile does not exist
-    * 1a1. System shows company profile does not exist message
+  * 1a1. System shows company profile does not exist message
 * 1b. System detects that the company role does not exist in the company profile
-    * 1b1. System shows company role does not exist message
+  * 1b1. System shows company role does not exist message
 
-    Use case ends.
+Use case ends.
 </box>
 
 <box header="#### Use case 16: List a specific company profile">
@@ -1936,11 +1952,11 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified company profile does not exist
-    * 1a1. System shows company profile does not exist message
+  * 1a1. System shows company profile does not exist message
 * 3a. System detects that the company profile has no associated roles
-    * 3a1. System shows company has no active roles message
+  * 3a1. System shows company has no active roles message
 
-    Use case ends.
+Use case ends.
 </box>
 
 ---
@@ -1953,7 +1969,7 @@ Use case ends.
 4. The system should be able to run without internet access.
 5. The system should respond to the user within 2 seconds for all valid user commands.
 6. The system should remain responsive while processing invalid user commands and should return an appropriate error message.
-7. The system should be able to support case-insensitive unique identifiers for contacts, contact groups and company profiles.
+7. The system should enforce data integrity by treating all unique identifiers for contacts, contact groups, and company profiles as case-insensitive across all storage mechanisms, indexing, and validation checks.
 
 #### Contact Non-Functional Requirements
 

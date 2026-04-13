@@ -182,7 +182,7 @@ Examples:
 
 Deletes the specified contact from HitList.
 
-<box theme="danger" header="**CAUTION**">
+<box theme="danger" header="**CAUTION: Irreversible Action**">
     This command deletes the selected contact in HitList. Use with caution.
     The action is irreversible and there is no confirmation prompt before the action is executed.
 </box>
@@ -639,7 +639,7 @@ Examples:
 
 Deletes a role from a specified existing company in the HitList.
 
-<box theme="danger" header="**CAUTION**">
+<box theme="danger" header="**CAUTION: Irreversible Action**">
     This command deletes the specified role from the company in HitList. Use with caution.
     The action is irreversible and there is no confirmation prompt before the action is executed.
 </box>
@@ -683,7 +683,7 @@ Examples:
 
 Clears all entries from the HitList.
 
-<box theme="danger" header="**CAUTION**">
+<box theme="danger" header="**CAUTION: Irreversible Action**">
     This command deletes all contacts, contact groups, companies, and roles from the HitList. Use with caution.
     The action is irreversible and there is no confirmation prompt before the action is executed.
 </box>
@@ -706,7 +706,10 @@ HitList data are saved automatically as a JSON file `[JAR file location]/data/hi
 
 Advanced users are welcome to update data directly by editing that data file.
 
-**Caution:** If your changes to the data file make its format invalid, HitList will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.
+<box theme="danger" header="**CAUTION: Manual Modification**">
+    If your changes to the data file make its format invalid, HitList will discard all data and start with an empty data file at the next run. 
+    Hence, it is recommended to take a backup of the file before editing it.
+</box>
 
 Furthermore, certain edits can cause HitList to behave in unexpected ways, for example, if a value entered is outside the acceptable range. Therefore, edit the data file only if you are confident that you can update it correctly.
 
