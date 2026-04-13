@@ -1,6 +1,7 @@
 package hitlist.model.person;
 
 import static hitlist.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,6 +48,9 @@ public class NameTest {
         // same values -> returns true
         assertTrue(name.equals(new Name("Valid Name")));
 
+        // same values, different casing -> returns true
+        assertTrue(name.equals(new Name("valid name")));
+
         // same object -> returns true
         assertTrue(name.equals(name));
 
@@ -58,5 +62,13 @@ public class NameTest {
 
         // different values -> returns false
         assertFalse(name.equals(new Name("Other Valid Name")));
+    }
+
+    @Test
+    public void hashCode_sameNameDifferentCasing_sameHashCode() {
+        Name firstName = new Name("Alice");
+        Name secondName = new Name("alice");
+
+        assertEquals(firstName.hashCode(), secondName.hashCode());
     }
 }

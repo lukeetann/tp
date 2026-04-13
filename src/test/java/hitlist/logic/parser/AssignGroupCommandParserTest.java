@@ -51,9 +51,10 @@ public class AssignGroupCommandParserTest {
     @Test
     public void parse_compulsoryFieldMissing_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignGroupCommand.MESSAGE_USAGE);
-
         assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
+
         assertParseFailure(parser, GROUP_NAME_DESC_STUDENTS, expectedMessage);
+
         assertParseFailure(parser, VALID_NAME_AMY + " " + VALID_GROUP_NAME_STUDENTS, expectedMessage);
     }
 
@@ -62,7 +63,6 @@ public class AssignGroupCommandParserTest {
         assertParseFailure(parser, INVALID_NAME_DESC + GROUP_NAME_DESC_STUDENTS, Name.MESSAGE_CONSTRAINTS);
 
         assertParseFailure(parser, NAME_DESC_AMY + INVALID_GROUP_NAME_DESC, GroupName.MESSAGE_CONSTRAINTS);
-
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_AMY + GROUP_NAME_DESC_STUDENTS,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignGroupCommand.MESSAGE_USAGE));
     }
