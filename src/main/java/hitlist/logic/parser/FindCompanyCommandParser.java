@@ -42,11 +42,6 @@ public class FindCompanyCommandParser implements Parser<FindCompanyCommand> {
             companyNameKeywords.add(trimmedToken);
         }
 
-        if (companyNameKeywords.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCompanyCommand.MESSAGE_USAGE));
-        }
-
         return new FindCompanyCommand(new CompanyMatchesFindPredicate(companyNameKeywords));
     }
 
