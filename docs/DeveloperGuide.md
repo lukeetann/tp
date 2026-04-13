@@ -1435,13 +1435,13 @@ The feature implements the following key operations:
 
 Given below is an example usage scenario and how the DeleteRole mechanism behaves at each step.
 
-Step 1. The user launches the application and types `roledel /c Google /r Software Engineer` into the command box.
+Step 1. The user launches the application and types `roledel /c Google /r SE` into the command box.
 
-Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roledel /c Google /r Software Engineer")`.
+Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#parseCommand("roledel /c Google /r SE")`.
 
 Step 3. Recognizing the `roledel` command word, the `HitListParser` instantiates a `DeleteCompanyRoleCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google /r Software Engineer")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it.
+Step 4. The `HitListParser` calls the `parse(" /c Google /r SE")` method of the newly created `DeleteCompanyRoleCommandParser`. The parser extracts the target company name, role name, creates a new `DeleteCompanyRoleCommand` targeting the "Software Engineer" role in "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-role/RoleDeleteParsing.puml" alt="RoleDeleteObjectDiagram-Parsing" />
