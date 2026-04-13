@@ -57,6 +57,50 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_duplicatePersonSameNameAndPhone_throwsCommandException() {
+        Person duplicatePerson = new PersonBuilder(ALICE).build();
+        AddCommand addCommand = new AddCommand(duplicatePerson);
+        ModelStub modelStub = new ModelStubWithPerson(duplicatePerson);
+
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_NAME,
+                duplicatePerson.getName());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonSameNameOnly_throwsCommandException() {
+        Person existingPerson = new PersonBuilder(ALICE).withPhone("12345678").build();
+        Person newPersonWithSameName = new PersonBuilder(ALICE).withPhone("87654321").build();
+
+        AddCommand addCommand = new AddCommand(newPersonWithSameName);
+        ModelStub modelStub = new ModelStubWithPerson(existingPerson);
+
+        String expectedMessage = String.format(
+                AddCommand.MESSAGE_DUPLICATE_NAME,
+                newPersonWithSameName.getName());
+
+        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonSamePhoneOnly_success() throws Exception {
+        Person existingPerson = new PersonBuilder(ALICE).withName("Alice Wong").build();
+        Person validPerson = new PersonBuilder()
+                .withName("Bob")
+                .withPhone(existingPerson.getPhone().value)
+                .build();
+
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        modelStub.addPerson(existingPerson);
+
+        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+
+        assertEquals(getExpectedSuccessMessage(validPerson), commandResult.getFeedbackToUser());
+    }
+
+    @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Person duplicatePerson = new PersonBuilder(ALICE).build();
         AddCommand addCommand = new AddCommand(duplicatePerson);

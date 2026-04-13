@@ -26,6 +26,11 @@ public class FindCompanyCommand extends Command {
             + "Search keywords must be valid company names. %s\n"
             + "Example: " + COMMAND_WORD + " Google";
 
+    public static final String SEARCH_KEYWORD_CONSTRAINTS =
+            "Search keywords cannot contain forward slashes (/), control characters, or vertical whitespace.\n"
+                    + "Single characters are allowed for search.\n"
+                    + "Search keywords have no maximum length and can contain spaces.";
+
     private final CompanyMatchesFindPredicate predicate;
 
     public FindCompanyCommand(CompanyMatchesFindPredicate predicate) {

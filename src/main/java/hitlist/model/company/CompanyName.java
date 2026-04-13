@@ -10,15 +10,16 @@ import static java.util.Objects.requireNonNull;
 public class CompanyName {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Company names must be between 2 and 30 characters long, "
-                    + "cannot start with a space, and cannot contain forward slashes (/), or line breaks.";
+            "Company names must be between 2 and 50 characters long, "
+                    + "cannot contain forward slashes (/), or line breaks.";
 
     /**
      * The first character of the company name must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      * Forward slashes (/) are not allowed to prevent command parser conflicts.
+     * Banned hidden whitespace characters
      */
-    public static final String VALIDATION_REGEX = "^[^\\s/][^/\\v]{1,29}$";
+    public static final String VALIDATION_REGEX = "^[^/\\s\\p{C}][^/\\v\\p{C}]{1,49}$";
 
     public final String companyName;
 
