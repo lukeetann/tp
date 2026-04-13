@@ -18,7 +18,7 @@ public class FindCompanyCommandParser implements Parser<FindCompanyCommand> {
     /**
      * The search string should only consist of the characters defined below, and should not be blank.
      */
-    public static final String VALIDATION_REGEX = "^[^\\s/][^/\\v]*$";
+    public static final String VALIDATION_REGEX = "^[^/\\s\\p{C}][^/\\v\\p{C}]*$";
 
     @Override
     public FindCompanyCommand parse(String args) throws ParseException {

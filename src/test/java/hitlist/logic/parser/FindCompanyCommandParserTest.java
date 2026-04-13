@@ -390,11 +390,9 @@ public class FindCompanyCommandParserTest {
     }
 
     @Test
-    public void parse_keywordWithEmbeddedControlCharacter_returnsFindCompanyCommand() {
+    public void parse_keywordWithEmbeddedControlCharacter_throwsParseException() {
         String keyword = "Go\u0007ogle";
-        FindCompanyCommand expectedCommand =
-                new FindCompanyCommand(new CompanyMatchesFindPredicate(Arrays.asList(keyword)));
-        assertParseSuccess(parser, keyword, expectedCommand);
+        assertParseFailure(parser, keyword, getExpectedErrorMessage(keyword));
     }
 
     @Test
@@ -446,10 +444,10 @@ public class FindCompanyCommandParserTest {
     }
 
     @Test
-    public void isValidSearchKeyword_controlCharacter_returnsTrue() throws Exception {
-        assertTrue(invokeIsValidSearchKeyword("Go\u0007ogle"));
-        assertTrue(FindCompanyCommandParser.isValidSearchKeyword("\u0007"));
-        assertTrue(FindCompanyCommandParser.isValidSearchKeyword("test\u0001keyword"));
+    public void isValidSearchKeyword_controlCharacter_returnsFalse() throws Exception {
+        assertFalse(invokeIsValidSearchKeyword("Go\u0007ogle"));
+        assertFalse(FindCompanyCommandParser.isValidSearchKeyword("\u0007"));
+        assertFalse(FindCompanyCommandParser.isValidSearchKeyword("test\u0001keyword"));
     }
 
     @Test
