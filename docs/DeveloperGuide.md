@@ -211,6 +211,10 @@ How the parsing works:
 
 <br>
 
+<box type="info" seamless header="Note">
+Due to limitations of PlantUML, the arrow from `ModelManager` to `Group` and `Company` is not shown in the diagram above, but in the code, `ModelManager` does depend on these classes.
+</box>
+
 The `Model` component,
 
 * stores HitList data i.e., all `Person`, `Group` and `Company` objects (which are contained in a `UniquePersonList`, `UniqueGroupList` and `UniqueCompanyList` object).
