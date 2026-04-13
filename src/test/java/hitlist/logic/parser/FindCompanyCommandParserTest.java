@@ -3,6 +3,7 @@ package hitlist.logic.parser;
 import static hitlist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static hitlist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static hitlist.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static hitlist.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +34,7 @@ public class FindCompanyCommandParserTest {
     private boolean invokeIsValidSearchKeyword(String keyword) throws Exception {
         Method method = FindCompanyCommandParser.class.getDeclaredMethod("isValidSearchKeyword", String.class);
         method.setAccessible(true);
-        return (boolean) method.invoke(parser, keyword);
+        return (boolean) method.invoke(null, keyword);
     }
 
     @Test
@@ -389,9 +390,11 @@ public class FindCompanyCommandParserTest {
     }
 
     @Test
-    public void parse_keywordWithEmbeddedControlCharacter_throwsParseException() {
-        String invalidKeyword = "Go\u0007ogle";
-        assertParseFailure(parser, invalidKeyword, getExpectedErrorMessage(invalidKeyword));
+    public void parse_keywordWithEmbeddedControlCharacter_returnsFindCompanyCommand() {
+        String keyword = "Go\u0007ogle";
+        FindCompanyCommand expectedCommand =
+                new FindCompanyCommand(new CompanyMatchesFindPredicate(Arrays.asList(keyword)));
+        assertParseSuccess(parser, keyword, expectedCommand);
     }
 
     @Test
@@ -419,8 +422,10 @@ public class FindCompanyCommandParserTest {
     }
 
     @Test
-    public void isValidSearchKeyword_null_returnsFalse() throws Exception {
-        assertFalse(invokeIsValidSearchKeyword(null));
+    public void isValidSearchKeyword_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> {
+            FindCompanyCommandParser.isValidSearchKeyword(null);
+        });
     }
 
     @Test
@@ -441,8 +446,10 @@ public class FindCompanyCommandParserTest {
     }
 
     @Test
-    public void isValidSearchKeyword_controlCharacter_returnsFalse() throws Exception {
-        assertFalse(invokeIsValidSearchKeyword("Go\u0007ogle"));
+    public void isValidSearchKeyword_controlCharacter_returnsTrue() throws Exception {
+        assertTrue(invokeIsValidSearchKeyword("Go\u0007ogle"));
+        assertTrue(FindCompanyCommandParser.isValidSearchKeyword("\u0007"));
+        assertTrue(FindCompanyCommandParser.isValidSearchKeyword("test\u0001keyword"));
     }
 
     @Test

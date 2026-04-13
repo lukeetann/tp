@@ -15,6 +15,11 @@ import hitlist.model.company.CompanyMatchesFindPredicate;
  */
 public class FindCompanyCommandParser implements Parser<FindCompanyCommand> {
 
+    /**
+     * The search string should only consist of the characters defined below, and should not be blank.
+     */
+    public static final String VALIDATION_REGEX = "^[^\\s/][^/\\v]*$";
+
     @Override
     public FindCompanyCommand parse(String args) throws ParseException {
         requireNonNull(args);
@@ -55,34 +60,8 @@ public class FindCompanyCommandParser implements Parser<FindCompanyCommand> {
      * - Forbids vertical whitespace - same as CompanyName
      * - Allows spaces and special characters
      */
-    private boolean isValidSearchKeyword(String keyword) {
-        if (keyword == null || keyword.isEmpty()) {
-            return false;
-        }
-
-        String trimmed = keyword.trim();
-
-        if (trimmed.isEmpty()) {
-            return false;
-        }
-
-        // Forbid forward slash (same as CompanyName)
-        if (trimmed.contains("/")) {
-            return false;
-        }
-
-        // Forbid control characters (same as CompanyName's \p{C})
-        for (char c : trimmed.toCharArray()) {
-            if (Character.isISOControl(c)) {
-                return false;
-            }
-        }
-
-        // SPECIAL EXCEPTION: Allow single character searches
-        if (trimmed.length() == 1) {
-            return true;
-        }
-
-        return true;
+    public static boolean isValidSearchKeyword(String test) {
+        requireNonNull(test);
+        return test.matches(VALIDATION_REGEX);
     }
 }
