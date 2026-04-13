@@ -353,19 +353,6 @@ Examples:
 
 <br>
 
-* `grplist` followed by `grpdel /g Unemployed`
-
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Listing of groups" src="images/ug/grpdel-unemployed-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="Deletion of group Unemployed in HitList" src="images/ug/grpdel-unemployed-after.png" />
-  </div>
-</div>
-
-<br>
-
 ### Listing contacts in a contact group : `grplist`
 
 List all contact groups in HitList. Optionally, if a group name is specified, shows a list of contact members in that group.
@@ -404,7 +391,7 @@ Format: `grpassign /n NAME /g GROUP_NAME`
 * The group name must exactly match an existing contact group in HitList.
 
 Examples:
-* `grpassign /n Alex Yeoh /g Experienced`
+* `grplist /g experienced` followed by `grpassign /n Alex Yeoh /g Experienced`
 
 <div class="row">
   <div class="col">
@@ -412,19 +399,6 @@ Examples:
   </div>
   <div class="col">
     <img class="img-fluid" alt="After Assigning Alex Yeoh to Experienced Group" src="images/ug/grpassign-experienced-after.png" />
-  </div>
-</div>
-
-<br>
-
-* `grpassign /n Betsy Crowe /g Students`
-
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Before Assigning Betsy Crowe to Students Group" src="images/ug/grpassign-students-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="After Assigning Betsy Crowe to Students Group" src="images/ug/grpassign-students-after.png" />
   </div>
 </div>
 
@@ -441,7 +415,8 @@ Format: `grpunassign /n NAME /g GROUP_NAME`
 * The contact must already belong to the specified group.
 
 Examples:
-* `grpunassign /n Alex Yeoh /g Experienced`
+
+* `grplist /g experienced` followed by `grpunassign /n Alex Yeoh /g Experienced`
 
 <div class="row">
   <div class="col">
@@ -449,19 +424,6 @@ Examples:
   </div>
   <div class="col">
     <img class="img-fluid" alt="After unassigning of Alex Yeoh from Experienced group" src="images/ug/grpunassign-experienced-after.png" />
-  </div>
-</div>
-
-<br>
-
-* `grpunassign /n Betsy Crowe /g Students`
-
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Before unassigning of Betsy Crowe from Students group" src="images/ug/grpunassign-students-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="After unassigning of Betsy Crowe from Students group" src="images/ug/grpunassign-students-after.png" />
   </div>
 </div>
 
@@ -483,20 +445,8 @@ Limitations:
 * No full support for languages other than English.
 
 Examples:
-* `cmpadd /c Hush Puppies /d Clothing company`
 
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Before creation of company Hush Puppies with description Clothing company" src="images/ug/cmpadd-hush-puppies-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="Creation of company Hush Puppies with description Clothing company" src="images/ug/cmpadd-hush-puppies-after.png" />
-  </div>
-</div>
-
-<br>
-
-* `cmpadd /c Bata /d Shoe company`
+* `cmplist` followed by `cmpadd /c Bata /d Shoe company`
 
 <div class="row">
   <div class="col">
@@ -524,20 +474,8 @@ Format: `cmpdel /c COMPANY_NAME`
 * The company name typed must be the exact company name registered in HitList.
 
 Example:
-* `cmpdel /c Hush Puppies` deletes a company named `Hush Puppies` from HitList.
 
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Before deletion of company Hush Puppies" src="images/ug/cmpdel-hush-puppies-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="Deletion of company Hush Puppies" src="images/ug/cmpdel-hush-puppies-after.png" />
-  </div>
-</div>
-
-<br>
-
-* `cmpdel /c Bata` deletes a company named `Bata` from HitList.
+* `cmplist` followed by `cmpdel /c Bata`
 
 <div class="row">
   <div class="col">
@@ -592,7 +530,7 @@ Format: `cmpfind KEYWORD...`
 * If multiple company name keywords are given, a Company matching any one of them is returned.
 
 Examples:
-* `cmpfind inc` returns all companies with `inc` in their name, such as `Google Inc.`, `Meta Platforms, Inc.`, and `Apple Inc.`
+* `cmpfind inc`
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
@@ -602,7 +540,7 @@ Examples:
 
 <br>
 
-* `cmpfind google flix` returns `Google`, `Netflix` 
+* `cmpfind google flix`
 
 <div class="row justify-content-center">
   <div class="col-12 col-md-8">
@@ -630,7 +568,7 @@ Limitations:
 * No full support for languages other than English.
 
 Examples:
-* `roleadd /r Quality Assurance Engineer /d Ensures software products meet quality standards by developing test plans /c Google Inc.` adds a role named `Quality Assurance Engineer` to the company `Google`.
+* `cmplist /c Google Inc.` followed by `roleadd /r Quality Assurance Engineer /d Ensures software products meet quality standards by developing test plans /c Google Inc.`
 
 <div class="row">
   <div class="col">
@@ -638,19 +576,6 @@ Examples:
   </div>
   <div class="col">
     <img class="img-fluid" alt="Addition of Quality Assurance Engineer role to company Google Inc." src="images/ug/roleadd-quality-assurance-after.png" />
-  </div>
-</div>
-
-<br>
-
-* `roleadd /r DevOps Engineers /d Manages infrastructure and automates deployment processes, bridging the gap between development and IT operations /c Meta Platforms, Inc.` adds a role named `DevOps Engineers` to the company `Meta`.
-
-<div class="row">
-  <div class="col">
-    <img class="img-fluid" alt="Before addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/roleadd-devops-before.png" />
-  </div>
-  <div class="col">
-    <img class="img-fluid" alt="Addition of DevOps Engineers role to company Meta Platforms, Inc." src="images/ug/roleadd-devops-after.png" />
   </div>
 </div>
 
@@ -674,7 +599,7 @@ Format: `roledel /r ROLE_NAME /c COMPANY_NAME` or `roledel INDEX /c COMPANY_NAME
 * The company name typed must be the exact company name registered in HitList.
 
 Examples:
-* `roledel /r Quality Assurance Engineer /c Google Inc.` deletes the role named `Quality Assurance Engineer` from the company `Google Inc.`
+* `cmplist /c Google Inc.` followed by `roledel /r Quality Assurance Engineer /c Google Inc.`
 
 <div class="row">
   <div class="col">
@@ -687,7 +612,7 @@ Examples:
 
 <br>
 
-* `roledel 1 /c Meta Platforms, Inc.` deletes the first role listed in the company `Meta Platforms, Inc.`'s role list.
+* `cmplist /c Meta Platforms, Inc.` followed by `roledel 1 /c Meta Platforms, Inc.`
 
 <div class="row">
   <div class="col">

@@ -307,11 +307,11 @@ A `Person` object represents a contact in the HitList. It has the following deta
 
 **Aspect: Handling Duplicate Persons:**
 * **Alternative 1 (current choice):** Reject duplicates based on the contact's name and phone number.
-    * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
-    * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
-* **Alternative 2:** Reject duplicates based on the full set of person fields.
-    * Pros: Allows multiple entries that share the same phone number and name.
-    * Cons: Makes duplicate detection harder and increases the chance of cluttering HitList with repeated contacts.
+  * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
+  * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
+* **Alternative 2:** Reject duplicates based on phone number and email.
+  * Pros: Disallows multiple entries that share the same phone number and email.
+  * Cons: Complicates CLI logic for edit and delete commands. If two distinct contacts share the same name, targeting them by the name field becomes ambiguous for the user and the parser.
 
 #### Adding a person
 
