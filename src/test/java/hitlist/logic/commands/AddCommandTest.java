@@ -47,7 +47,7 @@ public class AddCommandTest {
         ModelStub modelStub = new ModelStubWithPerson(duplicatePerson);
 
         String expectedMessage = String.format(
-                AddCommand.MESSAGE_DUPLICATE_SAME_PERSON,
+                AddCommand.MESSAGE_DUPLICATE_NAME,
                 duplicatePerson.getName(),
                 duplicatePerson.getPhone());
 
@@ -70,19 +70,18 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonSamePhoneOnly_throwsCommandException() {
+    public void execute_duplicatePersonSamePhoneOnly_success() throws Exception {
         Person existingPerson = new PersonBuilder(ALICE).withName("Alice Wong").build();
-        Person newPersonWithSamePhone = new PersonBuilder()
+        Person validPerson = new PersonBuilder()
                 .withName("Bob").withPhone(existingPerson.getPhone().value).build();
 
-        AddCommand addCommand = new AddCommand(newPersonWithSamePhone);
-        ModelStub modelStub = new ModelStubWithPerson(existingPerson);
+        ModelStub modelStub = new ModelStubAcceptingPersonAdded();
+        modelStub.addPerson(existingPerson);
 
-        String expectedMessage = String.format(
-                AddCommand.MESSAGE_DUPLICATE_PHONE,
-                newPersonWithSamePhone.getPhone());
+        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
-        assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validPerson.getName(), validPerson.getPhone()),
+                commandResult.getFeedbackToUser());
     }
 
     @Test
@@ -98,7 +97,7 @@ public class AddCommandTest {
         ModelStub modelStub = new ModelStubWithMultiplePersons(existingPerson1, existingPerson2);
 
         String expectedMessage = String.format(
-                AddCommand.MESSAGE_DUPLICATE_BOTH,
+                AddCommand.MESSAGE_DUPLICATE_NAME,
                 newPerson.getName(),
                 newPerson.getPhone());
 

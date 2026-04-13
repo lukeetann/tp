@@ -41,7 +41,7 @@ public class AddCommandIntegrationTest {
     public void execute_duplicatePerson_throwsCommandException() {
         Person personInList = model.getHitList().getPersonList().get(0);
         String expectedMessage = String.format(
-                AddCommand.MESSAGE_DUPLICATE_SAME_PERSON,
+                AddCommand.MESSAGE_DUPLICATE_NAME,
                 personInList.getName(),
                 personInList.getPhone());
         assertCommandFailure(new AddCommand(personInList), model, expectedMessage);

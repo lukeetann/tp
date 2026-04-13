@@ -11,14 +11,15 @@ public class CompanyDescription {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Company descriptions must be between 2 and 1000 characters long, "
-                    + "cannot start with a space, and cannot contain forward slashes (/) or line breaks.";
+                    + "cannot contain forward slashes (/) or line breaks.";
 
     /**
      * The first character of the description must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      * Forward slashes (/) are banned to prevent command parser conflicts.
+     * Banned hidden whitespace characters
      */
-    public static final String VALIDATION_REGEX = "^[^\\s/][^/\\v]{1,999}$";
+    public static final String VALIDATION_REGEX = "^[^/\\s\\p{C}][^/\\v\\p{C}]{1,999}$";
 
     public final String companyDescription;
 
