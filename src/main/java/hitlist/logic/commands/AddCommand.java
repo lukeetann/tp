@@ -6,6 +6,8 @@ import static hitlist.logic.parser.CliSyntax.PREFIX_NAME;
 import static hitlist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 import hitlist.commons.util.ToStringBuilder;
 import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.Model;
@@ -32,6 +34,8 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Added contact: ";
     public static final String MESSAGE_DUPLICATE_NAME = "Duplicate Contact: "
             + "A contact with the name '%s' already exists";
+    public static final String MESSAGE_DUPLICATE_PHONE = "Duplicate Phone number: "
+            + "A contact with the number '%s' already exists";
 
     private static final String PHONE_LABEL = " | Phone: ";
     private static final String EMAIL_LABEL = " | Email: ";
@@ -56,6 +60,17 @@ public class AddCommand extends Command {
 
         if (hasSameName) {
             throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME, toAdd.getName()));
+        }
+
+        // Find existing person with same number
+        Optional<Person> existingWithNumber = model.getFilteredPersonList().stream()
+                .filter(p -> p.getPhone().equals(toAdd.getPhone()))
+                .findFirst();
+
+        if (existingWithNumber.isPresent()) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE_PHONE,
+                    toAdd.getPhone()));
         }
 
         model.addPerson(toAdd);
