@@ -2172,6 +2172,28 @@ These instructions only provide a starting point for testers to work on; testers
     3. Test case: `grpadd /g NewGroup /n Donald Duck`<br>
         Expected: No contact group is added. An error indicating contact does not exist message shown in the status message.
 
+### Deleting a contact group
+
+1. Deleting a contact group with valid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "HR Manager", "Rocket Scientist" is present.
+
+    1. Test case: `grpdel /g HR Manager`<br>
+        Expected: Contact group with name "HR Manager" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+    2. Test case: `grpdel /g Rocket Scientist`<br>
+        Expected: Contact group with name "Rocket Scientist" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+2. Deleting a contact group with invalid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "NonExistentGroup" is not present.
+
+    1. Test case: `grpdel /g`<br>
+        Expected: No contact group is deleted. An error indicating invalid command format message shown in the status message. 
+
+    2. Test case: `grpdel /g NonExistentGroup`<br>
+        Expected: No contact group is deleted. An error indicating contact group does not exist message shown in the status message.
+
 ### Saving data
 
 1. Dealing with missing data files
