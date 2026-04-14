@@ -34,7 +34,6 @@ public class AssignGroupCommandParserTest {
 
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_AMY + GROUP_NAME_DESC_STUDENTS,
                 expectedCommand);
-
         assertParseSuccess(parser, GROUP_NAME_DESC_STUDENTS + NAME_DESC_AMY,
                 expectedCommand);
     }
@@ -43,26 +42,34 @@ public class AssignGroupCommandParserTest {
     public void parse_repeatedPrefixes_failure() {
         assertParseFailure(parser, NAME_DESC_AMY + NAME_DESC_BOB + GROUP_NAME_DESC_STUDENTS,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
-
         assertParseFailure(parser, NAME_DESC_AMY + GROUP_NAME_DESC_STUDENTS + GROUP_NAME_DESC_UNEMPLOYED,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_GROUP));
     }
 
     @Test
+    public void parse_repeatedNamePrefixesDifferentCasing_failure() {
+        String duplicateNameDifferentCasingInput = " " + PREFIX_NAME + " Alice"
+                + " " + PREFIX_NAME + " alice"
+                + GROUP_NAME_DESC_STUDENTS;
+
+        assertParseFailure(parser, duplicateNameDifferentCasingInput,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
+    }
+
+    @Test
     public void parse_compulsoryFieldMissing_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignGroupCommand.MESSAGE_USAGE);
-
         assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
+
         assertParseFailure(parser, GROUP_NAME_DESC_STUDENTS, expectedMessage);
+
         assertParseFailure(parser, VALID_NAME_AMY + " " + VALID_GROUP_NAME_STUDENTS, expectedMessage);
     }
 
     @Test
     public void parse_invalidValue_failure() {
         assertParseFailure(parser, INVALID_NAME_DESC + GROUP_NAME_DESC_STUDENTS, Name.MESSAGE_CONSTRAINTS);
-
         assertParseFailure(parser, NAME_DESC_AMY + INVALID_GROUP_NAME_DESC, GroupName.MESSAGE_CONSTRAINTS);
-
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_AMY + GROUP_NAME_DESC_STUDENTS,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignGroupCommand.MESSAGE_USAGE));
     }
