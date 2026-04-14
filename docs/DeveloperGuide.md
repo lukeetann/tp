@@ -21,51 +21,56 @@ pageNav: 4
         * [Storage component](#storage-component)
         * [Common classes](#common-classes)
     * [Implementation](#implementation)
-      * [Person](#person)
-          * [Design considerations for Person Parameters:](#design-considerations-for-person-parameters)
-          * [Design considerations for Person Commands:](#design-considerations-for-person-commands)
-          * [Adding a person](#adding-a-person)
-          * [Deleting a person](#deleting-a-person)
-          * [Editing a person](#editing-a-person)
-          * [Listing a person](#listing-a-person)
-          * [Finding a person](#finding-a-person)
-      * [Group](#group)
-          * [Design considerations for Group Parameters:](#design-considerations-for-group-parameters)
-          * [Design considerations for Group Commands:](#design-considerations-for-group-commands)
-          * [Adding a group](#adding-a-group)
-          * [Deleting a group](#deleting-a-group)
-          * [Listing groups](#listing-groups)
-          * [Assigning a contact to a group](#assigning-a-contact-to-a-group)
-          * [Unassigning a contact from a group](#unassigning-a-contact-from-a-group)
-      * [Company Profile](#company-profile)
-          * [Design considerations for Company Parameters:](#design-considerations-for-company-parameters)
-          * [Design considerations for Company Commands:](#design-considerations-for-company-commands)
-          * [Adding a company](#adding-a-company)
-          * [Deleting a company](#deleting-a-company)
-          * [Listing company profiles](#listing-company-profiles)
-          * [Finding company profiles](#finding-company-profiles)
-          * [Design considerations for Roles Parameters:](#design-considerations-for-roles-parameters)
-          * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
-          * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
-          * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
-        * [\[Proposed\] Undo/redo feature](#proposed-undoredo-feature)
-            * [Proposed Implementation](#proposed-implementation)
-            * [Design considerations:](#design-considerations)
+        * [Person](#person)
+            * [Design considerations for Person Parameters:](#design-considerations-for-person-parameters)
+            * [Design considerations for Person Commands:](#design-considerations-for-person-commands)
+            * [Adding a person](#adding-a-person)
+            * [Deleting a person](#deleting-a-person)
+            * [Editing a person](#editing-a-person)
+            * [Listing a person](#listing-a-person)
+            * [Finding a person](#finding-a-person)
+        * [Group](#group)
+            * [Design considerations for Group Parameters:](#design-considerations-for-group-parameters)
+            * [Design considerations for Group Commands:](#design-considerations-for-group-commands)
+            * [Adding a group](#adding-a-group)
+            * [Deleting a group](#deleting-a-group)
+            * [Listing groups](#listing-groups)
+            * [Assigning a contact to a group](#assigning-a-contact-to-a-group)
+            * [Unassigning a contact from a group](#unassigning-a-contact-from-a-group)
+        * [Company Profile](#company-profile)
+            * [Design considerations for Company Parameters:](#design-considerations-for-company-parameters)
+            * [Design considerations for Company Commands:](#design-considerations-for-company-commands)
+            * [Adding a company](#adding-a-company)
+            * [Deleting a company](#deleting-a-company)
+            * [Listing company profiles](#listing-company-profiles)
+            * [Finding company profiles](#finding-company-profiles)
+            * [Design considerations for Roles Parameters:](#design-considerations-for-roles-parameters)
+            * [Design considerations for Roles Commands:](#design-considerations-for-roles-commands)
+            * [Adding a role to a specified company](#adding-a-role-to-a-specified-company)
+            * [Deleting a role from a specified company](#deleting-a-role-from-a-specified-company)
+            * [\[Proposed\] Undo/redo feature](#proposed-undoredo-feature)
+                * [Proposed Implementation](#proposed-implementation)
+                * [Design considerations:](#design-considerations)
     * [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
     * [Appendix: Requirements](#appendix-requirements)
         * [Product scope](#product-scope)
         * [User stories](#user-stories)
         * [Use cases](#use-cases)
         * [Non-Functional Requirements](#non-functional-requirements)
-          * [Contact Non-Functional Requirements](#contact-non-functional-requirements)
-          * [Contact Group Non-Functional Requirements](#contact-group-non-functional-requirements)
-          * [Company Profile Non-Functional Requirements](#company-profile-non-functional-requirements)
+            * [Contact Non-Functional Requirements](#contact-non-functional-requirements)
+            * [Contact Group Non-Functional Requirements](#contact-group-non-functional-requirements)
+            * [Company Profile Non-Functional Requirements](#company-profile-non-functional-requirements)
         * [Glossary](#glossary)
     * [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
-        * [Launch and shutdown](#launch-and-shutdown)
-        * [Adding a person](#adding-a-person)
-        * [Editing a person](#editing-a-person)
-        * [Deleting a person](#deleting-a-person)
+        * [Launch and shutdown](#launch-and-shutdown-test)
+        * [Adding a person](#adding-a-person-test)
+        * [Editing a person](#editing-a-person-test)
+        * [Deleting a person](#deleting-a-person-test)
+        * [Adding a group](#adding-a-group-test)
+        * [Deleting a group](#deleting-a-group-test)
+        * [Assigning a contact to a group](#assigning-a-contact-to-a-group-test)
+        * [Unassigning a contact from a group](#unassigning-a-contact-from-a-group-test)
+        * [Adding a company](#adding-a-company-test)
         * [Saving data](#saving-data)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -264,11 +269,11 @@ A `Person` object represents a contact in the HitList. It has the following deta
 
 **Aspect: Person Field Requirements:**
 * **Alternative 1 (current choice):** Require both name and phone, while keeping email and address optional.
-  * Pros: Ensures every contact has enough information for the headhunter to identify and reach out to the person.
-  * Cons: Requires slightly more typing than a minimal single-field command.
+    * Pros: Ensures every contact has enough information for the headhunter to identify and reach out to the person.
+    * Cons: Requires slightly more typing than a minimal single-field command.
 * **Alternative 2:** Make only the phone number required and treat the name as optional.
-  * Pros: Speeds up quick data entry when the user only wants to capture a lead.
-  * Cons: Makes the contact list harder to read and distinguish during later follow-up.
+    * Pros: Speeds up quick data entry when the user only wants to capture a lead.
+    * Cons: Makes the contact list harder to read and distinguish during later follow-up.
 
 **Aspect: Validation of Name**
 * **Alternative 1:** Use strict alphanumeric regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow letters, numbers, and spaces.
@@ -306,22 +311,22 @@ A `Person` object represents a contact in the HitList. It has the following deta
 
 **Aspect: Command Format for Parameters:**
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/n` for name, `/p` for phone, `/e` for email and `/a` for address).
-  * Pros: Clear and unambiguous parsing of parameters, especially when values contain spaces.
-  * Cons: Requires the user to remember the prefixes.
+    * Pros: Clear and unambiguous parsing of parameters, especially when values contain spaces.
+    * Cons: Requires the user to remember the prefixes.
 * **Alternative 2:** Use a fixed parameter order without prefixes.
-  * Pros: Slightly shorter command format.
-  * Cons: Parsing becomes more brittle when optional fields are involved.
+    * Pros: Slightly shorter command format.
+    * Cons: Parsing becomes more brittle when optional fields are involved.
 
 **Aspect: Handling Duplicate Persons:**
-* **Alternative 1 (current choice):** Reject duplicates based on the contact's name.
+* **Alternative 1:** Reject duplicates based on the contact's name.
     * Pros: Using the name as the primary identifier makes commands highly readable
     * Cons: Duplicate names have to be disambiguated via the name field itself, leading to ad hoc naming conventions.
-* **Alternative 2:** Reject duplicates based on the contact's name and phone number.
+* **Alternative 2 (current choice):** Reject duplicates based on the contact's name and phone number.
     * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
-    * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
+    * Cons: It does not account for when two persons newly change their phone number and one now holds the other person's old number, forcing a strict order of operations to avoid false duplicate errors.
 * **Alternative 3:** Reject duplicates based on phone number and email.
-  * Pros: Disallows multiple entries that share the same phone number and email.
-  * Cons: Complicates CLI logic for edit and delete commands. If two distinct contacts share the same name, targeting them by the name field becomes ambiguous for the user and the parser.
+    * Pros: Disallows multiple entries that share the same phone number and email.
+    * Cons: Complicates CLI logic for edit and delete commands. If two distinct contacts share the same name, targeting them by the name field becomes ambiguous for the user and the parser.
 
 #### Adding a person
 
@@ -667,39 +672,39 @@ A `Group` object represents a contact group in HitList. It has the following det
 
 **Aspect: Group Field Requirements:**
 * **Alternative 1 (current choice):** Require only a group name and allow groups to be created without members.
-  * Pros: Allows users to create an empty group first and populate it later.
-  * Cons: Groups without members may be less meaningful and could clutter the HitList if users create many placeholder groups.
+    * Pros: Allows users to create an empty group first and populate it later.
+    * Cons: Groups without members may be less meaningful and could clutter the HitList if users create many placeholder groups.
 * **Alternative 2:** Require at least one member when creating a group.
-  * Pros: Ensures every group is meaningful immediately after creation.
-  * Cons: Prevents users from creating placeholder groups for future shortlisting work.
+    * Pros: Ensures every group is meaningful immediately after creation.
+    * Cons: Prevents users from creating placeholder groups for future shortlisting work.
 
 **Aspect: Validation of Group Names**
 * **Alternative 1 (current choice):** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
-  * Pros: Enforces clean, predictable group names, preventing users from accidentally entering malformed data or using symbols that might break the CLI formatting.
-  * Cons: Overly restrictive. It prevents users from creating perfectly valid group names that rely on standard punctuation (e.g., `C++ Developers`, `Front-end Techs`, or `R&D Team`).
+    * Pros: Enforces clean, predictable group names, preventing users from accidentally entering malformed data or using symbols that might break the CLI formatting.
+    * Cons: Overly restrictive. It prevents users from creating perfectly valid group names that rely on standard punctuation (e.g., `C++ Developers`, `Front-end Techs`, or `R&D Team`).
 * **Alternative 2:** Use a custom regex `^[^\s/][^/\v]{1,49}$` (Must not start with a space, cannot contain '/' or newlines, and must be between 2 and 50 characters in length).
-  * Pros: Highly flexible, allowing users to naturally categorize contacts using helpful symbols like hyphens, ampersands, or brackets (e.g., "Interns (2025)").
-  * Cons: Too permissive; it could allow users to create completely nonsensical group names consisting entirely of random punctuation, like `!!!` or `???`.
+    * Pros: Highly flexible, allowing users to naturally categorize contacts using helpful symbols like hyphens, ampersands, or brackets (e.g., "Interns (2025)").
+    * Cons: Too permissive; it could allow users to create completely nonsensical group names consisting entirely of random punctuation, like `!!!` or `???`.
 
 #### Design considerations for Group Commands:
 
 **Aspect: Command Format for Parameters:**
 
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g. `/g` for group name and repeated `/n` prefixes for member names).
-  * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-  * Cons: Requires users to remember and use specific prefixes.
+    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+    * Cons: Requires users to remember and use specific prefixes.
 * **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `grpadd Students Alex`).
-  * Pros: Simpler command format, less typing for users.
-  * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+    * Pros: Simpler command format, less typing for users.
+    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
 
 **Aspect: Handling Duplicate Groups:**
 
 * **Alternative 1 (current choice):** Reject duplicates based on group name.
-  * Pros: Prevents users from creating multiple groups with the same purpose and display name.
-  * Cons: Different groups that intentionally share a name cannot coexist.
+    * Pros: Prevents users from creating multiple groups with the same purpose and display name.
+    * Cons: Different groups that intentionally share a name cannot coexist.
 * **Alternative 2:** Allow duplicate group names and rely on the user to manage them manually.
-  * Pros: More flexible.
-  * Cons: Makes group operations such as deletion and listing more error-prone.
+    * Pros: More flexible.
+    * Cons: Makes group operations such as deletion and listing more error-prone.
 
 #### Adding a group
 
@@ -1044,47 +1049,47 @@ A `Role` object represents a role that the headhunter is recruiting for within a
 **Aspect: Company Field Requirements:**
 
 * **Alternative 1 (current choice):** Both company name and description are required fields.
-  * Pros: Ensures that all company profiles have a minimum level of information, which can be useful for the headhunter to quickly identify and differentiate between companies.
-  * Cons: May be too restrictive for users who want to quickly add a company profile with minimal information and fill in the details later.
+    * Pros: Ensures that all company profiles have a minimum level of information, which can be useful for the headhunter to quickly identify and differentiate between companies.
+    * Cons: May be too restrictive for users who want to quickly add a company profile with minimal information and fill in the details later.
 * **Alternative 2:** Only the company name is required, while the description is optional.
-  * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
-  * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
+    * Pros: Provides more flexibility for users to add company profiles with minimal information and update them later as needed.
+    * Cons: May lead to incomplete company profiles that lack important information, making it harder for the headhunter to manage their client base effectively.
 
 **Aspect: Validation of Company Names**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
-  * Pros: Enforces clean data entry and prevents users from accidentally entering malformed data or symbols that might break CLI formatting.
-  * Cons: Overly restrictive. It prevents users from adding companies with perfectly valid punctuation in their registered names (e.g., `Macy's`, `AT&T`, or `LEAK X'PRESS PLUMBING & CONSTRUCTION`).
+    * Pros: Enforces clean data entry and prevents users from accidentally entering malformed data or symbols that might break CLI formatting.
+    * Cons: Overly restrictive. It prevents users from adding companies with perfectly valid punctuation in their registered names (e.g., `Macy's`, `AT&T`, or `LEAK X'PRESS PLUMBING & CONSTRUCTION`).
 * **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,49}$` (Must not contain `/` or newlines, and must be between 2 and 50 characters).
-  * Pros: Highly flexible, allowing users to accurately input diverse company names exactly as they are legally registered, including standard punctuation.
-  * Cons: Too permissive; it could allow users to create completely nonsensical company names consisting entirely of random punctuation marks like `!!!` or `???`.
+    * Pros: Highly flexible, allowing users to accurately input diverse company names exactly as they are legally registered, including standard punctuation.
+    * Cons: Too permissive; it could allow users to create completely nonsensical company names consisting entirely of random punctuation marks like `!!!` or `???`.
 
 **Aspect: Validation of Company Description**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
-  * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
-  * Cons: Extremely restrictive for a text-heavy field. It prevents users from using basic, necessary punctuation to write readable sentences (e.g., blocking commas, periods, and hyphens in a description like "A fast-growing B2B startup, founded in 2023.").
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
+    * Cons: Extremely restrictive for a text-heavy field. It prevents users from using basic, necessary punctuation to write readable sentences (e.g., blocking commas, periods, and hyphens in a description like "A fast-growing B2B startup, founded in 2023.").
 * **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,999}$` (Must not contain `/` or newlines, and must be between 2 and 1000 characters).
-  * Pros: Highly flexible, allowing users to write detailed, naturally formatted descriptions using full sentences and helpful punctuation.
-  * Cons: Extremely permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
+    * Pros: Highly flexible, allowing users to write detailed, naturally formatted descriptions using full sentences and helpful punctuation.
+    * Cons: Extremely permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
 
 #### Design considerations for Company Commands:
 
 **Aspect: Command Format for Parameters:**
 
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/c` for company name, `/d` for description).
-  * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-  * Cons: Requires users to remember and use specific prefixes.
+    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+    * Cons: Requires users to remember and use specific prefixes.
 * **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `cmpadd Google Tech Company`).
-  * Pros: Simpler command format, less typing for users.
-  * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+    * Pros: Simpler command format, less typing for users.
+    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
 
 **Aspect: Handling Duplicate Companies:**
 
 * **Alternative 1 (current choice):** Check for duplicates based on company name and reject the addition if a duplicate is found.
-  * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
-  * Cons: Does not account for edge cases where two distinct companies might share the same names.
+    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+    * Cons: Does not account for edge cases where two distinct companies might share the same names.
 * **Alternative 2:** Allow duplicates but provide a warning to the user.
-  * Pros: Provides flexibility for users who may want to add similar companies, avoids false positives in duplicate detection.
-  * Cons: Can lead to a cluttered HitList and make it harder for users to manage their contacts effectively.
+    * Pros: Provides flexibility for users who may want to add similar companies, avoids false positives in duplicate detection.
+    * Cons: Can lead to a cluttered HitList and make it harder for users to manage their contacts effectively.
 
 #### Adding a company
 
@@ -1214,7 +1219,7 @@ The following activity diagram summarizes what happens when a user executes the 
 
 #### Listing company profiles
 
-The ListCompany mechanism is facilitated by `ListCompanyCommand` and its associated parser `ListCompanyCommandParser`. It allows users to list all company profiles or a specified company profile in the HitList. The feature implements the following key operations: 
+The ListCompany mechanism is facilitated by `ListCompanyCommand` and its associated parser `ListCompanyCommandParser`. It allows users to list all company profiles or a specified company profile in the HitList. The feature implements the following key operations:
 
 * `ListCompanyCommandParser#parse()` — Parses the user input to check for an optional target company name (indicated by the `/c` prefix). If a name is provided, it creates a command to filter for that company; otherwise, it creates a command to show all companies.
 * `ListCompanyCommand#execute()` — Executes the logic to apply the parsed filtering condition to the list of companies in the model.
@@ -1344,45 +1349,45 @@ The following activity diagram summarizes what happens when a user executes the 
 
 **Aspect: Role Field Requirements:**
 * **Alternative 1 (current choice):** Both role name and role description are required fields.
-  * Pros: Ensures that all roles have a minimum level of information, which can be useful for the headhunter to quickly identify the requirements of clients request.
-  * Cons: May be too restrictive for users who want to quickly add a role without the description first and fill in the details later.
+    * Pros: Ensures that all roles have a minimum level of information, which can be useful for the headhunter to quickly identify the requirements of clients request.
+    * Cons: May be too restrictive for users who want to quickly add a role without the description first and fill in the details later.
 * **Alternative 2:** Only the role name is required, while the description is optional.
-  * Pros: Provides more flexibility for users to add roles without description and update them later as needed.
-  * Cons: May lead to incomplete roles that lack important descriptions, making it harder for the headhunter to manage their client base effectively.
+    * Pros: Provides more flexibility for users to add roles without description and update them later as needed.
+    * Cons: May lead to incomplete roles that lack important descriptions, making it harder for the headhunter to manage their client base effectively.
 
 **Aspect: Validation of Role Names**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
-  * Pros: Enforces clean data entry, preventing users from accidentally entering malformed data or symbols that might disrupt CLI parsing.
-  * Cons: Too restrictive. It prevents users from adding perfectly valid roles that rely on standard industry punctuation (e.g., "Front-end Developer", "C++ Engineer", or "UI/UX Designer").
+    * Pros: Enforces clean data entry, preventing users from accidentally entering malformed data or symbols that might disrupt CLI parsing.
+    * Cons: Too restrictive. It prevents users from adding perfectly valid roles that rely on standard industry punctuation (e.g., "Front-end Developer", "C++ Engineer", or "UI/UX Designer").
 * **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,49}$` (Must not contain `/` or newlines, and must be between 2 and 50 characters).
-  * Pros: Highly flexible, allowing users to accurately input diverse job titles exactly as they appear in the market, including standard punctuation.
-  * Cons: Extremely permissive; it could allow users to create completely nonsensical role titles consisting entirely of random punctuation marks like `!!!` or `???`.
+    * Pros: Highly flexible, allowing users to accurately input diverse job titles exactly as they appear in the market, including standard punctuation.
+    * Cons: Extremely permissive; it could allow users to create completely nonsensical role titles consisting entirely of random punctuation marks like `!!!` or `???`.
 
 **Aspect: Validation of Role Description**
 * **Alternative 1:** Use strict regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow alphanumeric characters and spaces.
-  * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
-    * Cons: Highly impractical for a descriptive field. It prevents users from writing natural sentences and using basic punctuation (e.g., blocking commas, periods, and symbols like `+` or `&` in a description such as `Requires 5+ years of experience in C++ & Python.`).
+    * Pros: Prevents users from accidentally entering malformed data or using symbols that might break the CLI or JSON storage formatting.
+        * Cons: Highly impractical for a descriptive field. It prevents users from writing natural sentences and using basic punctuation (e.g., blocking commas, periods, and symbols like `+` or `&` in a description such as `Requires 5+ years of experience in C++ & Python.`).
 * **Alternative 2 (current choice):** Use a custom regex `^[^/\s\p{C}][^/\v\p{C}]{1,999}$` (Must not contain `/` or newlines, and must be between 2 and 1000 characters).
-  * Pros: Maximum flexibility, allowing users to write detailed, naturally formatted role requirements and descriptions.
-  * Cons: Too permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
+    * Pros: Maximum flexibility, allowing users to write detailed, naturally formatted role requirements and descriptions.
+    * Cons: Too permissive; it could allow users to enter unhelpful or completely nonsensical descriptions (like `!!!` or a string of random symbols) as long as it doesn't violate the basic exclusion rules.
 
 #### Design considerations for Roles Commands:
 
 **Aspect: Command Format for Parameters:**
 * **Alternative 1 (current choice):** Use prefixes to indicate parameters (e.g., `/r` for role name, `/d` for role description).
-  * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
-  * Cons: Requires users to remember and use specific prefixes.
+    * Pros: Clear and unambiguous parsing of parameters, especially when there are multiple parameters.
+    * Cons: Requires users to remember and use specific prefixes.
 * **Alternative 2:** Use a fixed order of parameters without prefixes (e.g., `roleadd Software Engineer Develops Software`).
-  * Pros: Simpler command format, less typing for users.
-  * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
+    * Pros: Simpler command format, less typing for users.
+    * Cons: Parsing can be more error-prone, especially if parameters can contain spaces or if there are optional parameters.
 
 **Aspect: Handling Duplicate Roles:**
 * **Alternative 1 (current choice):** Check for duplicates based on role name and reject the addition if a duplicate is found.
-  * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
-  * Cons: Does not account for edge cases where two distinct roles might share the same names.
+    * Pros: Prevents cluttering the HitList with duplicate entries, maintains data integrity.
+    * Cons: Does not account for edge cases where two distinct roles might share the same names.
 * **Alternative 2:** Allow duplicates but provide a warning to the user.
-  * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
-  * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
+    * Pros: Provides flexibility for users who may want to add similar roles, avoids false positives in duplicate detection.
+    * Cons: Can lead to a cluttered HitList and make it harder for users to manage the company roles effectively.
 
 #### Adding a role to a specified company
 
@@ -1709,7 +1714,7 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that a contact with the same name already exists.
-  * 1a1. System shows previously added contact with the same name message
+    * 1a1. System shows previously added contact with the same name message
 
 Use case ends.
 </box>
@@ -1727,7 +1732,7 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the requested contact does not exist.
-  * 1a1. System shows requested contact does not exist message
+    * 1a1. System shows requested contact does not exist message
 
 Use case ends.
 </box>
@@ -1741,13 +1746,13 @@ Similar to Use case 1 (Add a contact), except the user requests to edit an exist
 **Extensions**
 
 * 1a. System detects that the requested contact does not exist.
-  * 1a1. System shows requested contact does not exist message.
+    * 1a1. System shows requested contact does not exist message.
 * 1b. System detects that the new contact details conflict with an existing contact (i.e., same name).
-  * 1b1. System shows contact details conflict with existing contact message.
+    * 1b1. System shows contact details conflict with existing contact message.
 * 1c. System detects that the new contact details are the same as the existing contact details.
-  * 1c1. System shows contact details are the same as existing contact message.
+    * 1c1. System shows contact details are the same as existing contact message.
 * 1d. System detects that the new contact details are invalid (e.g. invalid phone number format).
-  * 1d1. System shows invalid contact details message.
+    * 1d1. System shows invalid contact details message.
 
 Use case ends.
 </box>
@@ -1764,7 +1769,7 @@ Use case ends.
 **Extensions**
 
 * 2a. System detects that the contact list is empty
-  * 2a1. System shows contact list is empty message
+    * 2a1. System shows contact list is empty message
 
 Use case ends.
 </box>
@@ -1778,7 +1783,7 @@ Similar to Use case 1 (Add a contact), except the user requests to add a contact
 **Extensions**
 
 * 1a. System detects that a contact group with the same name already exists
-  * 1a1. System shows contact group already exists message
+    * 1a1. System shows contact group already exists message
 
 Use case ends.
 </box>
@@ -1792,7 +1797,7 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
 **Extensions**
 
 * 1a. System detects that the contact group does not exist.
-  * 1a1. System shows contact group does not exist message
+    * 1a1. System shows contact group does not exist message
 
 Use case ends.
 </box>
@@ -1806,7 +1811,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all cont
 **Extensions**
 
 * 2a. System detects that there are no contact groups
-  * 2a1. System shows no contact groups message
+    * 2a1. System shows no contact groups message
 
 Use case ends.
 </box>
@@ -1826,11 +1831,11 @@ Use case ends.
 **Extensions**
 
 * 3a. System detects that the contact is already in the contact group
-  * 3a1. System shows contact is already in the contact group message
+    * 3a1. System shows contact is already in the contact group message
 * 3b. System detects that contact group does not exist
-  * 3b1. System shows contact group does not exist message
+    * 3b1. System shows contact group does not exist message
 * 3c. System detects that contact does not exist
-  * 3c1. System shows contact does not exist message
+    * 3c1. System shows contact does not exist message
 
 Use case ends.
 </box>
@@ -1848,11 +1853,11 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects there is no such contact in the contact group
-  * 1a1. System shows contact is not in the contact group message
+    * 1a1. System shows contact is not in the contact group message
 * 1b. System detects that contact group does not exist
-  * 1b1. System shows contact group does not exist message
+    * 1b1. System shows contact group does not exist message
 * 1c. System detects that contact does not exist
-  * 1c1. System shows contact does not exist message
+    * 1c1. System shows contact does not exist message
 
 Use case ends.
 </box>
@@ -1869,9 +1874,9 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified contact group does not exist
-  * 1a1. System shows contact group does not exist message
+    * 1a1. System shows contact group does not exist message
 * 2a. System detects that the specified contact group has no members
-  * 2a1. System shows contact group has no members message
+    * 2a1. System shows contact group has no members message
 
 Use case ends.
 </box>
@@ -1885,7 +1890,7 @@ Similar to Use case 1 (Add a contact), except the user requests to add a company
 **Extensions**
 
 * 1a. System detects that a company profile with the same name already exists
-  * 1a1. System shows company profile already exists message
+    * 1a1. System shows company profile already exists message
 
 Use case ends.
 </box>
@@ -1899,7 +1904,7 @@ Similar to Use case 2 (Delete a contact), except the user requests to delete a c
 **Extensions**
 
 * 1a. System detects that the specified company does not exist
-  * 1a1. System shows company profile does not exist message
+    * 1a1. System shows company profile does not exist message
 
 Use case ends.
 </box>
@@ -1913,7 +1918,7 @@ Similar to Use case 4 (List contacts), except the user requests to list all comp
 **Extensions**
 
 * 2a. System detects that there are no company profiles
-  * 2a1. System shows no company profiles message
+    * 2a1. System shows no company profiles message
 
 Use case ends.
 </box>
@@ -1932,9 +1937,9 @@ Use case ends.
 **Extensions**
 
 * 2a. System detects that the specified company profile does not exist
-  * 2a1. System shows company profile does not exist message
+    * 2a1. System shows company profile does not exist message
 * 2b. System detects that the company role already exists in the company profile
-  *  2b1. System shows company role already exists message
+    *  2b1. System shows company role already exists message
 
 Use case ends.
 </box>
@@ -1952,9 +1957,9 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified company profile does not exist
-  * 1a1. System shows company profile does not exist message
+    * 1a1. System shows company profile does not exist message
 * 1b. System detects that the company role does not exist in the company profile
-  * 1b1. System shows company role does not exist message
+    * 1b1. System shows company role does not exist message
 
 Use case ends.
 </box>
@@ -1972,9 +1977,9 @@ Use case ends.
 **Extensions**
 
 * 1a. System detects that the specified company profile does not exist
-  * 1a1. System shows company profile does not exist message
+    * 1a1. System shows company profile does not exist message
 * 3a. System detects that the company profile has no associated roles
-  * 3a1. System shows company has no active roles message
+    * 3a1. System shows company has no active roles message
 
 Use case ends.
 </box>
@@ -2044,123 +2049,286 @@ These instructions only provide a starting point for testers to work on; testers
 ### Launch and shutdown
 
 1. Initial launch
-   1. Download the jar file and copy into an empty folder
-   2. Double-click the jar file
-      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Download the jar file and copy into an empty folder
+    2. Double-click the jar file
+       Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 2. Saving window preferences
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-   2. Re-launch the app by double-clicking the jar file.<br>
+    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-### Adding a person
+### Adding a person test
 1. Adding a person with valid details
 
-    Prerequisites: Launch the application. The contact list is visible.
+   Prerequisites: Launch the application. The contact list is visible.
 
     1. Test case: `add /n Mary Doe /p 89606058`<br>
-        Expected: A new contact with name "Mary Doe" and phone number "89606058" is added to the HitList. Details of the added contact shown in the status message.
+       Expected: A new contact with name "Mary Doe" and phone number "89606058" is added to the HitList. Details of the added contact shown in the status message.
 
     2. Test case: `add /n Sin-Yee /p 89615937 /e sin-yee@gmail.com`<br>
-        Expected: A new contact with name "Sin-Yee", phone number "89615937" and, email "sin-yee@gmail.com" is added to the HitList. Details of the added contact shown in the status message.
+       Expected: A new contact with name "Sin-Yee", phone number "89615937" and, email "sin-yee@gmail.com" is added to the HitList. Details of the added contact shown in the status message.
 
     3. Test case: `add /n Thomas Brown /p 89619076 /a 13 Computing Drive, Singapore 117417`<br>
-        Expected: A new contact with name "Thomas Brown", phone number "89619076" and, address "13 Computing Drive, Singapore 117417" is added to the HitList. Details of the added contact shown in the status message.
+       Expected: A new contact with name "Thomas Brown", phone number "89619076" and, address "13 Computing Drive, Singapore 117417" is added to the HitList. Details of the added contact shown in the status message.
 
     4. Test case: `add /n Betsy Crowe /p 87654321 /e betsy.crowe@gmail.com /a 321, Clementi Rd, 123465`<br>
-        Expected: A new contact with name "Betsy Crowe", phone number "87654321", email "betsy.crowe@gmail.com" and, address "321, Clementi Rd, 123465" is added to the HitList. Details of the added contact shown in the status message.
+       Expected: A new contact with name "Betsy Crowe", phone number "87654321", email "betsy.crowe@gmail.com" and, address "321, Clementi Rd, 123465" is added to the HitList. Details of the added contact shown in the status message.
 
 2. Adding a person with invalid details
 
-    Prerequisites: Launch the application. The contact list is visible.
+   Prerequisites: Launch the application. The contact list is visible.
 
-   1. Test case: `add /n ValidName `<br>
+    1. Test case: `add /n ValidName `<br>
        Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for phone number.
 
-   2. Test case: `add /p 89606058 `<br>
-      Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for name.
+    2. Test case: `add /p 89606058 `<br>
+       Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for name.
 
-   3. Test case: `add /n Ravi s/o Subramaniam /p 89606058`<br>
-      Expected: No contact is added. An error indicating invalid name shown in the status message.
+    3. Test case: `add /n Ravi s/o Subramaniam /p 89606058`<br>
+       Expected: No contact is added. An error indicating invalid name shown in the status message.
 
-   4. Test case: `add /n ValidName /p InvalidPhoneNumber`<br>
-      Expected: No contact is added. An error indicating invalid contact number shown in the status message.
+    4. Test case: `add /n ValidName /p InvalidPhoneNumber`<br>
+       Expected: No contact is added. An error indicating invalid contact number shown in the status message.
 
-   5. Test case: `add /n ValidName /p 89606058 /e InvalidEmail`<br>
-      Expected: No contact is added. An error indicating invalid email shown in the status message.
+    5. Test case: `add /n ValidName /p 89606058 /e InvalidEmail`<br>
+       Expected: No contact is added. An error indicating invalid email shown in the status message.
 
-   6. Test case: `add /n InvalidEmail /p 89606058 /e invalid-email`<br>
-      Expected: No contact is added. Error details shown in the status message.
+    6. Test case: `add /n InvalidEmail /p 89606058 /e invalid-email`<br>
+       Expected: No contact is added. Error details shown in the status message.
 
-### Editing a person
+### Editing a person test
 1. Editing a person's details with valid details
 
-    Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `edit 1 /n Brian Tan /p 2345678`<br>
+    1. Test case: `edit 1 /n Brian Tan /p 2345678`<br>
        Expected: The first contact in the list is updated to have name "Brian Tan" and phone number "2345678". Details of the updated contact shown in the status message.
 
-   2. Test case: `edit 1 /e brian.tan@gmail.com`<br>
+    2. Test case: `edit 1 /e brian.tan@gmail.com`<br>
        Expected: The first contact in the list is updated to have email "brian.tan@gmail.com". Details of the updated contact shown in the status message.
 
-   3. Test case: `edit 1 /a 13 Computing Drive`<br>
+    3. Test case: `edit 1 /a 13 Computing Drive`<br>
        Expected: The first contact in the list is updated to have address "13 Computing Drive". Details of the updated contact shown in the status message.
 
 2. Editing a person's details with invalid details
 
    Prerequisites: List all persons using the `list` command. Multiple persons in the list with at one having the number `2345678`.
 
-   1. Test case: `edit 0 /p 12345678`<br>
+    1. Test case: `edit 0 /p 12345678`<br>
        Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
 
-   2. Test case: `edit 999 /n ValidName`<br>
-      Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
+    2. Test case: `edit 999 /n ValidName`<br>
+       Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
 
-   3. Test case: `edit 3 /n Ravi s/o Subramaniam`<br>
-     Expected: No contact is updated. An error indicating invalid name shown in the status message.
+    3. Test case: `edit 3 /n Ravi s/o Subramaniam`<br>
+       Expected: No contact is updated. An error indicating invalid name shown in the status message.
 
-   4. Test case: `edit 1 /p InvalidPhoneNumber`<br>
-     Expected: No contact is updated. An error indicating invalid contact number shown in the status message.
+    4. Test case: `edit 1 /p InvalidPhoneNumber`<br>
+       Expected: No contact is updated. An error indicating invalid contact number shown in the status message.
 
-   5. Test case: `edit 1 /p 2345678`<br>
-     Expected: No contact is updated. An error indicating contact number already exist shown in the status message.
+    5. Test case: `edit 1 /p 2345678`<br>
+       Expected: No contact is updated. An error indicating contact number already exist shown in the status message.
 
-### Deleting a person
+### Deleting a person test
 
 1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-1. Deleting a person while a list of persons is being shown (Index Deletion)
+2. Deleting a person while a list of persons is being shown (Index Deletion)
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
+    1. Test case: `delete 1`<br>
+       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
-   2. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message.
+    2. Test case: `delete 0`<br>
+       Expected: No person is deleted. Error details shown in the status message.
 
-   3. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the filtered list size)<br>
-      Expected: Invalid command format error details shown in the status message.
+    3. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the filtered list size)<br>
+       Expected: Invalid command format error details shown in the status message.
 
 3. Deleting a person while a list of persons is being shown (Name Deletion)
 
     1. Test case: `delete /n Alice`<br>
-        Expected: Contact with name "Alice" is deleted from the HitList. Details of the deleted contact shown in the status message.
-    
+       Expected: Contact with name "Alice" is deleted from the HitList. Details of the deleted contact shown in the status message.
+
     2. Test case: `delete /n NonExistentName`<br>
-        Expected: No person is deleted. Error details shown in the status message.
-    
+       Expected: No person is deleted. Error details shown in the status message.
+
     3. Other incorrect delete commands to try: `delete`, `delete /n`, `...`<br>
-        Expected: Invalid command format error details shown in the status message.
+       Expected: Invalid command format error details shown in the status message.
+
+### Adding a contact group test
+
+1. Adding a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the groups "Software Engineers" and "Data Scientist" are not present.
+
+    1. Test case: `grpadd /g Software Engineers`<br>
+       Expected: A new contact group with name "Software Engineers" is added to the HitList. Details of the added contact group shown in the status message.
+
+    2. Test case: `grpadd /g Data Scientists`<br>
+       Expected: A new contact group with name "Data Scientists" is added to the HitList. Details of the added contact group shown in the status message.
+
+2. Adding a contact group with users with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the groups "HR Manager" and "Rocket Scientist" are not present.<br>List all persons using the `list` command. Check the displayed list and verify that there are contacts with name "Thomas Brown" and "Betsy Crowe".
+
+    1. Test case: `grpadd /g HR Manager /n Betsy Crowe`<br>
+       Expected: A new contact group with name "HR Manager" is added to the HitList, and the contact with name "Betsy Crowe" is added as a member of the "HR Manager" contact group. Details of the added contact group shown in the status message.
+
+    2. Test case: `grpadd /g Rocket Scientist /n Thomas Brown /n Betsy Crowe`<br>
+       Expected: A new contact group with name "Rocket Scientist" is added to the HitList, and the contact with name "Thomas Brown" and, "Betsy Crowe" is added as a member of the "Rocket Scientist" contact group. Details of the added contact group shown in the status message.
+
+3. Adding a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is already present.<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with the name "Donald Duck".
+
+    1. Test case: `grpadd /g`<br>
+       Expected: No contact group is added. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpadd /g Software Engineers`<br>
+       Expected: No contact group is added. An error indicating contact group already exists message shown in the status message.
+
+    3. Test case: `grpadd /g NewGroup /n Donald Duck`<br>
+       Expected: No contact group is added. An error indicating contact does not exist message shown in the status message.
+
+### Deleting a contact group test
+
+1. Deleting a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "HR Manager", "Rocket Scientist" is present.
+
+    1. Test case: `grpdel /g HR Manager`<br>
+       Expected: Contact group with name "HR Manager" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+    2. Test case: `grpdel /g Rocket Scientist`<br>
+       Expected: Contact group with name "Rocket Scientist" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+2. Deleting a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "NonExistentGroup" is not present.
+
+    1. Test case: `grpdel /g`<br>
+       Expected: No contact group is deleted. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpdel /g NonExistentGroup`<br>
+       Expected: No contact group is deleted. An error indicating contact group does not exist message shown in the status message.
+
+### Assigning a contact to a contact group test
+
+1. Assigning a contact to a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpassign /g Software Engineers /n Mary Doe`<br>
+       Expected: The contact with name "Mary Doe" is assigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+       Expected: The contact with name "Thomas Brown" and "Mary Doe" is assigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Assigning a contact to a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck".
+
+    1. Test case: `grpassign /g`<br>
+       Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpassign /g Software Engineers`<br>
+       Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpassign /g NonExistentGroup /n Mary Doe`<br>
+       Expected: No contact is assigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpassign /g Software Engineers /n Donald Duck`<br>
+       Expected: No contact is assigned to the contact group. An error indicating contact does not exist message shown in the status message.
+
+### Unassigning a contact from a contact group test
+
+1. Unassigning a contact to a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: The contact with name "Mary Doe" is unassigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpunassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+       Expected: The contact with name "Thomas Brown" and "Mary Doe" is unassigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Unassigning a contact to a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck"<br>Run the command `grplist /c Software Engineer` and ensure that Mary Doe is not assigned to the group.
+
+    1. Test case: `grpunassign /g`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpunassign /g Software Engineers`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpunassign /g NonExistentGroup /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpunassign /g Software Engineers /n Donald Duck`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact does not exist message shown in the status message.
+
+    5. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact is not in the contact group message shown in the status message.
+
+### Adding a company test
+
+1. Adding a company with valid details
+
+   Prerequisites: Launch the application.
+
+    1. Test case: `cmpadd /c John Street /d A quant firm`<br>
+       Expected: A new company with name "John Street" and description "A quant firm" is added to the HitList. Details of the added company shown in the status message.
+
+    2. Test case: `cmpadd /c Boat Inc. /d A boating company - Based in San Francisco`<br>
+       Expected: A new company with name "Boat Inc." and description "A boating company - Based in San Francisco" is added to the HitList. Details of the added company shown in the status message.
+
+2. Adding a company with invalid details
+
+   Prerequisites: Launch the application. The company list is visible.
+
+    1. Test case: `cmpadd /c Valid Company`<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for description.
+
+    2. Test case: `cmpadd /d A company `<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for name.
+
+### Adding a company role test
+
+1. Adding a company role with valid details
+
+   Prerequisites: Launch the application. Execute `cmpadd /c John Street /d A quant firm`.
+
+    1. Test case: `roleadd /c John Street /r Quant Developer /d A developer`<br>
+       Expected: A new company role with name "Quant Developer" and role description "A developer" is added to the company "John Street". Details of the added company role shown in the status message.
+
+    2. Test case: `roleadd /c John Street /r Software Engineer - Summer '24 /d Internship`<br>
+       Expected: A new company role with name "Software Engineer - Summer '24" and role description "Internship" is added to the company "John Street". Details of the added company role shown in the status message.
+
+2. Adding a company role with invalid details
+
+   Prerequisites: Launch the application. Execute `clear`.
+
+    1. Test case: `roleadd /c John Street /r Quant Developer /d A developer`<br>
+       Expected: No company role is added. An error indicating company does not exist as the company does not exist.
+
+    2. Test case: `roleadd /c John Street /d A developer`<br>
+       Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role name.
+
+    3. Test case: `roleadd /c John Street /r Quant Developer`<br>
+       Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role description.
 
 ### Saving data
 
 1. Dealing with missing data files
 
-   1. Navigate to the folder where the jar file is located. Delete the `data` folder.
+    1. Navigate to the folder where the jar file is located. Delete the `data` folder.
 
-   2. Launch the app by double-clicking the jar file. Expected: The app should create a new `data` folder and a new `hitlist.json` file within it, and the app should run without any errors.
+    2. Launch the app by double-clicking the jar file. Expected: The app should create a new `data` folder and a new `hitlist.json` file within it, and the app should run without any errors.
 
 2. Dealing with corrupted data files
 
-   1. Navigate to the folder where the jar file is located. Open the `data` folder and open `hitlist.json` in a text editor. Replace the contents of `hitlist.json` with random text that does not conform to the expected JSON format.
+    1. Navigate to the folder where the jar file is located. Open the `data` folder and open `hitlist.json` in a text editor. Replace the contents of `hitlist.json` with random text that does not conform to the expected JSON format.
 
-   2. Save the file and launch the app by double-clicking the jar file.<br>
+    2. Save the file and launch the app by double-clicking the jar file.<br>
        Expected: The app should parse the corrupted `hitlist.json` file, fail to load the data, and start with an empty HitList. The app should run without any errors.
