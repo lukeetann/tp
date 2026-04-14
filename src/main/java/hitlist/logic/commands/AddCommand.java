@@ -35,6 +35,8 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Added %1$s with contact number %2$s";
     public static final String MESSAGE_DUPLICATE_NAME = "Duplicate Contact: "
             + "A contact with the name '%s' already exists";
+    public static final String MESSAGE_DUPLICATE_PHONE = "Duplicate Phone number: "
+            + "A contact with the number '%s' already exists";
 
     private final Person toAdd;
 
@@ -58,6 +60,17 @@ public class AddCommand extends Command {
         if (existingWithSameName.isPresent()) {
             throw new CommandException(String.format(
                     MESSAGE_DUPLICATE_NAME,
+                    toAdd.getName()));
+        }
+
+        // Find existing person with same number
+        Optional<Person> existingWithNumber = model.getFilteredPersonList().stream()
+                .filter(p -> p.getPhone().equals(toAdd.getPhone()))
+                .findFirst();
+
+        if (existingWithNumber.isPresent()) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE_PHONE,
                     toAdd.getName()));
         }
 
