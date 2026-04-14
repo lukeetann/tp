@@ -13,7 +13,7 @@ public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Names should only contain alphabetic characters, dashes,"
-                    + " apostrophes, and spaces, and it should not be blank";
+             + " apostrophes, and spaces, and it should not be blank";
 
     /*
      * Names should only contain alphabetic characters, spaces, -, and ', and it should not be blank
