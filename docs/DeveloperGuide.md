@@ -938,8 +938,15 @@ The following sequence diagram shows how an AssignGroup operation goes through t
 
 <br>
 
+<div class="text-center">
+  <puml src="diagrams/assign-group/GroupAssignSequenceDiagram2.puml" alt="GroupAssignSequenceDiagram2" />
+</div>
+
+<br>
+
 <box type="info" seamless header="Note">
 The lifeline for <code>AssignGroupCommand</code> and <code>AssignGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+Due  to the complexity of the AssignGroup feature, the sequence diagram is split into two parts: the first diagram focuses on the parsing phase, while the second diagram focuses on the execution phase. Both diagrams together provide a complete overview of how an AssignGroup operation flows through the Logic component.
 </box>
 
 The following activity diagram summarizes what happens when a user executes the `grpassign` command:
