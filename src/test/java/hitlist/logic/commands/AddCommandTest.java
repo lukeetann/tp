@@ -70,18 +70,19 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonSamePhoneOnly_success() throws Exception {
+    public void execute_duplicatePersonSamePhoneOnly_throwsCommandException() {
         Person existingPerson = new PersonBuilder(ALICE).withName("Alice Wong").build();
-        Person validPerson = new PersonBuilder()
+        Person duplicatePhonePerson = new PersonBuilder()
                 .withName("Bob").withPhone(existingPerson.getPhone().value).build();
 
         ModelStub modelStub = new ModelStubAcceptingPersonAdded();
         modelStub.addPerson(existingPerson);
 
-        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+        AddCommand addCommand = new AddCommand(duplicatePhonePerson);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validPerson.getName(), validPerson.getPhone()),
-                commandResult.getFeedbackToUser());
+        assertThrows(CommandException.class,
+                String.format(AddCommand.MESSAGE_DUPLICATE_PHONE, duplicatePhonePerson.getPhone()),
+                () -> addCommand.execute(modelStub));
     }
 
     @Test

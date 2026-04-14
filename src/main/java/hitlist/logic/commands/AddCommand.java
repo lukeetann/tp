@@ -71,7 +71,7 @@ public class AddCommand extends Command {
         if (existingWithNumber.isPresent()) {
             throw new CommandException(String.format(
                     MESSAGE_DUPLICATE_PHONE,
-                    toAdd.getName()));
+                    toAdd.getPhone()));
         }
 
         model.addPerson(toAdd);
