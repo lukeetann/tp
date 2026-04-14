@@ -6,6 +6,8 @@ import static hitlist.logic.parser.CliSyntax.PREFIX_NAME;
 import static hitlist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 import hitlist.commons.util.ToStringBuilder;
 import hitlist.logic.commands.exceptions.CommandException;
 import hitlist.model.Model;

@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -95,7 +94,7 @@ public class AddCommandTest {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
         modelStub.addPerson(existingPerson);
 
-        AddCommand addCommand = new AddCommand(duplicatePhonePerson).execute(modelStub);
+        AddCommand addCommand = new AddCommand(duplicatePhonePerson);
 
         String expectedMessage = String.format(
                 AddCommand.MESSAGE_DUPLICATE_PHONE,
