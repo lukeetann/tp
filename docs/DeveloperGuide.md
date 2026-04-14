@@ -2300,7 +2300,6 @@ These instructions only provide a starting point for testers to work on; testers
     3. Test case: `roleadd /c John Street /r Quant Developer`<br>
        Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role description.
 
-
 ### Saving data
 
 1. Dealing with missing data files
