@@ -2194,6 +2194,65 @@ These instructions only provide a starting point for testers to work on; testers
     2. Test case: `grpdel /g NonExistentGroup`<br>
         Expected: No contact group is deleted. An error indicating contact group does not exist message shown in the status message.
 
+### Assigning a contact to a contact group
+
+1. Assigning a contact to a contact group with valid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpassign /g Software Engineers /n Mary Doe`<br>
+        Expected: The contact with name "Mary Doe" is assigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+        Expected: The contact with name "Thomas Brown" and "Mary Doe" is assigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Assigning a contact to a contact group with invalid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck".
+
+    1. Test case: `grpassign /g`<br>
+        Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpassign /g Software Engineers`<br>
+        Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpassign /g NonExistentGroup /n Mary Doe`<br>
+        Expected: No contact is assigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpassign /g Software Engineers /n Donald Duck`<br>
+        Expected: No contact is assigned to the contact group. An error indicating contact does not exist message shown in the status message.
+
+### Unassigning a contact from a contact group
+
+1. Unassigning a contact to a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: The contact with name "Mary Doe" is unassigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpunassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+       Expected: The contact with name "Thomas Brown" and "Mary Doe" is unassigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Unassigning a contact to a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck"<br>Run the command `grplist /c Software Engineer` and ensure that Mary Doe is not assigned to the group.
+
+    1. Test case: `grpunassign /g`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpunassign /g Software Engineers`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpunassign /g NonExistentGroup /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpunassign /g Software Engineers /n Donald Duck`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact does not exist message shown in the status message.
+   
+    5. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact is not in the contact group message shown in the status message.
+
 ### Saving data
 
 1. Dealing with missing data files
