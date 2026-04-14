@@ -2137,6 +2137,28 @@ These instructions only provide a starting point for testers to work on; testers
     3. Other incorrect delete commands to try: `delete`, `delete /n`, `...`<br>
         Expected: Invalid command format error details shown in the status message.
 
+### Adding a company
+
+1. Adding a company with valid details
+
+   Prerequisites: Launch the application.
+
+    1. Test case: `cmpadd /c John Street /d A quant firm`<br>
+       Expected: A new company with name "John Street" and description "A quant firm" is added to the HitList. Details of the added company shown in the status message.
+
+    2. Test case: `cmpadd /c Boat Inc. /d A boating company - Based in San Francisco`<br>
+       Expected: A new company with name "Boat Inc." and description "A boating company - Based in San Francisco" is added to the HitList. Details of the added company shown in the status message.
+
+2. Adding a company with invalid details
+
+   Prerequisites: Launch the application. The company list is visible.
+
+    1. Test case: `cmpadd /c Valid Company`<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for description.
+
+    2. Test case: `cmpadd /d A company `<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for name.
+
 ### Saving data
 
 1. Dealing with missing data files
