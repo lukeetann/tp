@@ -98,7 +98,6 @@ public class AddCommandTest {
 
         String expectedMessage = String.format(
                 AddCommand.MESSAGE_DUPLICATE_PHONE,
-                duplicatePhonePerson.getName(),
                 duplicatePhonePerson.getPhone());
 
         assertThrows(CommandException.class, expectedMessage, () -> addCommand.execute(modelStub));
