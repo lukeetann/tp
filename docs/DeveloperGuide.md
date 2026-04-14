@@ -2253,6 +2253,54 @@ These instructions only provide a starting point for testers to work on; testers
     5. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
        Expected: No contact is unassigned to the contact group. An error indicating contact is not in the contact group message shown in the status message.
 
+### Adding a company
+
+1. Adding a company with valid details
+
+   Prerequisites: Launch the application.
+
+    1. Test case: `cmpadd /c John Street /d A quant firm`<br>
+       Expected: A new company with name "John Street" and description "A quant firm" is added to the HitList. Details of the added company shown in the status message.
+
+    2. Test case: `cmpadd /c Boat Inc. /d A boating company - Based in San Francisco`<br>
+       Expected: A new company with name "Boat Inc." and description "A boating company - Based in San Francisco" is added to the HitList. Details of the added company shown in the status message.
+
+2. Adding a company with invalid details
+
+   Prerequisites: Launch the application. The company list is visible.
+
+    1. Test case: `cmpadd /c Valid Company`<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for description.
+
+    2. Test case: `cmpadd /d A company `<br>
+       Expected: No company is added. An error indicating invalid command format as it is missing the prefix for name.
+
+### Adding a company role
+
+1. Adding a company role with valid details
+
+   Prerequisites: Launch the application. Execute `cmpadd /c John Street /d A quant firm`.
+
+    1. Test case: `roleadd /c John Street /r Quant Developer /d A developer`<br>
+       Expected: A new company role with name "Quant Developer" and role description "A developer" is added to the company "John Street". Details of the added company role shown in the status message.
+
+    2. Test case: `roleadd /c John Street /r Software Engineer - Summer '24 /d Internship`<br>
+       Expected: A new company role with name "Software Engineer - Summer '24" and role description "Internship" is added to the company "John Street". Details of the added company role shown in the status message.
+
+2. Adding a company role with invalid details
+
+   Prerequisites: Launch the application. Execute `clear`.
+
+    1. Test case: `roleadd /c John Street /r Quant Developer /d A developer`<br>
+       Expected: No company role is added. An error indicating company does not exist as the company does not exist.
+
+    2. Test case: `roleadd /c John Street /d A developer`<br>
+       Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role name.
+
+    3. Test case: `roleadd /c John Street /r Quant Developer`<br>
+       Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role description.
+
+
 ### Saving data
 
 1. Dealing with missing data files
