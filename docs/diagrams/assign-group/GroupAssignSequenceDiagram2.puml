@@ -4,6 +4,7 @@
 skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant "c:AssignGroupCommand" as AssignGroupCommand LOGIC_COLOR
 participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
@@ -13,7 +14,7 @@ participant "m:Model" as Model MODEL_COLOR
 participant "targetGroup:Group" as TargetGroup MODEL_COLOR
 end box
 
-[-> AssignGroupCommand : execute(m)
+LogicManager -> AssignGroupCommand : execute(m)
 activate AssignGroupCommand
 
 AssignGroupCommand -> Model : getPersonsByName(personName)
@@ -42,6 +43,6 @@ activate CommandResult
 CommandResult --> AssignGroupCommand : r
 deactivate CommandResult
 
-[<-- AssignGroupCommand : r
+LogicManager <-- AssignGroupCommand : r
 deactivate AssignGroupCommand
 @enduml

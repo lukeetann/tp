@@ -39,7 +39,4 @@ destroy AssignGroupCommandParser
 
 HitListParser --> LogicManager : c
 deactivate HitListParser
-
-[<--LogicManager : c
-deactivate LogicManager
 @enduml

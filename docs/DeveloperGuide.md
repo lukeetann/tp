@@ -1008,6 +1008,12 @@ The following sequence diagram shows how an UnassignGroup operation goes through
 
 <br>
 
+<div class="text-center">
+  <puml src="diagrams/unassign-group/GroupUnassignSequenceDiagram.puml" alt="GroupUnassignSequenceDiagram2" />
+</div>
+
+<br>
+
 <box type="info" seamless header="Note">
 The lifeline for <code>UnassignGroupCommand</code> and <code>UnassignGroupCommandParser</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </box>
