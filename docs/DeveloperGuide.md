@@ -313,12 +313,12 @@ A `Person` object represents a contact in the HitList. It has the following deta
   * Cons: Parsing becomes more brittle when optional fields are involved.
 
 **Aspect: Handling Duplicate Persons:**
-* **Alternative 1 (current choice):** Reject duplicates based on the contact's name.
-    * Pros: Using the name as the primary identifier makes commands highly readable
-    * Cons: Duplicate names have to be disambiguated via the name field itself, leading to ad hoc naming conventions.
-* **Alternative 2:** Reject duplicates based on the contact's name and phone number.
-    * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
-    * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
+* **Alternative 1:** Reject duplicates based on the contact's name.
+  * Pros: Using the name as the primary identifier makes commands highly readable
+  * Cons: Duplicate names have to be disambiguated via the name field itself, leading to ad hoc naming conventions.
+* **Alternative 2 (current choice):** Reject duplicates based on the contact's name and phone number.
+  * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
+  * Cons: It does not account for when two persons newly change their phone number and one now holds the other person's old number, forcing a strict order of operations to avoid false duplicate errors.
 * **Alternative 3:** Reject duplicates based on phone number and email.
   * Pros: Disallows multiple entries that share the same phone number and email.
   * Cons: Complicates CLI logic for edit and delete commands. If two distinct contacts share the same name, targeting them by the name field becomes ambiguous for the user and the parser.
@@ -2044,12 +2044,12 @@ These instructions only provide a starting point for testers to work on; testers
 ### Launch and shutdown
 
 1. Initial launch
-   1. Download the jar file and copy into an empty folder
-   2. Double-click the jar file
-      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Download the jar file and copy into an empty folder
+    2. Double-click the jar file
+       Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 2. Saving window preferences
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-   2. Re-launch the app by double-clicking the jar file.<br>
+    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
 ### Adding a person
@@ -2073,71 +2073,71 @@ These instructions only provide a starting point for testers to work on; testers
 
     Prerequisites: Launch the application. The contact list is visible.
 
-   1. Test case: `add /n ValidName `<br>
+    1. Test case: `add /n ValidName `<br>
        Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for phone number.
 
-   2. Test case: `add /p 89606058 `<br>
-      Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for name.
+    2. Test case: `add /p 89606058 `<br>
+       Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for name.
 
-   3. Test case: `add /n Ravi s/o Subramaniam /p 89606058`<br>
-      Expected: No contact is added. An error indicating invalid name shown in the status message.
+    3. Test case: `add /n Ravi s/o Subramaniam /p 89606058`<br>
+       Expected: No contact is added. An error indicating invalid name shown in the status message.
 
-   4. Test case: `add /n ValidName /p InvalidPhoneNumber`<br>
-      Expected: No contact is added. An error indicating invalid contact number shown in the status message.
+    4. Test case: `add /n ValidName /p InvalidPhoneNumber`<br>
+       Expected: No contact is added. An error indicating invalid contact number shown in the status message.
 
-   5. Test case: `add /n ValidName /p 89606058 /e InvalidEmail`<br>
-      Expected: No contact is added. An error indicating invalid email shown in the status message.
+    5. Test case: `add /n ValidName /p 89606058 /e InvalidEmail`<br>
+       Expected: No contact is added. An error indicating invalid email shown in the status message.
 
-   6. Test case: `add /n InvalidEmail /p 89606058 /e invalid-email`<br>
-      Expected: No contact is added. Error details shown in the status message.
+    6. Test case: `add /n InvalidEmail /p 89606058 /e invalid-email`<br>
+       Expected: No contact is added. Error details shown in the status message.
 
 ### Editing a person
 1. Editing a person's details with valid details
 
     Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `edit 1 /n Brian Tan /p 2345678`<br>
+    1. Test case: `edit 1 /n Brian Tan /p 2345678`<br>
        Expected: The first contact in the list is updated to have name "Brian Tan" and phone number "2345678". Details of the updated contact shown in the status message.
 
-   2. Test case: `edit 1 /e brian.tan@gmail.com`<br>
-       Expected: The first contact in the list is updated to have email "brian.tan@gmail.com". Details of the updated contact shown in the status message.
+    2. Test case: `edit 1 /e brian.tan@gmail.com`<br>
+        Expected: The first contact in the list is updated to have email "brian.tan@gmail.com". Details of the updated contact shown in the status message.
 
-   3. Test case: `edit 1 /a 13 Computing Drive`<br>
-       Expected: The first contact in the list is updated to have address "13 Computing Drive". Details of the updated contact shown in the status message.
+    3. Test case: `edit 1 /a 13 Computing Drive`<br>
+        Expected: The first contact in the list is updated to have address "13 Computing Drive". Details of the updated contact shown in the status message.
 
 2. Editing a person's details with invalid details
 
-   Prerequisites: List all persons using the `list` command. Multiple persons in the list with at one having the number `2345678`.
+    Prerequisites: List all persons using the `list` command. Multiple persons in the list with at one having the number `2345678`.
 
-   1. Test case: `edit 0 /p 12345678`<br>
+    1. Test case: `edit 0 /p 12345678`<br>
+        Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
+
+    2. Test case: `edit 999 /n ValidName`<br>
        Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
 
-   2. Test case: `edit 999 /n ValidName`<br>
-      Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
+    3. Test case: `edit 3 /n Ravi s/o Subramaniam`<br>
+      Expected: No contact is updated. An error indicating invalid name shown in the status message.
 
-   3. Test case: `edit 3 /n Ravi s/o Subramaniam`<br>
-     Expected: No contact is updated. An error indicating invalid name shown in the status message.
+    4. Test case: `edit 1 /p InvalidPhoneNumber`<br>
+      Expected: No contact is updated. An error indicating invalid contact number shown in the status message.
 
-   4. Test case: `edit 1 /p InvalidPhoneNumber`<br>
-     Expected: No contact is updated. An error indicating invalid contact number shown in the status message.
-
-   5. Test case: `edit 1 /p 2345678`<br>
-     Expected: No contact is updated. An error indicating contact number already exist shown in the status message.
+    5. Test case: `edit 1 /p 2345678`<br>
+      Expected: No contact is updated. An error indicating contact number already exist shown in the status message.
 
 ### Deleting a person
 
 1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-1. Deleting a person while a list of persons is being shown (Index Deletion)
+2. Deleting a person while a list of persons is being shown (Index Deletion)
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
+    1. Test case: `delete 1`<br>
+        Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
-   2. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message.
+    2. Test case: `delete 0`<br>
+        Expected: No person is deleted. Error details shown in the status message.
 
-   3. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the filtered list size)<br>
-      Expected: Invalid command format error details shown in the status message.
+    3. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the filtered list size)<br>
+        Expected: Invalid command format error details shown in the status message.
 
 3. Deleting a person while a list of persons is being shown (Name Deletion)
 
@@ -2149,6 +2149,122 @@ These instructions only provide a starting point for testers to work on; testers
     
     3. Other incorrect delete commands to try: `delete`, `delete /n`, `...`<br>
         Expected: Invalid command format error details shown in the status message.
+
+### Adding a contact group
+
+1. Adding a contact group with valid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the groups "Software Engineers" and "Data Scientist" are not present.
+
+    1. Test case: `grpadd /g Software Engineers`<br>
+        Expected: A new contact group with name "Software Engineers" is added to the HitList. Details of the added contact group shown in the status message.
+
+    2. Test case: `grpadd /g Data Scientists`<br>
+        Expected: A new contact group with name "Data Scientists" is added to the HitList. Details of the added contact group shown in the status message.
+
+2. Adding a contact group with users with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the groups "HR Manager" and "Rocket Scientist" are not present.<br>List all persons using the `list` command. Check the displayed list and verify that there are contacts with name "Thomas Brown" and "Betsy Crowe".
+
+    1. Test case: `grpadd /g HR Manager /n Betsy Crowe`<br>
+        Expected: A new contact group with name "HR Manager" is added to the HitList, and the contact with name "Betsy Crowe" is added as a member of the "HR Manager" contact group. Details of the added contact group shown in the status message.
+
+    2. Test case: `grpadd /g Rocket Scientist /n Thomas Brown /n Betsy Crowe`<br>
+        Expected: A new contact group with name "Rocket Scientist" is added to the HitList, and the contact with name "Thomas Brown" and, "Betsy Crowe" is added as a member of the "Rocket Scientist" contact group. Details of the added contact group shown in the status message.
+
+3. Adding a contact group with invalid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is already present.<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with the name "Donald Duck".
+
+    1. Test case: `grpadd /g`<br>
+        Expected: No contact group is added. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpadd /g Software Engineers`<br>
+        Expected: No contact group is added. An error indicating contact group already exists message shown in the status message.
+
+    3. Test case: `grpadd /g NewGroup /n Donald Duck`<br>
+        Expected: No contact group is added. An error indicating contact does not exist message shown in the status message.
+
+### Deleting a contact group
+
+1. Deleting a contact group with valid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "HR Manager", "Rocket Scientist" is present.
+
+    1. Test case: `grpdel /g HR Manager`<br>
+        Expected: Contact group with name "HR Manager" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+    2. Test case: `grpdel /g Rocket Scientist`<br>
+        Expected: Contact group with name "Rocket Scientist" is deleted from the HitList. Details of the deleted contact group shown in the status message.
+
+2. Deleting a contact group with invalid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "NonExistentGroup" is not present.
+
+    1. Test case: `grpdel /g`<br>
+        Expected: No contact group is deleted. An error indicating invalid command format message shown in the status message. 
+
+    2. Test case: `grpdel /g NonExistentGroup`<br>
+        Expected: No contact group is deleted. An error indicating contact group does not exist message shown in the status message.
+
+### Assigning a contact to a contact group
+
+1. Assigning a contact to a contact group with valid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpassign /g Software Engineers /n Mary Doe`<br>
+        Expected: The contact with name "Mary Doe" is assigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+        Expected: The contact with name "Thomas Brown" and "Mary Doe" is assigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Assigning a contact to a contact group with invalid details
+
+    Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck".
+
+    1. Test case: `grpassign /g`<br>
+        Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpassign /g Software Engineers`<br>
+        Expected: No contact is assigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpassign /g NonExistentGroup /n Mary Doe`<br>
+        Expected: No contact is assigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpassign /g Software Engineers /n Donald Duck`<br>
+        Expected: No contact is assigned to the contact group. An error indicating contact does not exist message shown in the status message.
+
+### Unassigning a contact from a contact group
+
+1. Unassigning a contact to a contact group with valid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers", and "QA Engineer" is present.<br>List all persons using the `list` command. Check the displayed list and verify that there is a contact with name "Mary Doe" and "Thomas Brown".
+
+    1. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: The contact with name "Mary Doe" is unassigned as a member of the "Software Engineers" contact group. Details of the updated contact group shown in the status message.
+
+    2. Test case: `grpunassign /g QA Engineer /n Thomas Brown /n Mary Doe`<br>
+       Expected: The contact with name "Thomas Brown" and "Mary Doe" is unassigned as a member of the "QA Engineer" contact group. Details of the updated contact group shown in the status message.
+
+2. Unassigning a contact to a contact group with invalid details
+
+   Prerequisites: List all contact groups using the `grplist` command. Check the displayed list and verify that the group "Software Engineers" is present and "NonExistentGroup".<br>List all persons using the `list` command. Check the displayed list and verify that there is no contact with name "Donald Duck"<br>Run the command `grplist /c Software Engineer` and ensure that Mary Doe is not assigned to the group.
+
+    1. Test case: `grpunassign /g`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    2. Test case: `grpunassign /g Software Engineers`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating invalid command format message shown in the status message.
+
+    3. Test case: `grpunassign /g NonExistentGroup /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact group does not exist message shown in the status message.
+
+    4. Test case: `grpunassign /g Software Engineers /n Donald Duck`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact does not exist message shown in the status message.
+   
+    5. Test case: `grpunassign /g Software Engineers /n Mary Doe`<br>
+       Expected: No contact is unassigned to the contact group. An error indicating contact is not in the contact group message shown in the status message.
 
 ### Adding a company
 
@@ -2197,18 +2313,17 @@ These instructions only provide a starting point for testers to work on; testers
     3. Test case: `roleadd /c John Street /r Quant Developer`<br>
        Expected: No company role is added. An error indicating invalid command format as it is missing the prefix for role description.
 
-
 ### Saving data
 
 1. Dealing with missing data files
 
-   1. Navigate to the folder where the jar file is located. Delete the `data` folder.
+    1. Navigate to the folder where the jar file is located. Delete the `data` folder.
 
-   2. Launch the app by double-clicking the jar file. Expected: The app should create a new `data` folder and a new `hitlist.json` file within it, and the app should run without any errors.
+    2. Launch the app by double-clicking the jar file. Expected: The app should create a new `data` folder and a new `hitlist.json` file within it, and the app should run without any errors.
 
 2. Dealing with corrupted data files
 
-   1. Navigate to the folder where the jar file is located. Open the `data` folder and open `hitlist.json` in a text editor. Replace the contents of `hitlist.json` with random text that does not conform to the expected JSON format.
+    1. Navigate to the folder where the jar file is located. Open the `data` folder and open `hitlist.json` in a text editor. Replace the contents of `hitlist.json` with random text that does not conform to the expected JSON format.
 
-   2. Save the file and launch the app by double-clicking the jar file.<br>
-       Expected: The app should parse the corrupted `hitlist.json` file, fail to load the data, and start with an empty HitList. The app should run without any errors.
+    2. Save the file and launch the app by double-clicking the jar file.<br>
+        Expected: The app should parse the corrupted `hitlist.json` file, fail to load the data, and start with an empty HitList. The app should run without any errors.
