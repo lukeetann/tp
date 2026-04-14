@@ -81,8 +81,8 @@ public class AddCommandTest {
         AddCommand addCommand = new AddCommand(duplicatePhonePerson);
 
         assertThrows(CommandException.class,
-                String.format(AddCommand.MESSAGE_DUPLICATE_PHONE, duplicatePhonePerson.getPhone()),
-                () -> addCommand.execute(modelStub));
+                String.format(AddCommand.MESSAGE_DUPLICATE_PHONE, duplicatePhonePerson.getPhone()), ()
+                -> addCommand.execute(modelStub));
     }
 
     @Test
