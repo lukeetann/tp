@@ -3,6 +3,8 @@ package hitlist.model.person;
 import static hitlist.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Locale;
+
 /**
  * Represents a Person's name in the HitList.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
@@ -38,7 +40,6 @@ public class Name {
         return test.matches(VALIDATION_REGEX);
     }
 
-
     @Override
     public String toString() {
         return fullName;
@@ -61,7 +62,6 @@ public class Name {
 
     @Override
     public int hashCode() {
-        return fullName.hashCode();
+        return fullName.toLowerCase(Locale.ROOT).hashCode();
     }
-
 }

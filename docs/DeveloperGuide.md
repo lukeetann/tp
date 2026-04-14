@@ -63,6 +63,8 @@ pageNav: 4
         * [Glossary](#glossary)
     * [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
         * [Launch and shutdown](#launch-and-shutdown)
+        * [Adding a person](#adding-a-person)
+        * [Editing a person](#editing-a-person)
         * [Deleting a person](#deleting-a-person)
         * [Saving data](#saving-data)
 
@@ -212,6 +214,10 @@ How the parsing works:
 
 <br>
 
+<box type="info" seamless header="Note">
+Due to limitations of PlantUML, the arrow from `ModelManager` to `Group` and `Company` is not shown in the diagram above, but in the code, `ModelManager` does depend on these classes.
+</box>
+
 The `Model` component,
 
 * stores HitList data i.e., all `Person`, `Group` and `Company` objects (which are contained in a `UniquePersonList`, `UniqueGroupList` and `UniqueCompanyList` object).
@@ -266,35 +272,35 @@ A `Person` object represents a contact in the HitList. It has the following deta
 
 **Aspect: Validation of Name**
 * **Alternative 1:** Use strict alphanumeric regex `^[\p{Alnum}][\p{Alnum} ]*$` to only allow letters, numbers, and spaces.
-    * **Pros:** Highly secure and prevents users from entering symbols, scripts, or malformed data that could break CLI formatting.
-    * **Cons:** Culturally exclusive and restrictive. It blocks completely valid names that contain punctuation (e.g., O'Connor, Mary-Jane).
+    * Pros: Highly secure and prevents users from entering symbols, scripts, or malformed data that could break CLI formatting.
+    * Cons: Culturally exclusive and restrictive. It blocks completely valid names that contain punctuation (e.g., O'Connor, Mary-Jane).
 * **Alternative 2 (current choice):** Use a custom regex `^[A-Za-z’-][A-Za-z\s'-]*$` to enforce starting with a letter, allowing only spaces, apostrophes, and hyphens thereafter.
-    * **Pros:** Accommodates common Western naming conventions and punctuation while still blocking nonsensical symbols like `???` or `!!!`.
-    * **Cons:** Excludes non-English characters (e.g., accents like `é` or Asian characters) and fails on valid names with periods (e.g., `St. John`).
+    * Pros: Accommodates common Western naming conventions and punctuation while still blocking nonsensical symbols like `???` or `!!!`.
+    * Cons: Excludes non-English characters (e.g., accents like `é` or Asian characters) and fails on valid names with periods (e.g., `St. John`).
 
 **Aspect: Validation of Phone**
 * **Alternative 1:** Use strict regex `^[0-9]{8}$` to explicitly require exactly 8 digits.
-    * **Pros:** Enforces strict data consistency, ensuring all numbers match local (Singaporean) phone number formats perfectly.
-    * **Cons:** Completely breaks down if a user needs to input international numbers, country codes (e.g., `+65`), or extensions.
+    * Pros: Enforces strict data consistency, ensuring all numbers match local (Singaporean) phone number formats perfectly.
+    * Cons: Completely breaks down if a user needs to input international numbers, country codes (e.g., `+65`), or extensions.
 * **Alternative 2 (current choice):** Use a custom regex `^\d{3,}$` to allow any string of digits with a minimum length of 3.
-    * **Pros:** Highly flexible, easily accommodating international numbers of varying lengths.
-    * **Cons:** Too permissive; it allows users to enter obviously fake numbers (like `123`) and doesn't enforce standard spacing or formatting.
+    * Pros: Highly flexible, easily accommodating international numbers of varying lengths.
+    * Cons: Too permissive; it allows users to enter obviously fake numbers (like `123`) and doesn't enforce standard spacing or formatting.
 
 **Aspect: Validation of Email**
 * **Alternative 1:** Use a standard, widely accepted email regex like `^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$`.
-    * **Pros:** Easier to read, maintain, and debug. It catches 99% of standard email formats without overcomplicating the codebase.
-    * **Cons:** May reject highly obscure but technically valid emails defined by edge cases in the RFC 5322 specification.
+    * Pros: Easier to read, maintain, and debug. It catches 99% of standard email formats without overcomplicating the codebase.
+    * Cons: May reject highly obscure but technically valid emails defined by edge cases in the RFC 5322 specification.
 * **Alternative 2 (current choice):** Use the strict, custom regex `^[^\W_]+([+_.-][^\W_]+)*@([^\W_]+(-[^\W_]+)*\.)*([^\W_]+(-[^\W_]+)*){2,}$` to tightly control character placement.
-    * **Pros:** Extremely precise validation that enforces strict alphanumeric boundaries for local and domain parts, ensuring very clean data.
-    * **Cons:** The regex is highly complex, difficult to read, and hard to update if email validation rules need to be adjusted in the future.
+    * Pros: Extremely precise validation that enforces strict alphanumeric boundaries for local and domain parts, ensuring very clean data.
+    * Cons: The regex is highly complex, difficult to read, and hard to update if email validation rules need to be adjusted in the future.
 
 **Aspect: Validation of Address**
 * **Alternative 1 (current choice):** Use a controlled regex `^[\p{Alnum}][\p{Alnum}\s,.-/#]*$` that allows alphanumeric characters and standard address punctuation (spaces, commas, periods, hyphens, slashes, and hashes).
-    * **Pros:** Prevents garbled input while comfortably allowing standard address formatting, including unit numbers (e.g., #12-34) and block/street divisions.
-    * **Cons:** Requires maintaining a list of allowed symbols. If an unexpected but valid symbol is used internationally, the address will be rejected.
+    * Pros: Prevents garbled input while comfortably allowing standard address formatting, including unit numbers (e.g., #12-34) and block/street divisions.
+    * Cons: Requires maintaining a list of allowed symbols. If an unexpected but valid symbol is used internationally, the address will be rejected.
 * **Alternative 2:** Use a custom regex `^[^\s].*` to simply enforce that the string cannot start with a whitespace character.
-    * **Pros:** Maximum flexibility; guarantees the user can enter any valid global address format without artificial restrictions.
-    * **Cons:** Extremely permissive; allows users to enter a single punctuation mark or complete gibberish as long as it doesn't start with a space.
+    * Pros: Maximum flexibility; guarantees the user can enter any valid global address format without artificial restrictions.
+    * Cons: Extremely permissive; allows users to enter a single punctuation mark or complete gibberish as long as it doesn't start with a space.
 
 #### Design considerations for Person Commands:
 
@@ -1147,7 +1153,7 @@ Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#pa
 
 Step 3. Recognizing the `cmpdel` command word, the `HitListParser` instantiates a `DeleteCompanyCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it. (Note: If the user had typed `cmpdel 1`, the parser would extract the index instead).
+Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteParsing.puml" alt="CompanyDeleteObjectDiagram-Parsing" />
@@ -1691,8 +1697,6 @@ Use case ends.
 
 * 1a. System detects that a contact with the same name already exists.
   * 1a1. System shows previously added contact with the same name message
-* 1b. System detects that a contact with the same phone number already exists.
-  * 1b1. System shows previously added contact with the same phone number message
 
 Use case ends.
 </box>
@@ -1725,7 +1729,7 @@ Similar to Use case 1 (Add a contact), except the user requests to edit an exist
 
 * 1a. System detects that the requested contact does not exist.
   * 1a1. System shows requested contact does not exist message.
-* 1b. System detects that the new contact details conflict with an existing contact (e.g. same name or same phone number).
+* 1b. System detects that the new contact details conflict with an existing contact (i.e., same name).
   * 1b1. System shows contact details conflict with existing contact message.
 * 1c. System detects that the new contact details are the same as the existing contact details.
   * 1c1. System shows contact details are the same as existing contact message.
@@ -2034,6 +2038,78 @@ These instructions only provide a starting point for testers to work on; testers
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
    2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
+
+### Adding a person
+1. Adding a person with valid details
+
+    Prerequisites: Launch the application. The contact list is visible.
+
+    1. Test case: `add /n Mary Doe /p 89606058`<br>
+        Expected: A new contact with name "Mary Doe" and phone number "89606058" is added to the HitList. Details of the added contact shown in the status message.
+
+    2. Test case: `add /n Sin-Yee /p 89615937 /e sin-yee@gmail.com`<br>
+        Expected: A new contact with name "Sin-Yee", phone number "89615937" and, email "sin-yee@gmail.com" is added to the HitList. Details of the added contact shown in the status message.
+
+    3. Test case: `add /n Thomas Brown /p 89619076 /a 13 Computing Drive, Singapore 117417`<br>
+        Expected: A new contact with name "Thomas Brown", phone number "89619076" and, address "13 Computing Drive, Singapore 117417" is added to the HitList. Details of the added contact shown in the status message.
+
+    4. Test case: `add /n Betsy Crowe /p 87654321 /e betsy.crowe@gmail.com /a 321, Clementi Rd, 123465`<br>
+        Expected: A new contact with name "Betsy Crowe", phone number "87654321", email "betsy.crowe@gmail.com" and, address "321, Clementi Rd, 123465" is added to the HitList. Details of the added contact shown in the status message.
+
+2. Adding a person with invalid details
+
+    Prerequisites: Launch the application. The contact list is visible.
+
+   1. Test case: `add /n ValidName `<br>
+       Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for phone number.
+
+   2. Test case: `add /p 89606058 `<br>
+      Expected: No contact is added. An error indicating invalid command format as it is missing the prefix for name.
+
+   3. Test case: `add /n Ravi s/o Subramaniam /p 89606058`<br>
+      Expected: No contact is added. An error indicating invalid name shown in the status message.
+
+   4. Test case: `add /n ValidName /p InvalidPhoneNumber`<br>
+      Expected: No contact is added. An error indicating invalid contact number shown in the status message.
+
+   5. Test case: `add /n ValidName /p 89606058 /e InvalidEmail`<br>
+      Expected: No contact is added. An error indicating invalid email shown in the status message.
+
+   6. Test case: `add /n InvalidEmail /p 89606058 /e invalid-email`<br>
+      Expected: No contact is added. Error details shown in the status message.
+
+### Editing a person
+1. Editing a person's details with valid details
+
+    Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+   1. Test case: `edit 1 /n Brian Tan /p 2345678`<br>
+       Expected: The first contact in the list is updated to have name "Brian Tan" and phone number "2345678". Details of the updated contact shown in the status message.
+
+   2. Test case: `edit 1 /e brian.tan@gmail.com`<br>
+       Expected: The first contact in the list is updated to have email "brian.tan@gmail.com". Details of the updated contact shown in the status message.
+
+   3. Test case: `edit 1 /a 13 Computing Drive`<br>
+       Expected: The first contact in the list is updated to have address "13 Computing Drive". Details of the updated contact shown in the status message.
+
+2. Editing a person's details with invalid details
+
+   Prerequisites: List all persons using the `list` command. Multiple persons in the list with at one having the number `2345678`.
+
+   1. Test case: `edit 0 /p 12345678`<br>
+       Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
+
+   2. Test case: `edit 999 /n ValidName`<br>
+      Expected: No contact is updated. An error indicating invalid command format as the index to edit is invalid.
+
+   3. Test case: `edit 3 /n Ravi s/o Subramaniam`<br>
+     Expected: No contact is updated. An error indicating invalid name shown in the status message.
+
+   4. Test case: `edit 1 /p InvalidPhoneNumber`<br>
+     Expected: No contact is updated. An error indicating invalid contact number shown in the status message.
+
+   5. Test case: `edit 1 /p 2345678`<br>
+     Expected: No contact is updated. An error indicating contact number already exist shown in the status message.
 
 ### Deleting a person
 
