@@ -33,18 +33,27 @@ public class AddCommandIntegrationTest {
         expectedModel.addPerson(validPerson);
 
         assertCommandSuccess(new AddCommand(validPerson), model,
-                String.format(AddCommand.MESSAGE_SUCCESS, validPerson.getName(), validPerson.getPhone()),
-                expectedModel);
+                getExpectedSuccessMessage(validPerson), expectedModel);
     }
 
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Person personInList = model.getHitList().getPersonList().get(0);
         String expectedMessage = String.format(
-                AddCommand.MESSAGE_DUPLICATE_SAME_PERSON,
-                personInList.getName(),
-                personInList.getPhone());
+                AddCommand.MESSAGE_DUPLICATE_NAME, personInList.getName());
+
         assertCommandFailure(new AddCommand(personInList), model, expectedMessage);
     }
 
+    private static String getExpectedSuccessMessage(Person person) {
+        StringBuilder expectedMessage = new StringBuilder(AddCommand.MESSAGE_SUCCESS)
+                .append(person.getName())
+                .append(" | Phone: ")
+                .append(person.getPhone());
+
+        person.getEmail().ifPresent(email -> expectedMessage.append(" | Email: ").append(email));
+        person.getAddress().ifPresent(address -> expectedMessage.append(" | Address: ").append(address));
+
+        return expectedMessage.toString();
+    }
 }

@@ -214,6 +214,10 @@ How the parsing works:
 
 <br>
 
+<box type="info" seamless header="Note">
+Due to limitations of PlantUML, the arrow from `ModelManager` to `Group` and `Company` is not shown in the diagram above, but in the code, `ModelManager` does depend on these classes.
+</box>
+
 The `Model` component,
 
 * stores HitList data i.e., all `Person`, `Group` and `Company` objects (which are contained in a `UniquePersonList`, `UniqueGroupList` and `UniqueCompanyList` object).
@@ -309,10 +313,13 @@ A `Person` object represents a contact in the HitList. It has the following deta
   * Cons: Parsing becomes more brittle when optional fields are involved.
 
 **Aspect: Handling Duplicate Persons:**
-* **Alternative 1 (current choice):** Reject duplicates based on the contact's name and phone number.
-  * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
-  * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
-* **Alternative 2:** Reject duplicates based on phone number and email.
+* **Alternative 1 (current choice):** Reject duplicates based on the contact's name.
+    * Pros: Using the name as the primary identifier makes commands highly readable
+    * Cons: Duplicate names have to be disambiguated via the name field itself, leading to ad hoc naming conventions.
+* **Alternative 2:** Reject duplicates based on the contact's name and phone number.
+    * Pros: A phone number is a strong practical identifier for recruiter workflows and prevents obvious duplicates.
+    * Cons: It does not handle the edge case where the users have more than one number or when users have the same name.
+* **Alternative 3:** Reject duplicates based on phone number and email.
   * Pros: Disallows multiple entries that share the same phone number and email.
   * Cons: Complicates CLI logic for edit and delete commands. If two distinct contacts share the same name, targeting them by the name field becomes ambiguous for the user and the parser.
 
@@ -1146,7 +1153,7 @@ Step 2. The `LogicManager` intercepts the user input and calls `HitListParser#pa
 
 Step 3. Recognizing the `cmpdel` command word, the `HitListParser` instantiates a `DeleteCompanyCommandParser`.
 
-Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it. (Note: If the user had typed `cmpdel 1`, the parser would extract the index instead).
+Step 4. The `HitListParser` calls the `parse(" /c Google")` method of the newly created `DeleteCompanyCommandParser`. The parser extracts the target company name, creates a new `DeleteCompanyCommand` targeting "Google", and returns it.
 
 <div class="text-center">
   <puml src="diagrams/delete-company/CompanyDeleteParsing.puml" alt="CompanyDeleteObjectDiagram-Parsing" />
@@ -1690,8 +1697,6 @@ Use case ends.
 
 * 1a. System detects that a contact with the same name already exists.
   * 1a1. System shows previously added contact with the same name message
-* 1b. System detects that a contact with the same phone number already exists.
-  * 1b1. System shows previously added contact with the same phone number message
 
 Use case ends.
 </box>
@@ -1724,7 +1729,7 @@ Similar to Use case 1 (Add a contact), except the user requests to edit an exist
 
 * 1a. System detects that the requested contact does not exist.
   * 1a1. System shows requested contact does not exist message.
-* 1b. System detects that the new contact details conflict with an existing contact (e.g. same name or same phone number).
+* 1b. System detects that the new contact details conflict with an existing contact (i.e., same name).
   * 1b1. System shows contact details conflict with existing contact message.
 * 1c. System detects that the new contact details are the same as the existing contact details.
   * 1c1. System shows contact details are the same as existing contact message.
